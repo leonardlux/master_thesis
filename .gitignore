@@ -1,0 +1,18 @@
+# Latex stuff
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.lof
+*.log
+*.out
+*.xml
+*.synctex.gz
+*.toc
+
+# Grafics
+*.pdf
+
+
