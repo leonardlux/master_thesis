@@ -1,10 +1,45 @@
 \chapter{Decoding}
+[This is only a rough draft! Will need to reread all the papers and then write something fitting!!! with citations]
+
+After extracting the syndrome we need to determine a fitting correction given the extracted syndrome.
+This process it called decoding.
+(And it is also a problem in classical error correction) 
+
+Given that (in most cases) there exist no 1-to-1 mapping between errors, we need to a way to choose a correction from the set of possible corrections. 
+
+This process can be as simple as a lookup table matching each syndrome with a given correction.
+But due to the exponential scaling of the total number of possible syndromes \textcolor{red}{put reference in which I describe the scaling of syndromes here},
+it is for larger codes or codes with larger distances more reasonable to calculate the fitting correction on the fly, opposed to precalculating a whole lookup table.
+
+There exist many different approaches to determine a fitting correction given a syndrome.
+Choosing a decoder for a given QEC cycle is a process of weighting the benefits and disadvantages. 
+In this thesis we will use two different approaches.
+
+First we will introduce the Maximum Likelihood (ML) decoder. 
+This decoder will return the correction with the highest likelihood of a successful recovery given the syndrome, hence its name. 
+We will go into more detail in the following section \ref{sec:ML_decoding}.
+
+The second decoder we will discuss and use is the Minimum Weight Perfect Matching (MWPM) Decoder.
+This decoder return the correction fitting to the most probable single error process.
+Further detail of the inner workings will be discussed in section \ref{sec:MWPM_decoding}.
 
 
-\section{Maximum Likelihood Decoding}
+
+\section{Maximum Likelihood Decoding}\label{sec:ML_decoding}
+
+We will first shortly introduce the general concept of ML Decoding.
+Then we will talk about the specific approach we are going to use to decode the syndromes extracted from our circuit with a surface code encoding and Steane type syndrome extraction.
+
+\subsection{General ML Decoder}
+
+[Do an algo box here?]
 
 
-\section{Minimum Weight Perfect Matching Decoding}
+
+\subsection{ML Decoder used in this thesis}
+
+
+\section{Minimum Weight Perfect Matching Decoding}\label{sec:MWPM_decoding}
 
 
 \section{Pauli Frame Tracking}

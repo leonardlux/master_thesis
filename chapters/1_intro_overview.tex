@@ -1,11 +1,29 @@
 \chapter{Introduction \& Overview}
 
-% Motivate the thesis here
+% 1. introduce Quantum computation and why is it interesting
+With quantum computing we can take advantage of quantum principles of entanglement and superposition,
+to solve several computational problems [Name here some examples]. 
+
+
+
+
+% 2. introduce quantum error correction 
+% <- and why it is needed (read again gottesmann book)
+% -> multiple different components to a QEC code that can be optimized 
+% and where tradeoffs can be made
+
+Quantum error correction (QEC) codes are needed to enable quantum computers, 
+to correct occurring errors and stop the decoherence of the state.
+There are many different QEC codes each with their own up- and down sides, 
+deciding on a QEC code is always a compromise between those.
 
 % Motivation why Steane Type QEC is good
-With rapidly increasing number of qubits in quantum computing platforms...
-We can make the tradeoff of more required physical qubits for a faster quantum error correction procedure.
-Constant overhead (in time) ft qec (Gottesmann paper)
+% increasing number of qubits: historic overview (if possible)
+% And introduce Steane type QEC/steane type syndrome extraction
+With rapidly increasing number of qubits in different quantum computing platforms, 
+we could afford to pay the tradeoff of more physical qubits needed in exchange for a 
+faster/constant in time QEC cycle.
+% shortly name the requirements for the platform due to steane type syndrome extraction
 
 % Explain why we look at the quantity and under which conditions
 The performance of a code is characterized by the threshold, .... explanation...
@@ -13,6 +31,8 @@ and to calculate this under realistic conditions we have to take into account th
 so called circuit level noise
 
 \section{Overview of the Thesis}
+
+% Here is to guide the reader through the thesis
 
 The thesis is organized as follows:
 \begin{enumerate}

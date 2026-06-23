@@ -11,15 +11,9 @@
 3. Weiter durch unterstützende Paper Strukturieren
 
 4. Offene Probleme also Themen die in die Arbeit rein sollten:
-    1. Multiple Rounds:
-        + hier parity check matrizen einführen und testen (diese Woche) dann habe ich kernthema fertig
-        + Hier nochmal genau aufschreiben was fehlt 
-    2. Mind. 1 weg für state preparation
+    1. Mind. 1 weg für state preparation
         + sollte ja simple replacement sein
         + aber wie bekomme ich die fehler optional an und aus?
-    3. Precision problem 
-        + what is stopping me from using 128 bit precision
-        + can I quantify this?
 
 
 
@@ -38,14 +32,23 @@ We find ....
 
 Topic XY require further investgation
 
-# Introduction & Overview
+# Overview (Write first)
+
+Rough intro to Quantum Computing 
+    +  
+
+Rough intro error correction
 
 With rapidly increasing number of qubit in QC platform ...
 We can pay the tradeoff of more physical qubit for a faster operation.
 Constant (in time) overhead ft qec (Gottesmann paper)
+luis likes historic overviews: development of fitting plattforms
 
 The performs of a code is charactized by the threshold, ...,
 and to calculate this under realistic conditions we have to take into account that errors occur in every part in the circuit even in the QEC, so called circuit level noise.
+
+Overview of requirements for the platform
+
 
 ## Overview of the thesis
 
@@ -54,45 +57,17 @@ The thesis is organized as follows:
 1. describe each chapter and what can be found there, what is interesting for the reader 
 
 
-# Quantum Memories 
+# Quantum Computing (How do I do nothing)
 
-## ideal Quantum Circuits
+
+## ideal Quantum Circuits and Quantum Memories
+
+0. Why should we do quantum experiment, name some interesting advantages/algos
 
 0. concept of quantum memory experiments
     + show a circuit with the basic principle
 
 
-## Pauli Error 
-
-0. What are real world physical noise process (some examples)
-1. How to find a good theoretical approach to model those
-    + assumption model them as pauli errors
-1. introduce 
-    + bit-/phase- flip noise
-    + introduce depolirizing noise
-
-### Code Capacity Model
-
-0. Just errors on data qubits
-1. Simplest model
-    + Surface code is designed for this model 
-2. describe the resulting error model
-
-### Circuit Level Noise
-
-0. Ancilla qubits and gates are faulty 
-    + more realworld like
-    + motivate the need to think about syndrome extraction
-0. concept of fault tolerance and residual error
-    + error on qubits only with prob p
-1. Principal of fault tolerance check
-2. Add two qubit depolirizing noise 
-3. describe the resulting full error model
-
-#### Phenomological Noise Model
-
-0. Defintion
-1. Why useful?
 
 
 
@@ -159,6 +134,39 @@ Meaning of threshold vs distance for the capacity of a code (maybe a bit to earl
 1. FT preparation for arbitrary distances is an open problem? correct?!
         
 
+## Pauli Error 
+
+0. What are real world physical noise process (some examples)
+1. How to find a good theoretical approach to model those
+    + assumption model them as pauli errors
+1. introduce 
+    + bit-/phase- flip noise
+    + introduce depolirizing noise
+
+### Code Capacity Model
+
+0. Just errors on data qubits
+1. Simplest model
+    + Surface code is designed for this model 
+2. describe the resulting error model
+
+### Circuit Level Noise
+
+0. Ancilla qubits and gates are faulty 
+    + more realworld like
+    + motivate the need to think about syndrome extraction
+0. concept of fault tolerance and residual error
+    + error on qubits only with prob p
+1. Principal of fault tolerance check
+2. Add two qubit depolirizing noise 
+3. describe the resulting full error model
+
+#### Phenomological Noise Model
+
+0. Defintion
+1. Why useful?
+
+
 # Syndrome Extraction
 
 0. talk about influence of circuit level noise 
@@ -166,7 +174,7 @@ Meaning of threshold vs distance for the capacity of a code (maybe a bit to earl
 1. ToDo: How does the group picture change?
     + can we find a nice way to express this?
 
-## 'Basic' Surface code ancilla syndrome extraction ciruit
+## 'Basic'/repeated Surface code ancilla syndrome extraction ciruit
 
 0. Talk about basic layout
     + for code capcity case
@@ -229,6 +237,11 @@ Properties:
 3. Talk about time correlated MWPM?
     + this is needed for Multi Round experiments 
 
+### Different level of information 
+
+...
+
+
 ## Pauli Frame Tracking
 
 0. Motivate uses case 
@@ -243,7 +256,7 @@ Properties:
 
 + Put details here
 
-# Implementing Steane Type Syndrome Extraction 
+# Implementing Steane Type Syndrome Extraction (Appendix)
 
 + generate Syndrome and Observable
 
@@ -353,6 +366,8 @@ Modifiable parameters of Circuit
 
 # Results
 
+Short note on implementation
+
 ## Code capacity Setting  (may move to implementation)
 
 + benchmarking
@@ -370,14 +385,34 @@ Modifiable parameters of Circuit
 1. Show threshold develops over multiple rounds
     + compare decoder
     + compare observable
+2. compare to repeated
 
 ## Different State Preparations 
 
+Show obvious approaches would not work
+
+
+
+## Discussion
+
+More details, comparison between the methods
 
 # Conclusion
 
-## Outlook
+Hightlight the interesting parts 
 
+If we can afford more qubits, we can get a higher threshold.
+
+Look for qubits error rates of platforms:
+    + atomic qubits -> trapped ions, neutral atoms 
+
+
+## Outlook
 Replacing Surface code with other codes is not interesting in the context of steane type error correction.
 
 FT State preparation investigation arbitrary distances and so
+
+
+# Appendix
+
+Implementation Details

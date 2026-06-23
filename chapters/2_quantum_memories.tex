@@ -1,12 +1,83 @@
-\chapter{Quantum Memories}
+\chapter{Quantum Error Correction}
 
-\section{Ideal Quantum Circuits}
+For the following chapter I used multiple previous works as a reference, which I can recommend for anybody interested \cite{terhal_qec_formalism}, \cite{intro_to_qec} and \cite{gottesmann_book}.
 
-% 0. explain here the concept of a quantum memory circuit and why it is interesting to look at
+Why do we bother to develop quantum computing?
 
-\section{Pauli Errors}
+Quantum computing is interesting because it offers the possibility to use quantum phenomena like superposition and entanglement in algorithms.
+Such algorithms can solve some problems efficiently for which we do not yet know an efficient classical algorithm.
+A famous examples is the problem of integer factorization, as proposed by Shor \cite{shor_factoring}. % because the problem of integer factorziation was the basis for a lot of encryption
+Other examples are the grover search algorithm \cite{grover_search_algo} or this \cite{chemistry_example_algo} proposed algorithm to calculate the energy of atoms and molecules.
+% Show the bitcoin paper for fun?
+
+To realize quantum computations we first need a quantum state in which we can store our quantum information, analogous to the (classical) bit of a (classical) computer.
+Such a state is called a quantum bit (qubit)\footnote{
+    It is only called a qubit if it is a binary/two level systems. One can also realize a higher dimensional data states, so called qudits, but they are not the topic of this thesis and therefore not discussed further. %[TODO: name paper by Irina?]
+} in the quantum case.
+To implement the proper algorithms we also need to be able to do operations on the quantum information, but the implementation of those is out of scope of this thesis. 
+We will focus on maintaining the quantum information contained in one qubit over time, a so called quantum memory experiment. 
+
+There are many different approaches of realizing qubits as physical systems, 
+like trapped ions,  % TODO find references
+neutral ions,       % TODO find references
+molecules,          % TODO find references
+photons,            % TODO find references
+superconducting circuits,% TODO find references
+and certainly more. 
+Each with their own advantages and disadvantages, but all of them still share the same problem they have a residual coupling with the environment and are therefore susceptible to faults. 
+Those faults can introduce errors which could change the information contained in the qubit and therefore destroy our quantum information memory. 
+
+The quantum information is stored in a single excited state of an ion, a single electron, for the example of trapped ions. 
+In comparison the classical information contained in one bit is stored in approximately $10^4$ electrons \cite{classical_bits_electrons}.
+Therefore one can intuitively understand that a qubit is intrinsically less robust, than a classical bit in regards to errors.
+% An because we still need to stay in the quantum regime we can not simply increase the number of electrons for each physical qubit, this would destroy/decohere the quantum information. % is this really correct?
+% This is the approach to make my mother understand why we need QEC.
+
+
+To mitigate the influence of errors and safeguard the quantum information against errors, quantum error-correction (QEC) codes were developed. %should put same papers here
+Quantum error-correction codes are different from classical error-correcting codes, because we have to take into account that by measuring we can destroy superpositions (Wavefunction collapse).
+Moreover where there is only one type of error in classical computers, the bit flip, quantum computers can have a multitude of different errors, as will be discussed in section \ref{sec:pauli_errors}.
+
+In QEC codes we take active measures to correct the quantum memory and remove errors from the qubits. 
+This is done by encoding one\footnote{We can also encode more than one qubit at a time, but this is also not the focus of this work.} (logical) qubit in many (physical) qubits. 
+Using the redundancy in those qubits we can extract some information, which does not tell us anything about the logical state, but can be used to infer which errors occurred.
+And based on this information we can take actions to correct those occured errors \cite{terhal_qec_formalism}.
+
+We will got into more detail in the following section, where we focus on stabilizer codes, which are a class of quantum error-correcting codes and which we are gonna use in this thesis.
+
+% should I include a more general defintion of QECC and an abstract circuit example or equations, to explain what exactly defines a QECC.
+
+
+\section{Stabilizer Codes and their Structure}
+
+One class of QEC codes are the stabilizer codes \cite{gottesmann_book}\cite{gottesmann_thesis}
+
+% formal defintion of stabilizer codes
+% defintion of distance and decoder an so on???
+
+
+\subsection{Kitaev Surface Code}
+
+% defintion and properties of kitaev surface code
+% stabilizer and logical operators 
+% scaling of such a code
+% connection to toric code
+
+
+% \subsubsection{Logical State Preparation}
+
+\section{Threshold Theorem}
+
+% talk about why scale anyways 
+% at which point encoding a qubit makes actual sense -> pseudo threshold
+% threshold of a code vs distance of a code
+
+
+\section{Pauli Errors}\label{sec:pauli_errors}
 
 % 1. realworld physical noise process -> model those in theory as pauli errors <- this is an underlying assumption
+% 1. talk about digitization of errors 
+% limit ourselfs to computational errors and the following channels
 % 2. introduce phase-,bit-flip error and depolirizing noise 
 % 3. Further talk about structure and sources of noise -> generalise in models which are split up as follows
 
@@ -36,7 +107,7 @@
 % 1. Why useful?
 
 
-
+\section{Fault Tolerance}
 
 
 
