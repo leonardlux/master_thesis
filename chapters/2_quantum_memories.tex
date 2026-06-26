@@ -111,64 +111,91 @@ We will refer to this intrinsic property of stabilizer codes by calling it the s
 % Write down that acting with a stabilizer on a codedword does not change anything?
 
 
-\subsection{Syndrome}
+\subsection{Syndrome}\label{ssec:syndrome}
 
-Given that we now have a defined the codespace, we can detect if a given eigenstate of the stabilizer group\footnote{
-    We will elaborate in section \ref{sec:pauli_errors} why we only care about eigenstates of the stabilizer group.
-} is in the codespace by determining the eigenvalues of the generators of the stabilizer groups.
-Based on the eigenvalues we can construct an $m$-bit string, the so called syndrome $\sigma(\ket{\Psi}) \in \mathbb{Z}_2$, using
+Now that we have defined the codespace, we can detect if a given eigenstate of the stabilizer group\footnote{
+    Only such states are of interest, because they are the basis of our logical information.
+} is in the codespace. 
+For this we determine the eigenvalues of the generators of the stabilizer groups.
+Based on the eigenvalues we can define an $m$-bit string, the so called syndrome $\sigma(\ket{\Psi}) \in \mathbb{Z}_2$, by
 \begin{equation}
     S_i \ket{\Psi} = (-1)^{\sigma_i} \ket{\Psi}.
     \label{eq:state_syndrome}
 \end{equation}
-If the state is a $+1$ ($-1$) eigenstate of $i$-th generator the $i$-th bit of th syndrome $0$ ($1$).
-Therefore the syndrome of the state tell us if the state belong to the codespace, all bit equal $0$, or if it lies outside of it.
-We will refer to the all $0$ syndrome as the trivial syndrome.
+If the state is a $+1$ ($-1$) eigenstate of $i$-th generator the $i$-th bit of the syndrome takes the value $0$ ($1$).
+Therefore the syndrome of the state tell us if that state belongs to the codespace, by all bits being equal $0$, or if it lies outside of it.
+We will refer to the syndrome with all bits set to $0$ as the trivial syndrome.
 
 Note that given we have $m$ generators, there are $2^m$ possible different syndromes.
 
 
-We can also construct a similar syndrome string for elements of the Pauli group $E\in \mathcal{P}_n$, here take the element $E$ to be represent an error. 
-This so called error syndrome $\sigma(E) \in \mathbb{Z}_2$ is constructed by first applying the operator $E$ to any codeword $\ket{\Phi}$.
-We can then use the definition of the syndrome of a state to assign a syndrome to the error
+We can construct a similar syndrome string for elements of the Pauli group $E\in \mathcal{P}_n$. 
+Here take the element $E\in \mathcal{P}_N$ to represent an error. 
+The error syndrome $\sigma(E) \in \mathbb{Z}_2$ is define by first applying the operator $E$ to any codeword $\ket{\Phi}$ and then
+we can then use the definition of the syndrome of a state defined above to assign a syndrome to the error
 \begin{equation}
     \sigma(E) = \sigma(E\ket{\Phi}); E \in \mathcal{P}_n; \Phi \in \mathcal{L}.
     \label{eq:error_syndrome}
 \end{equation}
 The resulting syndrome thus tells us how the operator $E$ would change the syndrome of a codeword. 
-Note that the choice of the specific codeword does not matter, as long as it is part of the codespace.
 
 Looking at the definition of the $i$-th bit of the error syndrome, 
 \begin{equation}
     S_i E \ket{\Phi} = (-1)^{\sigma_i} E S_i \ket{\Phi}.
 \end{equation}
-we can identify that the error $i$-th bit of the error syndrome represents the commutation relation between the error and the $i$-th generator. 
+we can identify that the $i$-th bit of the error syndrome is defined by the commutation relation between the error and the $i$-th generator and independent of the choice of the codeword.
 If they commute (anticommute) the error syndrome of the $i$-th bit has the value $0$ ($1$).
 Given that both the error operator and the generator are Pauli operators, they either commute or anticommute.
+
+Note that the choice of the specific codeword does not matter to determine the syndrome of an error operator.
+The error operators changes the syndrome of each codeword by its associated error syndrome. 
+Therefore it maps the whole codespace onto a different subspace where the eigenvalue for all stabilizers is no longer $+1$ but the syndrome of the error operator for each codeword.
+This is a key result.
+
+It tells us that all of those $2^m$ subspaces are isomorphic to the codespace, a fact that we are gonna use in subsection \ref{ssec:cosets_of_the_centralizer}.
+
+Note that we can reinterpret any of those subspaces, e.g. the subspace with the syndrome $\tilde{\sigma}$, to be the codespace by redefining the stabilizer group.
+For this we redefine the $i$-th generator $S_i$ to be $-S_i$ for each bit in the syndrome $\tilde{\sigma}$ which take the value $1=\tilde{\sigma}$. 
+When we use the resulting set of linear independent generators to define the stabilizer group the subspace corresponding to the syndrome $\tilde{\sigma}$ using the previous set on linear independent generators, 
+has now trivial syndrome assigned to it and is the codespace.
+We will use this fact in the subsection about Pauli Frame Tracking again \textcolor{red}{Put ref here}.
+
+Concluding we have $2^m$ subspaces which are isomorphic to the codespace, one for each syndrome. 
+All of those subspaces are orthogonal to each other, because they have different eigenvalues/different syndromes.
+Each of those subspaces is $2^k$  dimensional to encode the $k$-logical qubits, where $k=n-m$.
+Therefore we can decompose the full Hilbert space $\mathcal{H}_{2^n}$ into a direct sum of the $2^m=2^{n-k}$ subspaces, each one associated with a different syndrome.
+
 
 % talk a bit why we define the syndrome? motivation for decoding and such
 
 
 \subsection{Centralizer, Cosets and Group Structure}\label{ssec:intro_centralizer} % find a better title 
 
-As eluded to in the introduction, there is a certain group structure to both the Hilbert space and Pauli group when using the stabilizer formalism which we will now investigate.
+% As eluded to in the introduction, there is a certain group structure to both the Hilbert space and Pauli group when using the stabilizer formalism which we will now investigate.
+% already discovered half of this structure in the syndrome.
+When looking at the syndrome we were able to find a certain structure in the Hilbert space. 
+We can find some similar structure for the Pauli group $\mathcal{P}_n$, when take a look at group structure behind it. 
 
-Given the observed importance of commutation relations between operators and stabilizers regarding the syndrome in the previous chapter, we are motivated to look at the centralizer\footnote{The centralizer is the same as the normalizer for group made out of Paulis, because Paulis either commute or anticommute. Some people refer to this group as the normalizer of the stabilizer group.} of the stabilizer group $\mathcal{C}(\mathcal{S})$
+\subsubsection{Centralizer}
+
+Given the observed importance of commutation relations between operators and stabilizers regarding the syndrome in the previous chapter, we are motivated to look at the centralizer\footnote{
+    The centralizer is the same as the normalizer for group made out of Paulis, because Paulis either commute or anticommute. Some people refer to this group as the normalizer of the stabilizer group.
+    } of the stabilizer group $\mathcal{C}(\mathcal{S})$
 \begin{equation}
     \mathcal{C}(\mathcal{S}) = \left \{  P \in \mathcal{P}_n | P S_i = S_i P\  \forall S_i \in \mathcal{S}_G \right \}.
 \end{equation}
-The centralizer of the stabilizer group contains all the elements of the Pauli group which commute with all elements of the stabilizer group.
+The centralizer of the stabilizer group contains all the elements of the Pauli group $\mathcal{P}_n$ which commute with all elements of the stabilizer group.
 To shorten the following text we will refer to the centralizer of the stabilizer group as centralizer and in case we talk about the centralizer of a different group, we will specify it.
 
-We can deduce that all elements in the centralizer have the trivial syndrome, because they all commute with all generators.
-Note that having a trivial syndrome is equivalent with the operators beeing not detectable. % TODO expand this thought
+We can deduce that all elements in the centralizer have the trivial error syndrome, because they all commute with all generators.
+% Note that having a trivial syndrome is equivalent with the operators being not detectable. % TODO expand this thought
 
 
 Given that the stabilizer group itself is Abelian, the centralizer contains the stabilizer group as a subgroup $\mathcal{S} \subset \mathcal{C}(S)$.
-The centralizer also contain the sets $-\mathcal{S}, \pm i \mathcal{S}$. 
+The centralizer also contains the sets $-\mathcal{S}, \pm i \mathcal{S}$. 
 % I dont like the following line yet --> explain it better
 But if we think about the operators in the context of possible errors on the code, or operators applied to the code, and not measurements to determine the syndrome, we can identify the phase as a global phase and are therefore not long interested in it.
-Following the formalism in \cite{gottesmann_book} we will indicate the set in which we ignore the overall phases of the operator by a hat symbol
+Following the formalism in \cite{gottesmann_book} we will indicate the set in which we ignore the overall phases of the operator by a hat symbol, e.g.
 \begin{equation}
     \hat{\mathcal{P}}_n \cong \mathcal{P}_n / \{I, iI, -I, -iI\}.
 \end{equation}
@@ -180,23 +207,27 @@ and all other elements of the Pauli group $\hat{\mathcal{P}}_n$ which have the t
 Looking at the centralizer without the stabilizer $\hat{\mathcal{C}}(\mathcal{S})\setminus \hat{\mathcal{S}}$ we find an interesting set of operators.
 They have the trivial error syndrome, therefore they do not change the syndrome of the state if they act on the state. 
 But by definition they do not map the same codeword onto itself, otherwise they would belong to stabilizer group, which we have excluded here.
-Therefore we can conclude that they map codeword states to other codeword states.
-From this argumentation we can conclude that we have found a set of operator which realize the logical\footnote{
+Therefore they map codeword states to other codeword states.
+And we have found a set of operator which realize the logical\footnote{
     Here we refer to the logical operators which do not act trivially ($\bar{X}, \bar{Z}, \bar{Y}$). 
     The logical identity $\bar{I}$ is not changing the logical state and therefore is not changing between codewords and can be realized by any element of the stabilizer group.
 } operators on the codespace.
 
-Those operators could be applied on purpose to change from one codeword to another, which means to apply a logical operator on the encoded qubit. 
+Those operators could be applied on purpose to change from one codeword to another, which means to apply a logical operator onto the encoded qubit. 
 % i do not like the following sentence
-But if they happen through noise acting on the system, the logical information contained in the encoded qubit would change.
-This would represent an undetectable, because it has no syndrome and therefore not be distinguished from a valid encoded state, error. 
+But if they happen through noise acting on the system, the logical information contained in the encoded qubit will change.
+This would represent an undetectable error. 
+It is undetectable because our quantum error correcting code can only tell if a state is a valid codeword. 
+It can not distinguish if a state is reached by original encoding/purposefully applied logical operators and undetectable errors, hence the name. 
 
 Therefore the set of all possible realizations of the non identity logical operators is identical to the set of undetectable errors.
 % make a note that elements of the stabilizer group ignoring the phase are trivial erros ... errors not happening
 
 % Is this useful?
 Note that all operators outside of the centralizer anticommute with at least one generator of the stabilizer group and therefore all of them can be detected.
+We will talk about this set of errors in subsection \ref{ssec:cosets_of_the_centralizer}.
 
+To conclude, we detect errors by measuring the syndrome of the state. 
 
 \subsubsection{Distance}
 % Distance
@@ -211,6 +242,7 @@ A distance $d$ code can correct $t$ errors, with
     \label{eq:correctable_errors}
 \end{equation}
 The distance give us therefore an lower bound of how good our QEC code can perform. %TODO rewrite this sentence I do not like it yet!
+% Explain relation between correctable error and distance? 
 
 And now we have all necessary quantities to introduce a notation characterizing stabilizer codes.
 We refer to stabilizer codes by their set of characteristic number as $[[n,k,d]]$ codes.
@@ -256,7 +288,9 @@ All elements of the same coset of the stabilizer group act therefore the same on
 They all implement the same logical operation. 
 
 % quotient group
-Looking at the quotient group $\mathcal{C}(\mathcal{S})/\mathcal{S}$ we find that it contains all possible distinct logical operations and is isomorphic to the Pauli group $\mathcal{P}_k$.
+Looking at the quotient group $\mathcal{C}(\mathcal{S})/\mathcal{S}$ we find that it contains all possible distinct logical operations\footnote{
+    Note that we here keep track of the phase. One can do the same analysis for the sets in which we disregard the global phases.
+} and is isomorphic to the Pauli group $\mathcal{P}_k$.
 This we can write as 
 \begin{equation}
     \mathcal{C}(\mathcal{S})/\mathcal{S} \cong \mathcal{P}_k.
@@ -269,26 +303,129 @@ The exact choice of element from the coset is not important, all elements are lo
 which by stabilizer equivalence (eq. \ref{eq:stabilizer_equivalence}) is to say, they do not differ. 
 
 
+% Make about that the Centralizer can be written as a disjoint union of all of those cosets
+Note that each cosets of the stabilizer group in the normalizer is either identical or disjoint.
+Following those we can note that the centralizer $\mathcal{C}(\mathcal{S})$ can be partitioned into cosets of the stabilizer group, each realizing a unique logical operator.
+For notational purposes we fix a set of operators, one for each logical operator from each cosets, and refer to the set as realizations of the logical operators $\bar{\mathcal{P}}$. 
+% This set $\bar{\mathcal{P}}$ realizes each logical operator only once, and we will refer to it as the set of realizations of the logical operators.
+Using it we can express the centralizer as 
+\begin{equation}
+    \mathcal{C}(\mathcal{S}) = \bigcup_{\bar{P} \in\bar{\mathcal{P}}} \bar{P}\mathcal{S},
+    \label{eq:centralizer_partitioned_into_cosets_of_stabilizer_group}
+\end{equation}
+where $\bar{P}\mathcal{S}$ is the notation of the coset of the stabilizer group using the operator $\bar{P}$.
 
+% Should I show generators of the normalizer as being generators of stabilizer group and set of realizations of the logical operators
+
+% Should I point out that we can disregard the phase (use hat group) and the derivation still works?
 
 % Note about freedom in assigning logical operators 
-Note as well that we have some freedom of assigning the logical operators to the different cosets.
+Note as well that we have some freedom in assigning the logical operators to the different cosets.
 We just have to make sure that the commutations relations between the realizations of the logical operators are correct.
 (As an example it is trivial to switch the logical $\bar{X}$ with the logical $\bar{Z}$ operator.)
 
-\subsubsection{Cosets of the Centralizer}
+\subsubsection{Cosets of the Centralizer}\label{ssec:cosets_of_the_centralizer}
 
-So far we looked at all the elements of the Pauli group which are part of the centralizer 
+In the previous subsection we discovered that the centralizer, which can be described as the set of all Pauli operators which have the trivial error syndrome, can be partitioned into cosets of the stabilizer group. 
+Each of those cosets is associated with a logical operator on the codespace.
+
+In subsection \ref{ssec:syndrome} we discovered that each syndrome is associated with a subspace and each of those subspaces is isomorphic to the codespace.
+We also showed that we can change the syndrome of any associated space by redefining the stabilizer group.
+Following the same idea we can look at all the elements of the Pauli group $\mathcal{P}_n$ and group them into sets defined by their error syndrome.
+
+The resulting structure is that all the operators with the same error syndromes are collected in cosets of the centralizer, which therefore can be associated with this syndrome.
+Similar to the section above where all operators associated to the trivial syndrome are collected in normalizer.
+We can choose for each syndrome a representative error $E_{\sigma}$.
+
+The whole Pauli group $\mathcal{P}_n$ can then be partitioned into cosets of the centralizer of the stabilizer group, where we go over all possible $2^m$ syndromes
+\begin{equation}
+    \mathcal{P}_n = \bigcup_{\sigma \in \{0,1\}^m} E_{\sigma} \mathcal{C}(\mathcal{S}).
+\end{equation}
+
+All of those $2^m$ cosets of the centralizer have a same inner structure.
+Each of those cosets of centralizer can be partitioned into the cosets of the stabilizer group associated with a logical operator, as described in equation \ref{eq:centralizer_into_cosets_of_stabilizer_group},
+where each of those cosets also inherits the representative error $E_\sigma$ of the associated syndrome.
+
+As a result we can partition the whole Pauli group into cosets of the stabilizer group
+\begin{equation}
+    \mathcal{P}_n = \bigcup_{\sigma \in \{0,1\}^m} \bigcup_{\bar{P} \in\bar{\mathcal{P}}} E_{\sigma} \bar{P} \mathcal{S}.
+\end{equation}
+
+% Talk about the sizes of the different sets?
+
+
+\subsection{Summary: The actual error correcting process}
+
+So we discussed to a great detail the formalism of the stabilizer code and the underlying structure, but how does this help us to detect and correct errors?
+
+To be able to detect errors we start in a logical codeword state.
+We can verify that this state is a codeword state by measuring the generators of the stabilizer group, so by constructing the syndrome of the state.
+
+Note that we do not care which codeword state this is, so we do not know the logical information encoded in those $k$ qubits.
+And note that the logical operators by definition all commute with the stabilizers and therefore we can construct the syndrome, without collapsing any possible superposition of codeword states. 
+
+If an error operator\footnote{
+    We still assume that our error operator is an element of the Pauli group $\mathcal{P}_n$.
+} $\tilde{E}$ now acts on our codeword state $\ket{\Phi}$. 
+We get the resulting state $\tilde{E}\ket{\Phi}$.
+Measuring the syndrome of this state, will give us the error syndrome of the error operator $\sigma(\tilde{E})$. 
+
+This error syndrome points us directly to the coset of the centralizer with the associated syndrome $E_{\sigma(\tilde{E})}\mathcal{C}(\mathcal{S})$.
+We thus know that the error $\tilde{E}$ is an element of this set $\tilde{E}\in E_{\sigma(\tilde{E})}\mathcal{C}(\mathcal{S})$.
+What we do not know is from which coset of the stabilizer group this error is from.
+Each coset of the stabilizer in the centralizer realizes a logical operator on the encoded qubit.
+Asking the question, to which coset the error belongs is asking the question, which logical error $\bar{L}_{\tilde{E}} \in \bar{\mathcal{P}}$ does the error contain in addition to the representative error, and some element of the stabilizer group?
+\begin{equation}
+    \tilde{E} = E_{\sigma(\tilde{E})}\bar{L}_{\tilde{E}}\tilde{S}
+\end{equation}
+$\tilde{S}$ being some stabilizer element as we cant tell the exact makeup of the error.
+
+This problem is the so called decoding problem, which is handled by so called decoders. % is solved here the correct world
+We will spent some time in chapter \textcolor{red}{Put reference here} discussing this problem, as it is quite relevant to this thesis.
+For now lets assume our decoder tell us from which coset of the stabilizer group the error should be from, by telling us the associated realizations of the logical operation $\bar{L}_D \in \bar{\mathcal{P}}$.
+
+We then recover the state by choosing any element of the coset of the stabilizer group that the decoder pointed to, in the cosets of the normalizer that the syndrome pointed to.
+The resulting recovery $R$ has then the form
+\begin{equation}
+    R = E_{\sigma(\tilde{E})}\bar{L}_{D}S_R,
+\end{equation}
+where we are able to identify the representative error $E_{\sigma(\tilde{E})}$ by the syndrome of the error, 
+we are getting told the logical component $\bar{L}_D \in \bar{\mathcal{P}}$ by the decoder, 
+and we randomly choose some element of this coset of the stabilizer group so $S_R \in \mathcal{S}$ is arbitrary.
+
+The final question is did we recover the state correctly?
+So lets look at the state $R^\dag \tilde{E} \ket{\Phi}$, 
+(\textcolor{red}{either explain in detail why daggered and why it does not matter or show without, then problem with representative error!})
+\begin{equation}
+    R^\dag \tilde{E} \ket{\Phi} = S_R^\dag \bar{L}_D^\dag E_{\sigma(\tilde{E})}^\dag E_{\sigma(\tilde{E})}\bar{L}_{\tilde{E}}\tilde{S}\ket{\Phi}.
+\end{equation}
+Given that we are not interested in a conserving/recovering a global phase we can ignore those and then all those conjugates operators are equivalent to their unconjugated onces.
+Applying any Pauli operator (disregarding phases) twice is identical to the identity, so $E_{\sigma(\tilde{E})}^\dag E_{\sigma(\tilde{E})} = I$, which results in 
+\begin{equation}
+    R^\dag \tilde{E} \ket{\Phi} = S_R \bar{L}_D \bar{L}_{\tilde{E}} \tilde{S}\ket{\Phi}.
+\end{equation}
+The stabilizer group element $S_R$ commutes with the logical operators.
+They all belong to the centralizer as we established.
+Therefore we can rewrite the expression as 
+\begin{equation}
+    R^\dag \tilde{E} \ket{\Phi} = \bar{L}_D \bar{L}_{\tilde{E}} S_R \tilde{S}\ket{\Phi}.
+\end{equation}
+By the concept of stabilizer equivalence, or just by the definition of the codeword states, the stabilizers acting on the codeword states do not change it and therefore can be absored into it.
+Resulting in
+\begin{equation}
+    R^\dag \tilde{E} \ket{\Phi} = \bar{L}_D \bar{L}_{\tilde{E}} \ket{\Phi}.
+\end{equation}
+
+For this recovery to be successful we thus just have to choose $\bar{L}_D=\bar{L}_{\tilde{E}}$. 
+In this case we would recover our original codeword state $\ket{\Phi}$.
+If they are not identical, they would implement a different logical operator $\bar{L}_\Delta = \bar{L}_D \bar{L}_{\tilde{E}}$
+, as indicated by the isomorphism between the choosen realizations of the logical operators $\bar{\mathcal{P}}$ and the Pauli group for the the encoded logical qubit $\mathcal{P}_k$.
+Which then would change our codeword resulting in an unsuccessful recovery.
 
 
 
 
 
-
-
-% introduce normalizer and based of this introduce the disjoint union splitting up the pauli operators 
-% go back to codespace show that we can find the logical cosets 
-% talk about cosets of centralizer
 
 % then discuss all errors just beeing pauli, and then that the error itself are not identifable we can just identify the coset of the normalizer
 % task of the decoder is then finding the correct pauli/coset of pauli
