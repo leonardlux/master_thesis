@@ -58,9 +58,116 @@ They are a class of quantum error-correcting codes and we are gonna use them in 
 Afterwards we discuss how we can correct errors at all, given that there are an endless amount of errors that can occur in the section about Pauli errors \ref{sec:pauli_errors}.
 % could also make sense to first introduce pauli errors. 
 
-% should I include a more general defintion of QECC and an abstract circuit example or equations, to explain what exactly defines a QECC.
+% should I include a more general definition of QECC and an abstract circuit example or equations, to explain what exactly defines a QECC.
 % namely encoding + information extraction + decoding + correction
 
+% This is new at this position so adapt the previous and later text
+\section{Error Modeling and Pauli Errors}\label{sec:pauli_errors}
+The following section and subsections are based on \cite{terhal_qec_formalism}, \cite{gottesmann_thesis} and \cite{intro_to_qec}.
+
+We first introduce th Pauli group, which as well turns out, has special significance for stabilizer codes.
+Afterwards we will discuss how general quantum noise/errors behaves and their attributes.
+
+\subsection{Pauli Group}
+
+The Pauli group $\mathcal{P}_n$ is made up of tensor products of the $n$ one qubit Pauli group $P \in \hat{\mathcal{P}}_1 = \{ I,X,Z,Y \}$ without phase 
+\begin{equation}
+I =
+\begin{pmatrix}
+1 & 0 \\
+0 & 1
+\end{pmatrix}, \qquad
+X =
+\begin{pmatrix}
+0 & 1 \\
+1 & 0
+\end{pmatrix}, \qquad
+Y =
+i
+\begin{pmatrix}
+0 & -1 \\
+1 & 0
+\end{pmatrix}, \qquad
+Z =
+\begin{pmatrix}
+1 & 0 \\
+0 & -1
+\end{pmatrix}
+\end{equation} 
+together with an overall phase $\{\pm1,\pm i\}$.
+% full definition of pauli group?
+
+Note that we do not care for the overall phase of a state therefore can omit the overall phase of the operator in some cases and talk about the Pauli group without phase $\hat{\mathcal{P}}_n$.
+
+At this point we can introduce the weight of an Pauli operator $P\in\mathcal{P}_n$ indicated by $|P|$ as the number of non identity Paulis in the tensor product that defines $P$.
+This quantity will become interesting when we talk about correctable errors (\textcolor{red}{Put ref here}).
+% Discuss more?
+
+The Pauli group is closed under multiplication, especially $Y = i X Z$.
+And each Pauli squared, disregarding the phase, is identical to identity
+\begin{equation}
+    I = X^2 = Z^2 = Y^2.
+\end{equation} 
+Resulting from this any tensor product of Paulis, is also its own inverse, when we disregard the overall phase.
+\begin{equation}
+    \tilde{P} \tilde{P} = I \forall \tilde{P} \in \hat{\mathcal{P}}_n
+\end{equation}
+Taking the phase into account we obtain $\pm I $ after squaring any Pauli. 
+This property is important when we want to find a recovery for a given Pauli error. 
+To recover the error $P$ we just reapply the same Pauli, and in the process we might change the overall phase but otherwise act with the identity.
+
+Another important property of the Pauli group is that all their elements either commute or anticommute.
+For the one qubit Pauli group all non trivial pairings anticommute, we will use $\{A,B\}$ to indicate the anticommutator, 
+\begin{equation}
+    \{X,Z\} = \{X,Y\} = \{Z,Y\} = 0.
+\end{equation} 
+Elements of the $n$ qubit Pauli group $\mathcal{P}_n$ can also non trivially commute if they have an even number of anticommuting elements. 
+
+Each Pauli operator splits the Hilbert space in half, with each half either being associated with the eigenvalue $+1$ or $-1$.
+A fact that we use to define the codespace.
+
+% Following can be written better!
+We can use the $n$-qubit Pauli group as a basis to express any quantum channel. 
+As it spans the space of all $n$-qubit linear operations.
+Which will become important when we discuss general errors.
+
+We will refer to $X$ Pauli operator as bit-flip , as this error flips the $\ket{0}$ state to the $\ket{1}$ state and vice versa 
+\begin{equation}
+    X \ket{Psi} = X(\alpha \ket{0} + \beta \ket{1}) = \beta \ket{0} + \alpha \ket{1}.
+\end{equation}
+And we will refer to the $Z$ Pauli operator as phase-flip, as it maps the $\ket{1}$ basis state to $-\ket{1}$, while leaving the $\ket{0}$ basis state unchanged
+\begin{equation}
+    Z \ket{Psi} = Z(\alpha \ket{0} + \beta \ket{1}) = \alpha \ket{0} - \beta \ket{1}.
+\end{equation}
+
+The $Y$ Pauli is just bit- and phase-flip applied with an additional overall phase of $i$.
+
+\subsection{General Errors}
+
+As the quantum state $\ket{\Psi}$ itself is continuous 
+\begin{equation}
+    \ket{\Psi} = \alpha \ket{0} + \beta\ket{1}, \text{with }|\braket{\Psi|\Psi}|^2 = 1 
+\end{equation}
+the same holds for possible quantum errors.
+As such there are an infinite number of possible errors that can occur.
+We will use the term quantum error, quantum noise, error operator or error interchangeable. 
+
+% I need to discuss this! Unsure if this is valid discribtion 
+As it was shown by Knill and Laflamme \cite{knill_laflamme}, it is sufficient to correct a finite set of errors, namely the Pauli group $\mathcal{P}_n$,
+to correct any error, if we assume that the interaction operator acts independently on each qubit. 
+Which means that we can we express the error process as a tensor product of single system interactions.
+And this possible due to the digitization of errors by the parity check measurements. % is this possible for all error processes?! Discuss this part!
+As any error can be expanded in elements of the Pauli group, we can limit our analysis to the Pauli group.
+
+% Should I go into more detail about digitization?
+% Should I refer to the syndrome extraction, and then go into detail there? 
+% Should I explain the process by example of decoherence as done  
+% And explain how this can be mapped to a Pauli?
+
+We only look at Markovian processes in this thesis.
+We also do not take into account leakage or erasure errors.
+
+The exact error models we are gonna use will be introduced in section \ref{sec:error_models}.
 
 \section{Stabilizer Codes and their Structure}\label{sec:stabilizer_formalism}
 
@@ -165,7 +272,7 @@ Given that both the error operator and the generator are Pauli operators, they e
 
 Note that the choice of the specific codeword does not matter to determine the syndrome of an error operator.
 The error operators changes the syndrome of each codeword by its associated error syndrome. 
-% Are some explaintions missing ?
+% Are some explanations missing ?
 Therefore it maps the whole codespace onto a different subspace where the eigenvalue for all stabilizers is no longer $+1$ but the syndrome of the error operator for each codeword.
 This is a key result.
 % Should I refer to Knill Laflamme EC condition?
@@ -256,7 +363,7 @@ Both of those could have an arbitrary phase.
 \subsubsection{Distance}
 % Distance
 At this point we can introduce an characteristic quantity of QEC codes. % more general of QEC codes
-The distance $d$ which represent the minium weight\footnote{The weight of an operator is the number of qubits on which the operator acts non trivially.} that of a logical operator/undetectable error.
+The distance $d$ which represent the minium weight\footnote{The weight of an operator is the number of qubits on which the operator acts non trivially.} that of a non identity logical operator/undetectable error.
 \begin{equation}
     d = \min_{E\in \mathcal{C}(\mathcal{S})\setminus \mathcal{S}} |E|
 \end{equation}
@@ -265,9 +372,12 @@ A distance $d$ code can correct $t$ errors, with
     t =  \left \lfloor \frac{d-1}{2} \right \rfloor.
     \label{eq:correctable_errors}
 \end{equation}
-The distance give us therefore an lower bound of how good our QEC code can perform. %TODO rewrite this sentence I do not like it yet!
-% Explain relation between correctable error and distance? 
-% Why can it correct t errors?
+The equation above is easier if we follow the chain of reasoning presented by Terhal in \cite{terhal_qec_formalism}.
+
+If we have a weight $t$ error $E$, our decoder can find an correction $R$ with the same syndrome, at at most weight $t$.
+The combined operators $RE$ has then at most weight $2t$, which by the definition above smaller than the distance $d$.
+This combined operators has no error syndrome, therefore belongs to the centralizer and can by definition of the distance not be a non identity logical operator.
+Therefore it is a stabilizer and acting with a stabilizer on a codeword does not change it and therefore the we can recover this error. 
 
 And now we have all necessary quantities to introduce a notation characterizing stabilizer codes.
 We refer to stabilizer codes by their set of characteristic number as $[[n,k,d]]$ codes.
@@ -380,7 +490,7 @@ As a result we can partition the whole Pauli group into cosets of the stabilizer
 % Talk about the sizes of the different sets?
 
 
-\subsection{Summary: The actual error correcting process}\label{ssec:stabilizer_summary_qec_cylce}
+\subsection{Summary: A QEC Cycle using stabilizer formalism}\label{ssec:stabilizer_summary_qec_cylce}
 
 We discussed some details about the formalism of the stabilizer code and the underlying structure, but how does this help us to detect and correct errors?
 To see why this is useful, we will talk through one QEC cycle, which describes the process of detecting and correcting an error.
@@ -467,22 +577,95 @@ We thus see that the crucial part of the QEC cycle and its success rate is solvi
 
 
 
-
-% then discuss all errors just beeing pauli, and then that the error itself are not identifable we can just identify the coset of the normalizer
-% task of the decoder is then finding the correct pauli/coset of pauli
-% here bring into play stabilizer equivalence when it comes to corrections 
-
-% lastly introduce the distance of the code and set it into relation with the amount of correctable errors.
-
 \section{Kitaev Surface Code}\label{sec:kitaev_surface_code}
 
-% defintion and properties of kitaev surface code
-% stabilizer and logical operators 
-% scaling of such a code
-% connection to toric code
+The specific QEC code from the class of the stabilizer codes we are using is the (unrotated) surface code \cite{kitaev_surface_code}, \cite{other_surface_code_paper}, which is based on the toric code \cite{kitaev_toric_code}.
+The difference between the toric code and the surface code is the change from periodic boundary conditions to open boundaries for the surface code.
+The above papers and the paper by Dennis \cite{topological_quantum_memory} are the references of this chapter.
+
+The surface code is a well established QEC code, that is used due to it advantageous properties.
+One of those advantageous properties is that the surface code only requires next neighbor interactions.
 
 
-% \subsubsection{Logical State Preparation}
+To visualize the surface code of distance $d$, we arrange $n=d^2 + (d-1)^2$ physical qubits on a $d \times d$ lattice,
+by placing the qubits on the nodes connecting the sites of the lattice.
+Note that for the surface code with open boundary conditions we additionally remove the notes connecting the upper most lattice sites to form a rough boundary.
+The resulting constructing can be seen in figure \ref{fig:surface_code_explaination} a), with the associated indexing we are using for the qubits.
+
+As described in section \ref{sec:stabilizer_formalism} to define a QEC code of the class of stabilizer codes, we just need to define the stabilizer group of the code.
+We can define the stabilizer group of the surface code by defining a set of generators of the stabilizer group which split up into site and plaquette stabilizers\footnote{
+    They are generators of the group but we only refer to them as site and plaquette stabilizers to keep the text short.
+}.
+The site stabilizers are placed on the sites of the lattice and act (nontrivial) on each physical qubit sitting on edges incident to this site with a Pauli $X$ operator.
+The plaquette stabilizers are places in the middle of each cell and operate with a Pauli $Z$ operator on each physical qubit sitting on the edges of this cell.
+The placement of both is visualized in figure \ref{fig:surface_code_explaination} b) and c).
+
+We can formalize the describe of the site stabilizers as 
+\begin{equation}
+    S_{X,i} =  \bigotimes_{j \in A_i} X_j,
+\end{equation}
+where $A_i$ is the set of physical qubits that sit on the edges incident to the site.
+It follows for the plaquette stabilizers, that we can express them as 
+\begin{equation}
+    S_{Z,i} =  \bigotimes_{j \in B_i} Z_j,
+\end{equation}
+where $B_i$ are the edges forming the cell of the plaquette stabilizer.
+
+Note that the site and plaquette stabilizers in the bulk act on $4$ qubits each, whereas the generators on the edge only act on $3$ qubits each.
+
+We can easily check that all generators commute because site and plaquette stabilizers always overlap on an even number of qubits, either $0$ or $2$. 
+And site stabilizers trivially commute with all other site stabilizers. 
+The same holds for plaquette stabilizers.
+
+We can identify that we have found $m=2d(d-1)$ linear independent generators.
+Therefore we can encode
+\begin{equation}
+    k = n-m = d^2 + (d-1)^2 - 2d(d-1) = 1
+\end{equation} 
+logical qubit.
+
+The associated logical operators are the logical bit-flip $\bar{Z}$, a string of $Z$-type Paulis connecting the rough boundaries (top and bottom),
+and the logical phase-flip $\bar{X}$, a string of $X$-type Paulis connecting the smooth boundaries (left and right site).
+One representation of each is shown in figure \ref{fig:surface_code_explaination}.
+% Should I make a connection here to the noncontrcatable loops of the toric code?
+
+
+\begin{figure}[]
+    \centering
+    \includegraphics[width=0.8\linewidth]{graphics/surface_code_sketch.jpg}
+    \caption{Figure showing the configuration of the surface code. A proper caption will follow when I redo this image properly. I should change the logical X to the top row, to follow the defintion used in my python code.}
+    \label{fig:surface_code_explaination}
+\end{figure}
+
+
+We can scale the surface code by increasing the size of the square and therefore the distance.
+The surface code scales with distance $d$ as 
+\begin{equation}
+    [[n= d^2 + (d-1)^2, k=1, d]].
+\end{equation}
+As such the surface code will stay constant in the number of logical encoded qubits, always encoding one logical qubit.
+In contrast the number of physical qubits\footnote{
+    Note that we do not take into account any qubits needed for syndrome extraction.
+} required to encode this qubit will scale quadratically in the distance $d$.
+We have $m=n-k$ stabilizers and 
+\begin{equation}
+   2^m = 2^{2d^2 - 2d} 
+\end{equation}
+possible different syndromes.
+Given that the syndromes scales exponentially with the distance, it would be wise of us to use an algorithm which can decode the syndrome efficiently.
+
+Luckily for us, such an algorithm exist for maximum likelihood decoding for the surface code, developed by Bravyi \cite{efficient_decoding_algorithm}, for a certain set of error models.
+This algorithm is the reason we use the surface code and the algorithm will later be discussed in more detail \textcolor{red}{put reference here}.
+
+Note the surface code is part of the class of CSS codes \textcolor{red}{Cite here the 2 papers by those authors.}.
+Given that its stabilizers either consists of only $X$-type or only $Z$-type stabilizers. % correct argumentation?
+And as such the logical $CNOT$ operation is realized as transversal $CNOT$ gates.
+
+We can use any code that has transversal CNOT gates as an underlying encoding for Steane type error correction. 
+As such we could use in principle any CSS code.
+We especially decided on the unrotated surface code, because there exist an efficient maximum likelihood decoder for it, for a certain set of problems. 
+
+% Should I talk about syndrome extraction and state initilization 
 
 \section{Threshold Theorem}
 
@@ -491,33 +674,7 @@ We thus see that the crucial part of the QEC cycle and its success rate is solvi
 % threshold of a code vs distance of a code
 
 
-\section{Pauli Errors}\label{sec:pauli_errors}
-
-% 1. realworld physical noise process -> model those in theory as pauli errors <- this is an underlying assumption
-% endless physical errors (they are continous)
-
-% 1. talk about digitization of errors 
-% name knill laflamme QEC condition, 
-
-% any error can be approximated/expanded (which of both?) in discrete pauli basis
-% syndrome measurements projects into those error components with certain probability 
-% we just need to correct the projected error by applying a pauli 
-
-% Discuss the pauli group here a bit
-% all paulis either commute or anticommute
-% generators of P_n
-% weight of an error
-
-% markovian 
-% we do not simulate erasure and leakage errors
-
-
-We will discuss the exact shape of the noise model used in this thesis in the following, but we can already state that we assume Markovian noise, which means that our noise is not correlated in time. 
-
-
-% limit ourselfs to computational errors and the following channels
-% 2. introduce phase-,bit-flip error and depolirizing noise 
-% 3. Further talk about structure and sources of noise -> generalise in models which are split up as follows
+\section{Error Models}\label{sec:error_models}
 
 \subsection{Code Capacity Noise Model}
 
