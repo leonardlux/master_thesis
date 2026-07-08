@@ -1,22 +1,22 @@
 \chapter{Quantum Error Correction}
 
-This whole chapter I based on the works of \cite{terhal_qec_formalism}, \cite{intro_to_qec} and \cite{gottesmann_book}.
+% This whole chapter I based on the works of \cite{terhal_qec_formalism}, \cite{intro_to_qec} and \cite{gottesmann_book}.
 
 % Why do we bother to develop quantum computing? <- motivate a bit more
 
-Quantum computing is interesting because it offers the possibility to use quantum phenomena like superposition and entanglement in algorithms.
+Quantum computing is interesting because it offers the possibility to use quantum phenomena like superposition and entanglement in algorithms, which could lead to a quantum advantage.
 Such algorithms can solve some problems efficiently for which we do not know efficient classical algorithms.
 A famous examples is the problem of integer factorization, which can be solved efficiently using quantum computations as shown by Shor \cite{shor_factoring}. 
 % The problem of integer factorization is of special interest because it was/is the basis of many encryption algorithms.
-Other examples are the grover search algorithm \cite{grover_search_algo} or this \cite{chemistry_example_algo} proposed algorithm to calculate the energy of atoms and molecules.
+Other examples are the grover search algorithm \cite{grover_search_algo} or a \cite{chemistry_example_algo} proposed algorithm to calculate the energy of atoms and molecules \cite{chemistry_example_algo}.
 % Show the bitcoin paper for fun?
 
 To realize quantum computations we need a quantum state in which we can store our quantum information, analogous to the (classical) bit of a (classical) computer.
 Such a state is called a quantum bit (qubit)\footnote{
     It is only called a qubit if it is a binary/two level systems. One can also realize a higher dimensional data states, so called qudits, but they are not the topic of this thesis and therefore not discussed further. %[TODO: name paper by Irina?]
 } in the quantum case.
-To implement the algorithms we also need to be able to do operations on the quantum information, but the (fault-tolerant) implementation of those is out of scope of this thesis. 
-We will focus on maintaining the quantum information contained in one qubit over time, a so called quantum memory experiment. 
+In this thesis will focus on maintaining the quantum information contained in one qubit over time, a so called quantum memory experiment. 
+With the goal of characterizing a certain quantum error correction setup.
 
 There are many different approaches of realizing qubits as physical systems, 
 like trapped ions,  % TODO cite references
@@ -24,15 +24,15 @@ neutral ions,       % TODO cite references
 molecules,          % TODO cite references
 photons,            % TODO cite references
 superconducting circuits,% cite find references
-and certainly more. 
+and more. 
 Each has their own advantages and disadvantages. 
-But all of them still share the same problem, they have a residual coupling with the environment and are therefore susceptible to faults. 
-Those faults can introduce errors which could change the information contained in the qubit and therefore destroy our quantum information memory. 
+But all of them still share the same problem, they have a residual coupling with the environment and are therefore susceptible to faults through decoherence. 
+Those faults can introduce errors which could change the information contained in the qubit and therefore destroy the quantum information. 
 
 % The following is to illustrate to the reader (at the level of my mother) why quantum states are more susceptible.
 % But this part is so vague I do not know if I want to keep it.
-To illustrate why a quantum computer is more susceptible than a classical one, we take a look at the example of a trapped ion set up.  
-Here the quantum information is stored in a single excited state of an ion.
+By taking a look at the examples of a trapped ion setup, we can illustrate why a quantum computer might be more susceptible to noise than a classical computer.
+In the quantum computer the quantum information is stored in a single excited state of an ion.
 In comparison the classical information contained in one bit is stored in approximately $10^4$ electrons \cite{classical_bits_electrons}.
 Therefore one can intuitively understand that a qubit is intrinsically less robust, than a classical bit in regards to errors, without even taking quantum processes into account.
 % An because we still need to stay in the quantum regime we can not simply increase the number of electrons for each physical qubit, this would destroy/decohere the quantum information. % can one say it like this? 
@@ -40,10 +40,9 @@ Therefore one can intuitively understand that a qubit is intrinsically less robu
 
 
 To mitigate the influence of errors and safeguard the quantum information against errors, quantum error-correction (QEC) codes were developed. %should put same papers here
-Quantum error-correction codes are different from classical error-correcting codes. 
-Ee have to take into account that by measuring we can destroy superpositions (Wavefunction collapse).
-Moreover there is only one type of error in classical computers, the bit flip. 
-Quantum computers can have a multitude of different errors, as will be discussed in section \ref{sec:pauli_errors}.
+Quantum error-correction codes differ from classical error-correcting codes. 
+We have to take into account that by measuring we can destroy superpositions (Wavefunction collapse).
+Moreover there is only one type of error in classical computers, the bit flip, whereas quantum computers can have a multitude of different errors, as will be discussed in section \ref{sec:pauli_errors}.
 
 In QEC codes we take active measures to correct the quantum memory and remove errors from the qubits. 
 % Talk a bit about error avoidance?
@@ -53,24 +52,26 @@ Based on this information we can take actions to correct those occurred errors a
 % should I cite in detail or is it enough to name them in the beginning.
 
 We will got into more detail in section \ref{sec:stabilizer_formalism}, where we focus on stabilizer codes. 
-They are a class of quantum error-correcting codes and we are gonna use them in this thesis.
+The class of quantum error-correcting codes from which the code is from which we are gonna use them in this thesis.
 
-Afterwards we discuss how we can correct errors at all, given that there are an endless amount of errors that can occur in the section about Pauli errors \ref{sec:pauli_errors}.
+Before that we discuss how we can correct errors at all, given that there are an endless amount of errors that can occur in the section about Pauli errors \ref{sec:pauli_errors}.
 % could also make sense to first introduce pauli errors. 
 
 % should I include a more general definition of QECC and an abstract circuit example or equations, to explain what exactly defines a QECC.
 % namely encoding + information extraction + decoding + correction
 
 % This is new at this position so adapt the previous and later text
-\section{Error Modeling and Pauli Errors}\label{sec:pauli_errors}
-The following section and subsections are based on \cite{terhal_qec_formalism}, \cite{gottesmann_thesis} and \cite{intro_to_qec}.
+\section{Pauli Operators and General Errors}\label{sec:pauli_errors}
+The following section and subsections are based on the works \cite{terhal_qec_formalism}, \cite{gottesmann_thesis} and \cite{intro_to_qec}.
 
-We first introduce th Pauli group, which as well turns out, has special significance for stabilizer codes.
-Afterwards we will discuss how general quantum noise/errors behaves and their attributes.
+Before discussing how to correct error we first need to discuss what types of errors can occur or how we can model them.
+
+Towards this goal we first introduce th Pauli group, which as well turns out, has special significance for stabilizer codes.
+Afterwards we will discuss how general quantum noise/errors behaves and how we can connect them back to the Pauli group.
 
 \subsection{Pauli Group}
 
-The Pauli group $\mathcal{P}_n$ is made up of tensor products of the $n$ one qubit Pauli group $P \in \hat{\mathcal{P}}_1 = \{ I,X,Z,Y \}$ without phase 
+The Pauli group $\mathcal{P}_n$ is made up of tensor products of the $n$ one qubit Pauli group without phase $P \in \hat{\mathcal{P}}_1 = \{ I,X,Z,Y \}$ 
 \begin{equation}
 I =
 \begin{pmatrix}
@@ -94,29 +95,34 @@ Z =
 0 & -1
 \end{pmatrix}
 \end{equation} 
-together with an overall phase $\{\pm1,\pm i\}$.
-% full definition of pauli group?
+together with an overall phase $\{\pm1,\pm i\}$
+\begin{equation}
+    \mathcal{P}_n = \{c P_1\otimes P_2 \otimes ... \otimes P_n | c \in \{\pm 1, \pm i\}; P_i \in \hat{\mathcal{P}}_1 \forall i \}
+\end{equation}
 
-Note that we do not care for the overall phase of a state therefore can omit the overall phase of the operator in some cases and talk about the Pauli group without phase $\hat{\mathcal{P}}_n$.
+% Make the 
+Note that a global phase of a state has no observable consequence and as such we can omit it in most cases.
+Following this argumentation it can be sometimes useful to omit the overall phase of the operator as well in some cases.
+When we want to talk about the Pauli group without a phase we will refer to it as $\hat{\mathcal{P}}_n$.
 
-At this point we can introduce the weight of an Pauli operator $P\in\mathcal{P}_n$ indicated by $|P|$ as the number of non identity Paulis in the tensor product that defines $P$.
-This quantity will become interesting when we talk about correctable errors (\textcolor{red}{Put ref here}).
-% Discuss more?
+At this point we can introduce the weight of an Pauli operator $P\in\mathcal{P}_n$ indicated by $|P|$ as the number of non identity Paulis in the tensor product that defines $P\in\mathcal{P}_n$.
+This quantity will become interesting when we talk about the distance of codes and what errors are guaranteed to be correctable \ref{sssec:distance_stabilizer_formalism}. 
 
-The Pauli group is closed under multiplication, especially $Y = i X Z$.
-And each Pauli squared, disregarding the phase, is identical to identity
+The Pauli group is closed under multiplication, especially $Y = i X Z$, as such it is a group.
+Each Pauli squared, disregarding the phase, is identical to identity
 \begin{equation}
     I = X^2 = Z^2 = Y^2.
 \end{equation} 
-Resulting from this any tensor product of Paulis, is also its own inverse, when we disregard the overall phase.
+Resulting from this any tensor product of Paulis, is also its own inverse, when we disregard the overall phase
 \begin{equation}
-    \tilde{P} \tilde{P} = I \forall \tilde{P} \in \hat{\mathcal{P}}_n
+    \tilde{P} \tilde{P} = I \forall \tilde{P} \in \hat{\mathcal{P}}_n.
+    \label{eq:pauli_squared_is_identity}
 \end{equation}
-Taking the phase into account we obtain $\pm I $ after squaring any Pauli. 
-This property is important when we want to find a recovery for a given Pauli error. 
+Taking the phase into account the square of an element of the Pauli group is $\pm I $, depending on the overall phase.  
+This property is important when we want to find a recovery for a given Pauli error, see section \ref{ssec:stabilizer_summary_qec_cylce}. 
 To recover the error $P$ we just reapply the same Pauli, and in the process we might change the overall phase but otherwise act with the identity.
 
-Another important property of the Pauli group is that all their elements either commute or anticommute.
+Another property of the Pauli group is that all their elements either commute or anticommute.
 For the one qubit Pauli group all non trivial pairings anticommute, we will use $\{A,B\}$ to indicate the anticommutator, 
 \begin{equation}
     \{X,Z\} = \{X,Y\} = \{Z,Y\} = 0.
@@ -131,7 +137,7 @@ We can use the $n$-qubit Pauli group as a basis to express any quantum channel.
 As it spans the space of all $n$-qubit linear operations.
 Which will become important when we discuss general errors.
 
-We will refer to $X$ Pauli operator as bit-flip , as this error flips the $\ket{0}$ state to the $\ket{1}$ state and vice versa 
+We will refer to $X$-type Pauli operator as bit-flip, as this error flips the $\ket{0}$ state to the $\ket{1}$ state and vice versa 
 \begin{equation}
     X \ket{Psi} = X(\alpha \ket{0} + \beta \ket{1}) = \beta \ket{0} + \alpha \ket{1}.
 \end{equation}
@@ -144,6 +150,9 @@ The $Y$ Pauli is just bit- and phase-flip applied with an additional overall pha
 
 \subsection{General Errors}
 
+After introducing the Pauli group and its two fundamental errors, the bit- and phase-flip, we can discuss general quantum errors.
+This subsection will only be used to shortly introduce some needed concepts to introduce the stabilizer formalism, we will later return to the topic on how to model quantum errors in our circuits.
+
 As the quantum state $\ket{\Psi}$ itself is continuous 
 \begin{equation}
     \ket{\Psi} = \alpha \ket{0} + \beta\ket{1}, \text{with }|\braket{\Psi|\Psi}|^2 = 1 
@@ -154,7 +163,7 @@ We will use the term quantum error, quantum noise, error operator or error inter
 
 % I need to discuss this! Unsure if this is valid discribtion 
 As it was shown by Knill and Laflamme \cite{knill_laflamme}, it is sufficient to correct a finite set of errors, namely the Pauli group $\mathcal{P}_n$,
-to correct any error, if we assume that the interaction operator acts independently on each qubit. 
+to correct any error, if we assume that the interaction operator acts independently on each qubit.  % is not really independent
 Which means that we can we express the error process as a tensor product of single system interactions.
 And this possible due to the digitization of errors by the parity check measurements. % is this possible for all error processes?! Discuss this part!
 As any error can be expanded in elements of the Pauli group, we can limit our analysis to the Pauli group.
@@ -175,7 +184,7 @@ One class of QEC codes are the stabilizer codes as described by Gottesmann \cite
 This section is mainly based on Gottesmann works, as cited above, and the work of Terhal \cite{terhal_qec_formalism}.
 
 In this and in all the following chapters we limit ourselves to Pauli operators as possible errors. 
-The argumentation why this is assumption valid is following in section \ref{sec:pauli_errors}.
+The argumentation why this is assumption valid is presented in section \ref{sec:pauli_errors}.
 
 The goal of this chapter is to introduce the structure and formalism behind stabilizer codes.
 We want to place a special focus on the group structure behind stabilizer codes to motivate the later chapter about possible decoder approaches. 
@@ -187,7 +196,7 @@ At the end of this section after we introduces all necessary components and talk
 The stabilizer formalism is based around a subgroup of the Pauli group $\mathcal{P}_n$ called the stabilizer group $\mathcal{S}$. 
 The reason for naming the subgroup stabilizers becomes obvious in the next subsection \ref{ssec:codespace}, when we talk about the codespace.
 
-By choosing the stabilizer group one defines the specific stabilizer code.
+By choosing the stabilizer group one defines the specific stabilizer code and the specific encoding of the QEC code.
 We will later in section \ref{sec:kitaev_surface_code} discuss a specific choice but here we take a general view upon stabilizer codes. 
 One can freely choose which operators to use to define a stabilizer group with the following limitations for the resulting stabilizer group.
 It must be an Abelian subgroup of the $n$-qubit Pauli group $\mathcal{P}_n$ and it is not allowed to contain $-I$. 
@@ -201,7 +210,7 @@ We will also refer to the linear independent generators of the stabilizer group 
 \subsection{Codespace}\label{ssec:codespace}% rework this headline 
 
 As described earlier the basic idea behind QEC codes is to encode the logical information of $k$ logical qubits into $n$ physical qubits.  
-The space in which the logical states exist is called the codespace $\mathcal{L}$, which is a subspace of the full $n$-qubit Hilbert space $\mathcal{H}_{2^n}$. 
+The space in which the logical states lay is called the codespace $\mathcal{L}$, which is a subspace of the full $n$-qubit Hilbert space $\mathcal{H}_{2^n}$. 
 
 Using the stabilizer group defined in the previous subsection, we can define the codespace $\mathcal{L}$ as being the space spanned by all states $\ket{\Psi}$ which are invariant under all elements of the stabilizer group.
 
@@ -210,27 +219,29 @@ Using the stabilizer group defined in the previous subsection, we can define the
     \label{eq:defintion_codespace_whole_group}
 \end{equation}
 
-Given that each element of the stabilizer can be generated by our set of generators $\mathcal{S}_G$, we can rewrite this definition as 
+Given that each element of the stabilizer can be generated by the set of generators $\mathcal{S}_G$, we can rewrite this definition as 
 
 \begin{equation}
     \mathcal{L} = \left\{  \ket{\Psi} \in  \mathcal{H}_{2^n} : S \ket{\Psi} = \ket{\Psi} \forall S_i \in \mathcal{S}_G \right\}.
     \label{eq:defintion_codespace_generators}
 \end{equation}
 
-Given that we have $n$ physical qubits into which we encode the logical information and used a stabilizer group with $m$ linear independent generators, we can encode $k=n-m$ logical qubits into the resulting codespace. 
-The resulting codespace is therefore a $2^k$ dimensional Hilbert space.
+Given that we have $n$ physical qubits into which we encode the logical information and given we use a stabilizer group with $m$ linear independent generators, we can encode $k=n-m$ logical qubits into the resulting codespace. 
+Which we can understand by following the argumentation:
+Each of the $m$ linear independent generators splits splits the $2^n$ dimensional Hilbert space into two subspaces associated with the eigenvalues $+1$ and $-1$.
+The resulting codespace is therefore a $2^k=2^n/2^m$ dimensional Hilbert space.
 This subspace is characterized by being the $+1$ eigenspace of all generators (and all stabilizers).
 
 We will refer to the states which are in the codespace, as codewords $\ket{\Phi}\in \mathcal{L}$.
 
-Here we note explicitly that acting with an element of the stabilizer group on any codeword is equivalent to act with the identity
+Here we note explicitly that acting with an element of the stabilizer group on any codeword is equivalent to act with the identity on them,
+given that the codewords states are defined as being $+1$ eigenstates of all elements of the stabilizer group
 \begin{equation}
     S \ket{\Phi} = \ket{\Phi}.
     \label{eq:stabilizer_equivalence}
 \end{equation}
 We will refer to this intrinsic property of stabilizer codes by calling it the stabilizer equivalence.
-% Should i write a short derivation for this? no right?
-% Write down that acting with a stabilizer on a codedword does not change anything?
+
 
 
 \subsection{Syndrome}\label{ssec:syndrome}
@@ -360,7 +371,7 @@ To conclude, we detect errors by measuring the syndrome of the state.
 And logical operators and stabilizer are part of the centralizer.
 Both of those could have an arbitrary phase.
 
-\subsubsection{Distance}
+\subsubsection{Distance}\label{sssec:distance_stabilizer_formalism}
 % Distance
 At this point we can introduce an characteristic quantity of QEC codes. % more general of QEC codes
 The distance $d$ which represent the minium weight\footnote{The weight of an operator is the number of qubits on which the operator acts non trivially.} that of a non identity logical operator/undetectable error.
