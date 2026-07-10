@@ -69,7 +69,7 @@ Before discussing how to correct error we first need to discuss what types of er
 Towards this goal we first introduce th Pauli group, which as well turns out, has special significance for stabilizer codes.
 Afterwards we will discuss how general quantum noise/errors behaves and how we can connect them back to the Pauli group.
 
-\subsection{Pauli Group}
+\subsection{Pauli Group}\label{ssec:intro_pauli_group}
 
 The Pauli group $\mathcal{P}_n$ is made up of tensor products of the $n$ one qubit Pauli group without phase $P \in \hat{\mathcal{P}}_1 = \{ I,X,Z,Y \}$ 
 \begin{equation}
@@ -263,9 +263,10 @@ All states with different syndromes lie outside of our defined codespace.
 Note that given we have $m$ generators, there are $2^m$ possible different syndromes.
 
 We can construct a similar syndrome string for elements of the Pauli group $E\in \mathcal{P}_n$. 
-Not that we assumed that we can represent errors as such elements $E\in \mathcal{P}_N$. 
-The error syndrome $\sigma(E) \in \mathbb{Z}_2$ is define by applying the operator $E$ to any codeword $\ket{\Phi}$ and  
-then we use the definition of the syndrome of a state, as defined above, to assign a syndrome to the operator 
+Note that we assumed that we can represent errors as elements $E\in \mathcal{P}_N$. 
+To define the error syndrome $\sigma(E) \in \mathbb{Z}_2$ we first apply the operator $E$ to any codeword $\ket{\Phi}$.
+Then we determine the syndrome of the resulting state following the procedure above.
+We define the resulting syndrome as the error syndrome or the operator $E$
 \begin{equation}
     \sigma(E) = \sigma(E\ket{\Phi}); E \in \mathcal{P}_n; \Phi \in \mathcal{L}.
     \label{eq:error_syndrome}
@@ -300,10 +301,9 @@ Concluding we have $2^m$ subspaces which are isomorphic to the codespace, one fo
 All of those subspaces are orthogonal to each other, because they have different eigenvalues/different syndromes.
 Each of those subspaces is $2^k$  dimensional to encode the $k$-logical qubits, where $k=n-m$.
 Therefore we can decompose the full Hilbert space $\mathcal{H}_{2^n}$ into a direct sum of the $2^m=2^{n-k}$ subspaces, each one associated with a different syndrome.
-
+% point here to knill-laflamme?
 
 % talk a bit why we define the syndrome? motivation for decoding and such
-
 
 \subsection{Centralizer, Cosets and Group Structure}\label{ssec:intro_centralizer} % find a better title 
 
@@ -361,7 +361,7 @@ It is undetectable because our quantum error correcting code can only tell if a 
 It can not distinguish if a state is reached by original encoding/purposefully applied logical operators or undetectable errors, hence the name. 
 
 Therefore the set of all possible realizations of non identity logical operators is identical to the set of undetectable errors.
-% make a note that elements of the stabilizer group ignoring the phase are trivial erros ... errors not happening
+% make a note that elements of the stabilizer group ignoring the phase are trivial errors ... errors not happening
 
 % Is this useful?
 Note that all operators outside of the centralizer anticommute with at least one generator of the stabilizer group and therefore all of them can be detected.
@@ -497,69 +497,101 @@ As a result we can partition the whole Pauli group into cosets of the stabilizer
 \begin{equation}
     \mathcal{P}_n = \bigcup_{\sigma \in \{0,1\}^m} \bigcup_{\bar{P} \in\bar{\mathcal{P}}} E_{\sigma} \bar{P} \mathcal{S}.
 \end{equation}
+The resulting structure is illustrated in figure \ref{fig:stabilizer_formalism_cosets_of_centralizer}.
 
+As such if we fix, the stabilizer group $\mathcal{S}$, the set of realizations of the logical operators $\bar{\mathcal{P}}$ and the canonical representation error associated with each syndrome $E_\sigma$,
+we can rewrite any operator from the Pauli group $P \in \mathcal{P}_n$ as a combinations of those 
+\begin{equation}
+    P =  E_\sigma \bar{L} S \forall P \in \mathcal{P}_n; S \in \mathcal{S}, \bar{L} \in \bar{\mathcal{P}}.
+    \label{eq:pauli_rewriting_stabilizer_formalism}
+\end{equation}
+Note that here the overall phase is contained in the logical operator $\bar{L}$.
+If we do not care about the phase we can just use the realizations of logical operators without phases.
 % Talk about the sizes of the different sets?
+
+\begin{figure}[]
+    \centering
+    \includegraphics[width=0.6\linewidth]{graphics/stabilizer_formalism_cosets_of_centralizer_sketch.png}
+    \caption{
+        Here we sketch how the complete Pauli group can be partitioned into cosets of the centralizer of the stabilizer group and at the same time into cosets of the stabilizer group.
+        This graphic is adapted from \cite{gottesmann_book}.
+        As noted before we can ignore the phase of the operators, here marked with the dotted lines, when we talk about correcting errors.
+        Each coset of the centralizer has a different syndrome, which we can assign a canonical error, here $E,F,G$, with $\sigma(E)$ and so on.
+        While we have shown only four cosets of the centralizer explicitly, there should be $2^m$ of those, one for each syndrome.
+        }
+    \label{fig:stabilizer_formalism_cosets_of_centralizer}
+\end{figure}
 
 
 \subsection{Summary: A QEC Cycle using stabilizer formalism}\label{ssec:stabilizer_summary_qec_cylce}
 
-We discussed some details about the formalism of the stabilizer code and the underlying structure, but how does this help us to detect and correct errors?
-To see why this is useful, we will talk through one QEC cycle, which describes the process of detecting and correcting an error.
+% rewrite this whole section 
 
-To be able to detect errors we start in a logical codeword state.
-We can verify that this state is a codeword state by measuring the generators of the stabilizer group, so by constructing the syndrome of the state.
+We discussed some details about the formalism of the stabilizer codes and the underlying structure, but how does this help us to detect and correct errors?
+To see why the previous analyzed structure is useful, we will talk through one QEC cycle, which describes the process of detecting and correcting an error.
 
-Note that we do not care which codeword state this is, so we do not know the logical information encoded in those $k$ qubits.
-And note that the logical operators, by definition, all commute with the stabilizers and therefore we can construct the syndrome, without collapsing any possible superposition of codeword states. 
+To be able to detect errors we start in a logical codeword state $\ket{\Phi}$.
+We will talk at a later point about how to initialize such a state. \textcolor{red}{put a ref here}
+
+Note that we do not care which codeword state this is, as such we do not know the logical information encoded in those $k$ qubits.
+And note that the logical operators, by definition, all commute with the stabilizers and therefore we can construct the syndrome, without collapsing any possible superposition of codeword states or learning anything about the encoded state. 
 
 If an error operator\footnote{
     We still assume that our error operator is an element of the Pauli group $\mathcal{P}_n$.
-} $\tilde{E}$ now acts on our codeword state $\ket{\Phi}$. 
-We get the resulting state $\tilde{E}\ket{\Phi}$.
-Measuring the syndrome of this state, will give us the error syndrome of the error operator $\sigma(\tilde{E})$. 
+} $\tilde{E}$ acts on our codeword state $\ket{\Phi}$. 
+We get the resulting faulty state $\tilde{E}\ket{\Phi}$.
 
-This error syndrome points us directly to the coset of the centralizer with the associated syndrome $E_{\sigma(\tilde{E})}\mathcal{C}(\mathcal{S})$.
-% Do I need to emphasize the connection between syndrome and coset of the centralizer more? 
-% By proving it in the previous chapter?
-We thus know that the error $\tilde{E}$ must be an element of this set $\tilde{E}\in E_{\sigma(\tilde{E})}\mathcal{C}(\mathcal{S})$.
-What we do not know is from which coset of the stabilizer group in the coset of the centralizer this error is from.
-Note that we do not need to identify the exact error operator, we just need to identify the coset of the stabilizer group.
-All operators in such a coset are stabilizer equivalent.
+Our goal at the end of the cycle is to recover the original codeword state $\ket{\Phi}$.
+To achieve this we need to find a way to inverse the error $\tilde{E}$.
+As discussed in section \ref{ssec:intro_pauli_group}, the square of any operator is the identity, in addition to some global phase which has no physical relevance\footnote{As the phase is not relevant we will ignore is for the sake of clarity.}. 
+Therefore we can recover our original codeword state if we apply the exact same error to our faulty state $\tilde{E}\ket{\Phi}$.
+As such our goal during the QEC cycle is to identify the error operator $\tilde{E}$.
+We can then apply the same error operator again to recover our original codeword state $\tilde{E}\tilde{E}\ket{\Phi} = \ket{\Phi}$.
+
+We start the process of identifying the occurred error by measuring the syndrome of this state, which will give us the error syndrome of the error operator $\sigma(\tilde{E})$. 
+The exact circuit/approach of extracting the syndrome of a given state will be discussed in section \textcolor{red}{Put ref here}.
+The extracted error syndrome points us directly to the coset of the centralizer which contains the occurred error $\tilde{E} \in E_{\sigma(\tilde{E})}\mathcal{C}(\mathcal{S})$.
+We went into great detail about this connection in the previous section \ref{ssec:cosets_of_the_centralizer}.
+
+We thus know that the error $\tilde{E}$ must be an element of the set $\tilde{E}\in E_{\sigma(\tilde{E})}\mathcal{C}(\mathcal{S})$.
+We do not know yet from which coset of the stabilizer group in the cosets of the centralizer this error is from.
+
 Each coset of the stabilizer in the centralizer realizes a logical operator on the encoded qubit.
-Asking the question, to which coset the error belongs is asking the question, which logical error $\bar{L}_{\tilde{E}} \in \bar{\mathcal{P}}$ does the error contain in addition to the representative error, and some element of the stabilizer group?
+Asking the question, which coset the error belong to is asking the question, which logical error $\bar{L}_{\tilde{E}} \in \bar{\mathcal{P}}$ does the error contain.
+Here we adapt the rewriting introduced in equation \ref{eq:pauli_rewriting_stabilizer_formalism} to the occurred error 
 \begin{equation}
-    \tilde{E} = E_{\sigma(\tilde{E})}\bar{L}_{\tilde{E}}\tilde{S}
+    \tilde{E} = E_{\sigma(\tilde{E})}\bar{L}_{\tilde{E}}\tilde{S}.
 \end{equation}
-$\tilde{S}$ being some stabilizer element as we cant tell the exact makeup of the error.
 
-This problem is the so called decoding problem, which is handled by so called decoders. % is solved here the correct world
-We will spent some time in chapter \textcolor{red}{Put reference here} discussing this problem, as it is relevant to this thesis.
-For now lets assume our decoder tell us from which coset of the stabilizer group the error operator should be from. 
-% We can then find use the associated realizations of the logical operation $\bar{L}_D \in \bar{\mathcal{P}}$
+The problem of determining from which cosets of the stabilizer the error is from, or which logical operator it includes, is the so called decoding problem.
+It is handled by so called decoders. % is solved here the correct world
+We will go into more detail about possible approaches to decode a syndrome in the following section \ref{sec:decoding_problem_general}.
+For now lets assume our decoder give us a prediction from which coset of the stabilizer group the error operator should be from.
+This prediction can be represented as a logical operator, which we refer to as $\bar{L}_D\in\bar{\mathcal{P}}$.
 
-We recover the state by choosing any element of the coset of the stabilizer group that the decoder points to, in the cosets of the normalizer that the syndrome pointed to.
-We will call this element the recovery $R$ and it has the form
+We can then construct a possible recovery operation $R$ from the given parts as,
 \begin{equation}
-    R = E_{\sigma(\tilde{E})}\bar{L}_{D}S_R,
+    R = E_{\sigma(\tilde{E})}\bar{L}_{D} S_R.
 \end{equation}
-where we are able to identify the representative error $E_{\sigma(\tilde{E})}$ by the syndrome of the error, 
-we are getting told the logical component $\bar{L}_D \in \bar{\mathcal{P}}$ by the decoder, 
-and we randomly choose some element of this coset of the stabilizer group, so $S_R \in \mathcal{S}$ is arbitrary.
+To reiterate we got the representative error $E_{\sigma(\tilde{E})}$ by the syndrome of the error.
+The logical component $\bar{L}_D \in \bar{\mathcal{P}}$ is predicted by the decoder.
+Note that we do not have any information about the stabilizer component $\tilde{S}$ of the occurred error, but as we will see later we can choose any stabilizer element $S_R$ for our recovery.
 
-By applying this recovery operation $R$, we hope to be able to undo the previously occurred error $E$, so 
+By applying this recovery operation $R$, we hope to be able to undo the previously occurred error $E$, so we would succeed if  
 \begin{equation}
     R E \ket{\Phi} = \ket{\Phi}.
 \end{equation}
 
 The final question is did we recover the state correctly?
-So lets look at the state $R^\dag \tilde{E} \ket{\Phi}$, 
-(\textcolor{red}{either explain in detail why daggered and why it does not matter or show without, then problem with representative error!})
+So lets look at the state\footnote{
+    Given that we ignore the phases we could also apply $R\tilde{E}$, instead of $R^\dag\tilde{E}$ and we would change the phase by commuting the operators to the correct position.
+    But I found it more illustrative to recover the Pauli by applying the adjoint.
+    } $R^\dag \tilde{E} \ket{\Phi}$,
 \begin{equation}
     R^\dag \tilde{E} \ket{\Phi} = S_R^\dag \bar{L}_D^\dag E_{\sigma(\tilde{E})}^\dag E_{\sigma(\tilde{E})}\bar{L}_{\tilde{E}}\tilde{S}\ket{\Phi}.
 \end{equation}
-Given that we are not interested in a conserving/recovering a global phase, we can ignore phases.
-Then all those conjugates Paulis are equal to their unconjugated onces.
-Applying any Pauli operator (disregarding phases) twice is identical to the identity, so $E_{\sigma(\tilde{E})}^\dag E_{\sigma(\tilde{E})} = I$, which results in 
+Given that we ignore the phase all pauli operators are hermitian, we can ignore the daggers.
+Applying any Pauli operator twice is identical to the identity, so $E_{\sigma(\tilde{E})}^\dag E_{\sigma(\tilde{E})} = I$, which results in 
 \begin{equation}
     R^\dag \tilde{E} \ket{\Phi} = S_R \bar{L}_D \bar{L}_{\tilde{E}} \tilde{S}\ket{\Phi}.
 \end{equation}
@@ -578,17 +610,196 @@ Resulting in
 
 For this recovery to be successful we thus just have the condition $\bar{L}_D=\bar{L}_{\tilde{E}}$. 
 In this case we would recover our original codeword state $\ket{\Phi}$.
+Note that the choice of stabilizer element of the recovery $S_R$ does not matter, as such we only need to determine the correct cosets of the stabilizer group, not the identical error operator.
 
 If they are not identical, they would implement a different logical operator $\bar{L}_\Delta = \bar{L}_D \bar{L}_{\tilde{E}}$, 
 as indicated by the isomorphism between the chosen realizations of the logical operators $\bar{\mathcal{P}}$ and the Pauli group for the the encoded logical qubit $\mathcal{P}_k$.
 Which then would change our codeword resulting in an unsuccessful recovery.
 
-We thus see that the crucial part of the QEC cycle and its success rate is solving the decoding problem correctly.
+We thus see that the crucial part of the QEC cycle and its success rate is dependent on solving the decoding problem correctly.
+As such the choice of decoding strategy is quite influential on our QEC code performance and 
+
+The success rate will be later quantified as the logical error rate $p_L$, the rate at which we make logical mistakes in our recovery. 
+At a later point we will discuss the logical error rate in more detail. \textcolor{red}{Put ref here}.
+
+% Discuss here the difference influences on logical error rate?
+% introduce the concept of logical error rate here?
+
+\section{Decoding Problem}\label{sec:decoding_problem_general}
+
+The decoding problem is the task of determining the occurred error based on the observed syndrome.
+
+To shortly recap, given the error syndrome we can identify the cosets of the centralizer to which the error belongs.
+For a successful recovery we also need to know to which coset of the stabilizer group, disregarding the phase, the error belongs to.
+The coset of the stabilizer group defines determined logical component of the occurred error.
+The syndrome does not provide any information\footnote{
+    Knowing the logical state before or after the error occurred would lead to a wavefunction collapse/a projection onto the measured state and as such would destroy possible superpositions of the logical state. 
+    We are therefore limited in the information we can extract from the state. See \cite{knill_laflamme}.
+} about the logical state of the codeword or the logical operator applied. 
+The decoder therefore needs to use a different approach do predict which logical component might have occurred.
+
+For this we need as an additional resource the error model.
+This error model assigns a probability to each possible error operator $\text{Pr}(E) \forall\hat{\mathcal{P}}_n$.
+We will discuss the exact error models used in this thesis in section \textcolor{red}{Put ref here}.
+
+We will use two different decoding strategies in this thesis.
+The first is called Maximum Likelihood Decoding (MLD), as it is the decoding approach which the highest likelihood of returning a successful recovery.
+This approach can be summarized in the context of stabilizer codes as finding the coset of the stabilizer group, in the coset of the centralizer with the corresponding syndrome, with the highest probability.
+As such we take into account all possible errors.
+In return we get the optimal possible success rate.
+Computing the MLD problem for general stabilizer codes has been shown to be a $\sharp P$-hard \cite{MP_sharp_P_hard}.
+We will go into more detail in the following section \ref{ssec:general_ML_decoder}. 
+
+The second is the so called Minimum Weight Perfect Matching (MWPM) approach.
+It has a lower success probability but can be solved more efficiently in general. 
+Here certain properties of how errors interact with stabilizers are used to find the error operator with the highest probability of occurring. 
+We will go into more detail in the section \ref{ssec:general_MWMP_decoder}. 
+
+Note that we have shown that the number of possible syndromes scales exponentially with the distance of the code.
+As such it becomes unfeasible to compute the look up table ahead of time. 
+But under certain conditions\footnote{We will discuss those conditions a bit when we talk about Pauli frame tracking \textcolor{red}{put ref here}.} we need to be able to correct the errors in real time.
+Therefore efficient decoding techniques become more relevant to enable an real time decoding and correction of occurred errors during QEC cycles. 
+
+
+\subsection{Maximum Likelihood Decoding}\label{ssec:general_ML_decoder}
+
+In this section we will formalize the Maximum Likelihood Decoding (MLD) strategy for stabilizer codes \cite{mld_decoding_intro_luis}.
+The MLD problem is finding the logical coset\footnote{We can and will once again disregard overall phase of this logical operator.} of the stabilizer group $\bar{L_MLD}\mathcal{S}$, in the centralizer with the corresponding syndrome, with the highest total probability of occurring, given our error model.
+We can formalize this as
+\begin{equation}
+    \bar{L}_{\text{MLD};\sigma} = \arg \max_{\bar{L} \in  {\bar{\mathcal{P}}}} \text{Pr}(E_\sigma \bar{L} \mathcal{S}), 
+\end{equation}
+where $\bar{L}_{\text{MLD}}$ is the logical component of the error/recovery, 
+$\text{Pr}(E_\sigma \bar{L}\mathcal{S})$ is the probability of the cosets of the stabilizer group $\mathcal{S}$, 
+where the exact cosets is determined by the canonical error $E_\sigma$ corresponding to the syndrome and the logical component $\bar{L} \in {\bar{\mathcal{P}}}$.
+
+We can expand this equation in terms of probabilities of individuals Pauli operators as 
+\begin{eqnarray}
+    \bar{L}_{\text{MLD};\sigma} = \arg \max_{\bar{L} \in  {\bar{\mathcal{P}}}} \sum_{S \in \mathcal{S}} \text{Pr}(E\bar{L}S). 
+\end{eqnarray}
+The number of operators in this summation grows exponentially with the distance of the codes as the number of stabilizer elements of the stabilizer group grows exponentially\footnote{
+    See section \ref{sec:kitaev_surface_code} where we discuss in detail how the number of generators of the stabilizer group scale with distance of the code. 
+} with the distance of the code.
+
+Note that by taking all possible operators into account the ML decoder takes the degeneracy of errors into account.
+As such the MLD finds the coset with the highest combined probability of all errors, not only the error with the highest probability.
+Therefore even if we have a single error in a different coset that has the highest probability of occurring, MLD will find the coset with the overall highest probability.
+This is a crucial difference to the following MWPM decoder, as described in section \ref{ssec:general_MWMP_decoder}.
+
+The problem of determining the correct logical component using MLD has been shown to be $\#$P-hard for arbitrary stabilizer codes \cite{MP_sharp_P_hard}.
+
+% make the following more precise, which models and why?
+We can map the MLD problem of stabilizer codes to the partition function of classical disordered spin models \cite{topological_quantum_memory}. 
+Here we map the summation over different Pauli operators to the partition function of a classical disordered spin model.
+Dependent on the specific model and its symmetries, some of those classical disordered spin models can be solved exactly \cite{topological_quantum_memory}\cite{fundamental_thresholds}.
+And some of them have been shown to computational efficiently solvable \cite{efficient_decoding_algorithm}. % is this classical disordered spin? because we use even more here
+
+%TODO: go into detail about the phase change at the threshold???? include the threshold theorem before?!
+
+If we can solve the MLD problem exactly, we can calculate the success rate of the MLD $p_{\text{success}}$ exactly using 
+\begin{equation}
+    p_{\text{success}} = \sum_{\sigma \in \{0,1\}^m} \text{Pr}(\bar{L}_{\text{MLD};\sigma}\mathcal{S}).
+\end{equation}
+We will use such a exactly calculated optimal threshold to test our setup in \textcolor{red}{Put reference here}.
+
+
+\subsection{Minimum Weight Perfect Matching}\label{ssec:general_MWMP_decoder}
+
+The second decoding strategy is Minimum Weight Perfect Matching (MWPM)\cite{pymatching}\cite{pymatching_loger_paper}.
+We can summarize the goal of MWPM as finding the error operator with the highest probability of occurring given the observed syndrome.
+Note that as we determine a single operator we are not taking the degeneracy of possible errors into account or even the possibility that different logical classes/cosets could have multiple errors with the lowest weight\footnote{
+    Note as well that there exist approaches where the degeneracy is also included in such maximum probability decoders \cite{degeneracy_enhanced_mp_decoding}.
+}.
+
+The MWPM decoder is based on mapping the error model together with the stabilizers onto a Detector Error Model (DEM) which we then map onto a weighted graph, called the matching graph.
+
+To get from the error model to the DEM, we observe how each error mechanism changes the bits of the syndrome.
+We represent each bit of the syndrome as a detector and if the bit is changes we talk about a triggered detector.
+We can then connect individual error mechanism to those detectors, by associating each error mechanism with bit of the syndrome they flip.
+This correspondence to identifying with which generator of the stabilizer group the error mechanism anticommutes.
+As such we can connect the error mechanism to detectors.
+
+To keep tack of logical changes we label each edge with the additional information on how the associated error mechanism commutes with the logical observable.
+For this we first need to fix a certain realization of logical operator, which is done by selecting the set $\bar{\mathcal{P}}$. 
+We then label the each error mechanism that anticommutes with the logical observable, $1$ for anticommutes, $0$ for they commute.
+This will be used to determine the effect of the determined most probable error at the end, by summing over the labels of all edges, where an odd sum (even) corresponds to the combined error anticommutating (commutation).
+
+If each error mechanism triggers at most\footnote{For the surface codes errors on the edge only trigger one detector. To obtain an graphlike error model we can introduce a boundary node into our graph \cite{pymatching_loger_paper}.} two detectors, we can refer to the DEM as a graphlike error model.
+We will at this point assume\footnote{This is a valid assumption for the surface code \cite{topological_quantum_memory}.} that we have such an error model.
+For this to be a valid assumption we might need to decompose the $Y$-type errors into $X$-type errors and $Z$-type errors ($Y = i XZ$), to ensure the graphlike property of our error model.
+We then solve the $X$-type and $Y$-type MWPM decoding problems independently.
+% Talk about this beeing valid in CSS codes?
+
+We can then map this graph like error model onto a matching graph by representing each detector as a node and each error mechanism as an edge.
+Each edge represents an error $E$ and is weighted $w(E)$ by the probability of the error $\text{Pr}(E)$
+\begin{equation}
+    w(E) = \log \left( \frac{1-\text{Pr}(E)}{\text{Pr}(E)}\right)
+\end{equation}
+and each edge connects the nodes, which represent the detectors that the associated error mechanism triggers. 
+
+The MWPM decoder now tries to find the most probable error event consistent with the syndrome.
+Finding a error consistent with the syndrome correspondence to finding a set of edges, such that all triggered detectors have an odd number of incident edges and non triggered detectors have an even number of incident matches.
+And to choose the most probable of such configurations we need to find the set of edges, that fulfills the above condition with the lowest total weight $\sum_E w(E)$. 
+Note at this point that we are following here the definition of an minimum weight embedded matching, which is a variation of the MWPM problem and is the basis of PyMatching the MWPM decoder which we are going to use \cite{pymatching_loger_paper}. 
+
+After finding such a set the decoder then returns the prediction if the logical observable commutes or anticommutes with the predicted error, by combining the labels on the predicted edges. 
+As such it predicts the change of the logical observable due to the error, including the canonical representation of the syndrome and the logical component.
+We could also use the configuration of edges to reconstruct the predicted occurred error.
+As discussed in section \textcolor{red}{ref to pauli frame tracking} this will be not necessary.
+% I could spent some time here elaborating the true and complete difference and why what is useful but his might make sense to do at a later point.
+% prediction of observable instead of prediction of logical component in the coset
+
+The use of the detectors which just represent changes of bits in the syndrome instead of the absolute value of the syndrome, relates to the isomorphism between the codespace and the other orthogonal subspaces of the Hilbert space.
+As we discussed in section \ref{ssec:syndrome} each subspace associated to a syndrome is isomorphic to the codespace. 
+Given that we are only interested in the change of the syndrome, we can use this MWPM decoding setup, to return corrupted codeword states of isomorphic spaces to their original state.
+We would still get the same prediction as if we would have started in a state belonging to the codespace, assuming the same error occurred.
+We will discuss this principle in more detail in section \ref{}\textcolor{red}{Put reference to pauli frame tracking here}.
+
+For now lets close this comparison between MWPM and ML decoding by once again pointing out that MWPM find the most probable single error event, while ML finds most likely coset and as such the most likely occurred logical operation.
+
+\section{Threshold Theorem}
+
+% talk about why scale anyways 
+% at which point encoding a qubit makes actual sense -> pseudo threshold
+% threshold of a code vs distance of a code
+
+\section{Fault Tolerance}
 
 
 
+\section{Error Models}\label{sec:error_models}
+
+\subsection{Code Capacity Noise Model}
+
+% 0. Just errors on data qubits 
+% 1. Simplest model -> assumes noise free QEC <- somewhat faulty assumption -> leads to next error model
+
+\subsection{Circuit Level Noise Model}
+
+% 0. Ancilla qubits and gates are faulty 
+%     + more realworld like
+%     + motivate the need to think about syndrome extraction
+% 0. explain concept of fault tolerance and residual error
+%     + error on qubits only with prob p
+%     + introduce the need for fault tolerance check
+% 2. Add two qubit depolirizing noise, due to CNOT gates
+% 3. describe the resulting full error model/show graph
+
+
+\subsubsection{Phenomological Noise Model}
+
+% Do I actually describe the correct model here?
+% -> I want to use this later as a references when I want to motivate the propagated error model
+
+% 0. Definition 
+% 1. Why useful?
+
+
+
+% Specific things used
 
 \section{Kitaev Surface Code}\label{sec:kitaev_surface_code}
+% Maybe move this block to a later point?
 
 The specific QEC code from the class of the stabilizer codes we are using is the (unrotated) surface code \cite{kitaev_surface_code}, \cite{other_surface_code_paper}, which is based on the toric code \cite{kitaev_toric_code}.
 The difference between the toric code and the surface code is the change from periodic boundary conditions to open boundaries for the surface code.
@@ -677,43 +888,4 @@ As such we could use in principle any CSS code.
 We especially decided on the unrotated surface code, because there exist an efficient maximum likelihood decoder for it, for a certain set of problems. 
 
 % Should I talk about syndrome extraction and state initilization 
-
-\section{Threshold Theorem}
-
-% talk about why scale anyways 
-% at which point encoding a qubit makes actual sense -> pseudo threshold
-% threshold of a code vs distance of a code
-
-
-\section{Error Models}\label{sec:error_models}
-
-\subsection{Code Capacity Noise Model}
-
-% 0. Just errors on data qubits 
-% 1. Simplest model -> assumes noise free QEC <- somewhat faulty assumption -> leads to next error model
-
-\subsection{Circuit Level Noise Model}
-
-% 0. Ancilla qubits and gates are faulty 
-%     + more realworld like
-%     + motivate the need to think about syndrome extraction
-% 0. explain concept of fault tolerance and residual error
-%     + error on qubits only with prob p
-%     + introduce the need for fault tolerance check
-% 2. Add two qubit depolirizing noise, due to CNOT gates
-% 3. describe the resulting full error model/show graph
-
-
-\subsubsection{Phenomological Noise Model}
-
-% Do I actually describe the correct model here?
-% -> I want to use this later as a references when I want to motivate the propagated error model
-
-% 0. Definition 
-% 1. Why useful?
-
-
-\section{Fault Tolerance}
-
-
 

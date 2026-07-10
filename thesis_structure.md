@@ -1,20 +1,29 @@
 # ToDo:
 
-1. Zeitplan
-    + Deadlines schaffen
-    + Wann welches Kapitel -> erstmal was schreiben und dann später verbessern
-2. 1-2 Formel für jede Kapitel -> dadurch Kernstruktur bilden 
+# stuff to add
+1. General definition of a QEC code
+    + encoding and recovery
+        + and describe all the parts in detail
 
-21. Use Examples <- take as reference the surface code to make the problem understandable
-    + define a proper layout of the surface code for my thesis!
+2. example and discussion of discretization of errors (not yet done)
 
-3. Weiter durch unterstützende Paper Strukturieren
+3. include example of noise and describe it as stochastic! (show channel!!)
 
-4. Offene Probleme also Themen die in die Arbeit rein sollten:
-    1. Mind. 1 weg für state preparation
-        + sollte ja simple replacement sein
-        + aber wie bekomme ich die fehler optional an und aus?
+4. ML decoding and phase change explain connection (include threshold theorem somehow)
 
+# new stuff
+write chapters on:
+1. Threshold Theorem & logical error rate
+    + move this toward the subsection discussing the distance?!
+2. Fault tolerance
+3. Error model, Error setting
+    + code capacity 
+    + circuit level
+    + phenomenological
+4. Syndrome extraction 
+    + Basic 
+    + Steane Type syndrome extraction
+5. Correction and Pauli Frame Tracking
 
 
 
