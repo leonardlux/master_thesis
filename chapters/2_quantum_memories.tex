@@ -620,7 +620,6 @@ We thus see that the crucial part of the QEC cycle and its success rate is depen
 As such the choice of decoding strategy is quite influential on our QEC code performance and 
 
 The success rate will be later quantified as the logical error rate $p_L$, the rate at which we make logical mistakes in our recovery. 
-At a later point we will discuss the logical error rate in more detail. \textcolor{red}{Put ref here}.
 
 % Discuss here the difference influences on logical error rate?
 % introduce the concept of logical error rate here?
@@ -692,6 +691,7 @@ The problem of determining the correct logical component using MLD has been show
 We can map the MLD problem of stabilizer codes to the partition function of classical disordered spin models \cite{topological_quantum_memory}. 
 Here we map the summation over different Pauli operators to the partition function of a classical disordered spin model.
 Dependent on the specific model and its symmetries, some of those classical disordered spin models can be solved exactly \cite{topological_quantum_memory}\cite{fundamental_thresholds}.
+For those we can identify a phase change in the model at the threshold probability, which we will discuss in section \ref{ssec:threshold_theorem}. 
 And some of them have been shown to computational efficiently solvable \cite{efficient_decoding_algorithm}. % is this classical disordered spin? because we use even more here
 
 %TODO: go into detail about the phase change at the threshold???? include the threshold theorem before?!
@@ -756,43 +756,6 @@ We would still get the same prediction as if we would have started in a state be
 We will discuss this principle in more detail in section \ref{}\textcolor{red}{Put reference to pauli frame tracking here}.
 
 For now lets close this comparison between MWPM and ML decoding by once again pointing out that MWPM find the most probable single error event, while ML finds most likely coset and as such the most likely occurred logical operation.
-
-\section{Threshold Theorem}
-
-% talk about why scale anyways 
-% at which point encoding a qubit makes actual sense -> pseudo threshold
-% threshold of a code vs distance of a code
-
-\section{Fault Tolerance}
-
-
-
-\section{Error Models}\label{sec:error_models}
-
-\subsection{Code Capacity Noise Model}
-
-% 0. Just errors on data qubits 
-% 1. Simplest model -> assumes noise free QEC <- somewhat faulty assumption -> leads to next error model
-
-\subsection{Circuit Level Noise Model}
-
-% 0. Ancilla qubits and gates are faulty 
-%     + more realworld like
-%     + motivate the need to think about syndrome extraction
-% 0. explain concept of fault tolerance and residual error
-%     + error on qubits only with prob p
-%     + introduce the need for fault tolerance check
-% 2. Add two qubit depolirizing noise, due to CNOT gates
-% 3. describe the resulting full error model/show graph
-
-
-\subsubsection{Phenomological Noise Model}
-
-% Do I actually describe the correct model here?
-% -> I want to use this later as a references when I want to motivate the propagated error model
-
-% 0. Definition 
-% 1. Why useful?
 
 
 
@@ -888,4 +851,126 @@ As such we could use in principle any CSS code.
 We especially decided on the unrotated surface code, because there exist an efficient maximum likelihood decoder for it, for a certain set of problems. 
 
 % Should I talk about syndrome extraction and state initilization 
+
+
+\section{Fault Tolerance and Error Models}\label{sec:fault_tolerance}
+
+In the previous section we implicitly assumed that errors only happen at a specific point in our quantum circuit.
+Right after we encoded our state and then they stop occurring when we want to extract the syndrome and recover the state.
+This is assumption is not well motivated as in realistic implementations, error can occur in every part of the circuit and with every gate applied.
+Therefore we need to change our error model.
+We will talk about the specific error models we will look at in this thesis in section \ref{ssec:error_models}, and the one that is described above is called the circuit level error model.
+
+At this point we introduce the notion of fault tolerance in relation to QEC codes.
+The concept of fault tolerance describes how our QEC code behaves under the condition that faults happen during its execution.
+Given that all components of a circuit can fail, we can not expect of our QEC code to recover the original state.
+For fault tolerance we change the requirements.
+If we previously had a distance $d$ QEC circuit, that was able to correct $t$ errors, we now require of our fault tolerant circuit distance $d$ circuit, that $t$ faults lead to at most $t$ errors at the end of the QEC cycle.
+As such the resulting state should be a correctable one with the same circuit given the noiseless assumption \cite{gottesmann_book}.
+We refer as such a QEC as distance preserving and we will refer to the error remaining after the QEC cycle as the residual error.
+
+One reason $t$ faults could lead to more than $t$ faults at the end of a circuit is so called error propagation, which we will talk about using the example of a CNOT gate.
+
+\subsection{CNOT Gate}\label{ssec:cnot_gate}
+As an example for error propagation and because we will use its properties later we will shortly discuss the CNOT gate.
+
+It is a two qubit gate and implements the controlled NOT operation.
+At especially important for the use case in this paper we look at how propagates errors $E$ \cite{gottesmann_book}.
+As the CNOT operation is unitary and hermitian we can write
+\begin{equation}
+    \text{CNOT} \ E\ket{\Psi} = \text{CNOT } E\text{ CNOT} \ \text{CNOT} \ket{\Psi}.
+\end{equation}
+The propagated error is therefore $\text{CNOT } E \text{ CNOT}$.
+We can identify that an error $E = X \otimes I$, will be propagated to become $X \otimes X$.
+Here the first element of the tensor product is the error acting on the control qubit and the second is acting on the target qubit of the CNOT gate. 
+As such the CNOT gate propagates $X$-type errors from the control bit onto the target bit. 
+% Show a circuit diagram for CNOT gates!
+
+We can identify such a propagation also in the other direction.
+$E = I \otimes Z$, will become $Z \otimes Z$, which tells us that $Z$-type errors propagate from the target qubit onto the control qubit.
+
+As such even if the CNOT gate itself is not faulty, if we an error is propagated through a CNOT gate, the number of errors in the circuit is increased.
+And the CNOT gate propagates errors in both directions from control onto the target and vice versa.
+
+We will later show that we can use this error propagation property of CNOT gates to our advantage in section \textcolor{red}{Put ref to syndrome extraciton here}.
+
+% this might be a subsection 
+\subsection{Threshold Theorem}\label{ssec:threshold_theorem}
+
+The cornerstone of QEC codes and there usefulness is based on the threshold theorem, which states that even under the assumption that all components are noisy we can still arbitrary reduce the logical error rate of the logical qubit, given that the error rates of the noisy components is below a certain threshold \cite{gottesmann_book},\cite{topological_quantum_memory}.
+As such we can if we the physical error rate is below the threshold we can reduce the logical error rate by using more resources.
+This can be done for surface codes by increasing the distance $d$ of the code.
+The overhead in the number of qubits has been shown to be polynomial \cite{topological_quantum_memory}.
+
+Based on this theorem we not need to realize perfect qubits in an experimental setting to be able to realize arbitrarily long quantum computations
+Instead we can use QEC codes to suppress the logical error rates to levels where long quantum computations become feasible.  
+This makes quantum computational possible as awe do not need to create perfect qubits, just enough decent qubits, to enable quantum computing.
+
+% A bit useless
+Note that will below the threshold each additional qubit reduces the logical error probability, above the threshold the logical probability actually rises for each qubit added.
+
+The threshold is QEC and error model dependent.
+The threshold is an important quantity of a QEC codes. 
+Codes with higher threshold can be used with less optimal qubits and therefore might enable quantum computation where other QEC codes still fail. 
+
+The threshold can be determined through mapping to statistical physics models, as alluded to in section \ref{sec:ML_decoding}. 
+In those models we can identify a phase change between an ordered and unordered state at the threshold \cite{fundamental_thresholds},\cite{topological_quantum_memory}.
+ 
+We can also determine the threshold using numerical simulations of the QEC code with an associated error model.
+This will be the approached used in this thesis.
+To determine the threshold we compute the logical error rate for different distances and different physical error rates. 
+Above the threshold the higher distance codes should have a higher logical error rate, whereas there increased distance results in a lower logical error rate below the threshold.
+Given that we want to determine the location of a phase transition, when we want to locate the threshold, we can use finite-size scaling analysis to determine the value of the threshold give the data.
+\textcolor{red}{Put ref here or add a chapter later to explain the finite-size scaling methods.}
+
+We can also state an asymptotic expectation for the scaling below the threshold.
+We will assume at this point that we will only choose codes with odd distances $d$ for practical purposes.
+In addition we assume that every noise process has a probability proportional to $p_{\text{phy.}}$ 
+\begin{equation}
+    \text{Pr}(E) \propto p_{\text{phy.}}.
+\end{equation}
+As our distance $d$ code is guaranteed to correct $t=(d-1)/2$ faults, assuming it is fault tolerant.
+Therefore we need at least $t+1$ noise processes to create a logical error.
+We Should expect the asymptotic behavior for physical noise rates towards zero to behave like
+\begin{equation}
+    \lim_{p_{\text{phy.}}\rightarrow 0} p_{\text{log}} \approx p_{\text{phy.}}^{t+1} = p_{\text{phy.}}^{(d+1)/2}.
+\end{equation}
+Here we discarded terms of higher order in $p_{\text{phy.}}$ as they are suppressed by the asymptotic limit.
+
+% TODO this subsection
+\subsubsection{Finite-Size Scaling Analysis}
+
+
+% those as well
+\subsection{Error Models}\label{ssec:error_models}
+
+The threshold of the QEC code depends also on the chosen error model.
+In this subsection we will introduce the two different error models uses in this thesis.
+These two error models are standard noise model \cite{mld_decoding_intro_luis}.
+
+\subsubsection{Code Capacity Noise Model}\label{sssec:code_capacity_error_model}
+
+For the code capacity noise model we apply independent errors onto the data qubits after we have encoded the logical qubits.
+As such we implicitly assume that all gates in the encoding, syndrome extraction and associated ancilla qubits and measurements are faultless.
+This is the simplest noise model \cite{mld_decoding_intro_luis}. 
+
+This model can be realized by applying a depolarizing, bit-flip or phase-flip noise channels. 
+
+% Show circuit diagram?
+% or equations?
+
+
+\subsubsection{Circuit Level Noise Model}\label{sssec:circuit_level_noise}
+
+The other noise model we will use is the so called circuit level noise model.
+This is designed to be more realistic, as we model all gates and measurements to be faulty.
+In general one assigns errors to every operation which include state preparation, single- and two-qubits gates, idle location and measurements.
+This means that our whole decoding process is faulty as well, as we will see and discuss later.
+Only fault tolerant QEC codes show distance preserving properties under this error model.
+
+Note here that these errors propagate through the circuit, as discussed in section \ref{ssec:cnot_gate}, during the QEC cycle, which leads to correlated errors being spread over multiple qubits and having influence on multiple syndromes. 
+
+% show noise model as circuit or equations?
+% make note about residual error check
+
 

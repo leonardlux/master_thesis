@@ -6,24 +6,35 @@
         + and describe all the parts in detail
 
 2. example and discussion of discretization of errors (not yet done)
+    + should i discuss this?
 
 3. include example of noise and describe it as stochastic! (show channel!!)
 
-4. ML decoding and phase change explain connection (include threshold theorem somehow)
+4. discuss connection, maybe include this somewhere
+    + logical error rate
+    + correctable errors 
+    + and distance
+    + threshold 
+
+6. noise model
+    + equations and exmaple circuits?
+
+might go into the appendix
+4. describe finite size scaling approach.
+    + and how to bootstrap errors!
+    + also maybe at a later point?!
 
 # new stuff
-write chapters on:
-1. Threshold Theorem & logical error rate
-    + move this toward the subsection discussing the distance?!
-2. Fault tolerance
-3. Error model, Error setting
-    + code capacity 
-    + circuit level
-    + phenomenological
+
+5. Correction and Pauli Frame Tracking
+
 4. Syndrome extraction 
     + Basic 
     + Steane Type syndrome extraction
-5. Correction and Pauli Frame Tracking
+
+
+Morgen: 
+kontrolle und verbesserung (?!)
 
 
 
