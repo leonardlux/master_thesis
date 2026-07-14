@@ -127,7 +127,7 @@ For the one qubit Pauli group all non trivial pairings anticommute, we will use 
 \begin{equation}
     \{X,Z\} = \{X,Y\} = \{Z,Y\} = 0.
 \end{equation} 
-Elements of the $n$ qubit Pauli group $\mathcal{P}_n$ can also non trivially commute if they have an even number of anticommuting elements. 
+Elements of the $n$ qubit Pauli group $\mathcal{P}_n$ can also non trivially commute if they have an even number of anticommute elements. 
 
 Each Pauli operator splits the Hilbert space in half, with each half either being associated with the eigenvalue $+1$ or $-1$.
 A fact that we use to define the codespace.
@@ -161,7 +161,7 @@ the same holds for possible quantum errors.
 As such there are an infinite number of possible errors that can occur.
 We will use the term quantum error, quantum noise, error operator or error interchangeable. 
 
-% I need to discuss this! Unsure if this is valid discribtion 
+% I need to discuss this! Unsure if this is valid description 
 As it was shown by Knill and Laflamme \cite{knill_laflamme}, it is sufficient to correct a finite set of errors, namely the Pauli group $\mathcal{P}_n$,
 to correct any error, if we assume that the interaction operator acts independently on each qubit.  % is not really independent
 Which means that we can we express the error process as a tensor product of single system interactions.
@@ -203,7 +203,7 @@ It must be an Abelian subgroup of the $n$-qubit Pauli group $\mathcal{P}_n$ and 
 
 Many of the following definitions will be formulated by only taking a set of $m$ linear independent generators of the stabilizer group, which we will label as $S_i$, such that the stabilizer group can be written as $\langle S_1, S_2, ..., S_m\rangle= \mathcal{S}$.
 To shorten the notation even further we will refer to the set of linear independent generators of the stabilizer group by $\mathcal{S}_G$.
-% Should I remove this, to much defintions and there is only little benefit.
+% Should I remove this, to much definitions and there is only little benefit.
 We will also refer to the linear independent generators of the stabilizer group by generators to shorten the following text.
 
 
@@ -951,6 +951,7 @@ These two error models are standard noise model \cite{mld_decoding_intro_luis}.
 \subsubsection{Code Capacity Noise Model}\label{sssec:code_capacity_error_model}
 
 For the code capacity noise model we apply independent errors onto the data qubits after we have encoded the logical qubits.
+There are no other locations in the circuits where errors occur.
 As such we implicitly assume that all gates in the encoding, syndrome extraction and associated ancilla qubits and measurements are faultless.
 This is the simplest noise model \cite{mld_decoding_intro_luis}. 
 
@@ -964,13 +965,187 @@ This model can be realized by applying a depolarizing, bit-flip or phase-flip no
 
 The other noise model we will use is the so called circuit level noise model.
 This is designed to be more realistic, as we model all gates and measurements to be faulty.
-In general one assigns errors to every operation which include state preparation, single- and two-qubits gates, idle location and measurements.
+Here we assume for simplicity that each elementary gate and measurement can fail independently, each with the error probability $p$. 
+
+In general one assigns errors to every operation which include state preparation, single- and two-qubits gates and measurements\footnote{
+It is also common to include idling errors, errors on qubits not acted on.
+But due to the construction of our circuit we decided against using those.
+}.
 This means that our whole decoding process is faulty as well, as we will see and discuss later.
+
 Only fault tolerant QEC codes show distance preserving properties under this error model.
 
 Note here that these errors propagate through the circuit, as discussed in section \ref{ssec:cnot_gate}, during the QEC cycle, which leads to correlated errors being spread over multiple qubits and having influence on multiple syndromes. 
 
 % show noise model as circuit or equations?
 % make note about residual error check
+
+
+\subsection{Syndrome Extraction}\label{ssec:syndrome_extraction}
+% ToDo add reference to syndrome part to this chapter
+So far we defined the syndrome as the eigenvalues of the generators of the stabilizer group.
+We also discovered that they are the essential input to the decoding problem and therefore essential to the whole QEC process.
+Therefore we need to be able to determine the syndrome by measuring the generators of the stabilizer group without destroying the logical state or changing it, or at least without introducing a non-recoverable residual error.
+For this task we need additional qubits, so called ancillas and we need to couple those to the data qubits, which store our encoded state. 
+
+For a fault tolerant QEC code we need to be able to measure the eigenvalues of the generators without introducing too much errors, such that the residual error is still correctable.
+Moreover we need to discuss what happens to the syndrome under the influence of errors during the syndrome extraction process and how they can change the syndrome and therefore impact the decoding problem. 
+
+% Motivate Steane type error correction a bit more.
+We will start by introducing the basic approach to measure the eigenvalue of any Pauli operator and how we can use this to determine the syndrome for the surface code in section \ref{sssec:standard_syndrome_extraction_circuit}.
+Following this we will discuss so called Steane Type Error Correction \cite{steane_type_EC_og_paper}.
+
+
+\subsubsection{Standard Surface Code Syndrome Extraction Circuit}\label{sssec:standard_syndrome_extraction_circuit}
+
+\begin{figure}
+    \centering 
+    \begin{quantikz}
+        \lstick{$q_1$} & & \gate{P_1} & & & & & \\
+        \lstick{$q_2$} & & & \gate{P_2} & & & & \\
+        \lstick{$q_3$} & & & & \gate{P_3} & & & \\
+        \lstick{$q_4$} & & & & & \gate{P_4} & & \\
+        \lstick{$\ket{0}$} & \gate{H} & \ctrl{-4} & \ctrl{-3} & \ctrl{-2} & \ctrl{-1} & \gate{H} & \meter{Z}
+    \end{quantikz}
+    \caption{Quantum circuit to measure the eigenvalue of an arbitrary Pauli $P = P_1 \otimes P_2 \otimes P_3 \otimes P_4$, using one extra ancilla qubit.}
+    % Should I make a point about the phase being \pm 1 and not complex?
+    \label{circ:arb_pauli_measure_eigenvalues}
+\end{figure}
+
+
+We can measure the eigenvalue of an arbitrary Pauli operator $P = P_1 \otimes P_2 \otimes P_3 \otimes P_4$, supported on 4 qubits, using one ancilla qubit, as shown in \ref{circ:arb_pauli_measure_eigenvalues} \cite{gottesmann_book}.
+
+As already introduced in section \ref{sec:kitaev_surface_code}, the generators of the surface code can be chosen to take the form of plaquette and site stabilizer.
+To measure the eigenvalues of each generator we can place each needed ancilla in the middle of each stabilizer, on the sites of the lattice for $X$-type site stabilizer and in the plaquettes for $Z$-type plaquette stabilizers, as shown in figure \ref{fig:surface_code_explaination}.
+The advantage of placing the ancilla qubits in those positions is that we only need next-neighbor interaction to realize the syndrome extraction circuit. 
+We can then realize both types of stabilizer generators using the construction for general Paulis shown in figure \ref{circ:arb_pauli_measure_eigenvalues}, which can be simplified to the circuits shown in \ref{circ:standard_syndrome_X_stabilizer} and \ref{circ:standard_syndrome_Z_stabilizer} \cite{topological_quantum_memory}.
+
+% TODO: Adapt order to have fastest possible order?!
+% And to minipages
+% Z-stabilizer
+\begin{figure}
+    \centering 
+    \begin{quantikz}
+        \lstick{$q_1$} & \ctrl{4} & & & &  \\
+        \lstick{$q_2$} & & \ctrl{3} & & &  \\
+        \lstick{$q_3$} & & & \ctrl{2} & &  \\
+        \lstick{$q_4$} & & & & \ctrl{1} &  \\
+        \lstick{$\ket{0}$} & \targ{} & \targ{} & \targ{} & \targ{-1} & \meter{Z}
+    \end{quantikz}
+    \caption{Quantum circuit to measure the eigenvalue of a $Z$-type plaquette stabilizer $S_Z = Z_1 \otimes Z_2 \otimes Z_3 \otimes Z_4$, using an ancilla qubit.}
+    % Should I make a point about the phase being \pm 1 and not complex?
+    \label{circ:standard_syndrome_Z_stabilizer}
+\end{figure}
+
+% X-stabilizer
+\begin{figure}
+    \centering 
+    \begin{quantikz}
+        \lstick{$q_1$} & \targ{} & & & & \\
+        \lstick{$q_2$} & & \targ{} & & & \\
+        \lstick{$q_3$} & & & \targ{} & & \\
+        \lstick{$q_4$} & & & & \targ{} & \\
+        \lstick{$\ket{+}$}  & \ctrl{-4} & \ctrl{-3} & \ctrl{-2} & \ctrl{-1} & \meter{X} 
+    \end{quantikz}
+    \caption{Quantum circuit to measure the eigenvalue of a $X$-type site stabilizer $S_X = X_1 \otimes X_2 \otimes X_3 \otimes X_4$, using an ancilla qubit. Here we absorbed the Hadamard gates into the initial state and into the measurement, changing those.}
+    % Should I make a point about the phase being \pm 1 and not complex?
+    \label{circ:standard_syndrome_X_stabilizer}
+\end{figure}
+
+Given those circuits we can discuss how all possible errors of a circuit level noise model propagate through the circuit and how they influence the result.
+Therefore we can determine if our circuit is fault tolerant.
+Comparing both circuits we can identify a symmetry between the $X$-type and $Z$-type extraction, as they have the form circuit only differing by a change of basis.
+As such and because we can express $Y=iXZ$, we can discuss the elemental error process in one of those circuit and it applies to both.
+Therefore we limit our view onto $Z$-type plaquette stabilizers extraction circuit. 
+We can then apply the results to the $X$-type site stabilizer extraction circuit by relabeling $X$-type errors to $Z$-type errors and vice versa.
+
+Starting with incoming errors, which are the errors already present on the data qubit before we start our syndrome extraction circuit.
+These would be the only errors for a code capacity error model and the circuit is by definition built to detect those.
+Given that we look at the circuit which extract the plaquette stabilizer syndromes, the incoming $X$-type errors are propagated to the ancilla qubits, while $Z$-type errors commute with the control side of the CNOT gate.
+As a result we can detect each of those errors individual and the circuit behaves as expected.
+
+Looking at possible errors on the initialization of the ancilla qubit, we can determine that a possible $Z$-error would be propagated onto each data qubit and therefore realize the stabilizer we want to measure.
+Due to stabilizer equivalence we can ignore this error.
+A possible $X$-type error would not be propagated onto the data qubits, but it would change the result of the measurement, and is therefore in principle a measurement error.
+We will discuss the influence of measurement errors at the end.
+
+The next possible fault location in a circuit level noise model are after each CNOT gate.
+Here each possible $X$-type error on the ancilla qubit is in principle a measurement error.
+For $Z$-type errors only those that can propagate onto data qubits are relevant.
+$Z$-type errors after the last CNOT can be neglected, as they do neither propagate to the data qubits nor affect the measurement outcome.
+Errors after the first and third CNOT are equivalent, up to a stabilizer, to a weight one error $Z$-error on the data qubits and therefore do not reduce the distance.
+Here we used stabilizer equivalence 
+\begin{equation}
+    I \otimes Z_2 \otimes Z_3 \times Z_4 = Z_1 \cdot S_Z,
+\end{equation} 
+to rewrite a weight-three error as an equivalent weight-one error and a stabilizer. 
+In contrast, a $Z$-type error after the second CNOT gate will propagate through the following two CNOT gates and will produce a correlated weight-2 error on the data qubits.
+Such an error is called a hook error \cite{topological_quantum_memory}.
+By choosing the CNOT ordering such that the resulting hook errors do not align with the logical operator, we can assure that these correlated errors to not result in a lower weight logical operator.
+It still takes $t + 1$ independent errors events to realize a logical operator, and the distance of our code ist preserved.
+
+Lastly we take a look at the effect of measurement errors.
+A single measurement error leads two to detection events separated in time, a so called time like error. 
+As an example take an circuit without errors on the data qubit only with two measurement error, sharing the type of stabilizer they act on.
+Such two measurement errors are indistinguishable from the syndrome of a chain of data qubits error connecting those to stabilizer.
+If our decoder then assumes that the chain of data qubits is the error that has occurred, the correction would be the same chain again. 
+By applying the correction we would introduce a chain of errors connecting those two stabilizer onto the previous error free stabilizer.
+As such we might have introduced an error of higher weight than two onto our logical error with just two errors.
+This could possibly introduce a logical operator in cases where the data qubits are not free of errors to begin with.
+
+To overcome this problem we need to repeat the syndrome extraction, to construct a syndrome history, which we then can decode.
+Measurement errors then appear as error separated by time instead of by space and we can decode this three dimensional space time matching problem, using the MWPM decoder.
+Note that for a finite time interval measurement errors in the last syndrome extraction step, are never distinguishable from spatial errors \cite{topological_quantum_memory}. 
+A possible solution for this is the overlapping recovery method introduced by Dennis et al. in \cite{topological_quantum_memory}.
+
+% I also need more argumentation here
+We perform $d$ rounds of syndrome extraction to form the syndrome history for a single round of the QEC code.
+As such the time direction has the same dimension as the space directions.
+
+We will use an approximation in this thesis, by giving the decoder access to a final noiseless syndrome extraction circuit.
+This in combination with a noiseless syndrome to start with, gives the decoder all necessary resources to be able to distinguish time like errors from space like errors.
+Note that this is an strong assumption leading to a better performing code, but we can use this as an upper bound for the possible performance capabilities of this standard syndrome extraction circuit. 
+ 
+We can summarize the resources needed for each QEC cycle, in which we perform $d$ rounds of syndrome extraction. 
+For this we count the number of ancilla qubits $n_{\text{ancilla}}$ required, note that we assume here that we can reset and measure them fast enough to reuse them for each of the $d$ rounds of syndrome extraction.
+If this is not the case the number of required qubits is $n_{\text{ancilla}}'= d \cdot n_{\text{ancilla}}$. 
+Then we are interested in the number of measurements performed $n_{\text{meas.}}$, the time steps required $n_{\text{time}}$, assuming we can perform CNOTs on a disjoint set of qubits in parallel.
+And lastly the number of CNOT gates required $n_{\text{CNOT}}$.
+The results are
+\begin{align}
+    n_{\text{ancilla}} &= m = 2d^2 -2d \\
+    n_{\text{meas.}} &=  m \cdot d = 2d^3 -2d^2 \\
+    n_{\text{time}} &= 4 d \\
+    n_{\text{CNOT}} &= (4m - 4(d-1)) \cdot d = 8d^3 - 4 d^2 -4d \\
+\end{align}
+,where $m$ is the number of generators of the stabilizer group and $d$ is the distance of the code. 
+
+hello ...
+
+\subsubsection{Stean Type Error Correction}\label{sssec:steane_type_error_correction_intro}
+
+% syndrome extraction using two fully encoded logical qubits in the same code 
+% possible with all CSS codes => transversal logical CNOT gate
+
+% basics: log CNOT acts trivially vs individual cnots propagate errors => can measure syndrome on ancilla on ancilly log qubit by transversally measuring all qubits => reconstruct syndromes from measurements 
+% need encoded and verfied qubits as ressource (we assume that we have this as a ressouce)
+% note that we need to be sure of the syndrome of this provided qubit
+% error propagate up from the ancilla onto the logical qubit
+% measurement error can be reinterpreted as bitflip errors on a single qubit -> single p fault does not lead to problem as in the other version -> no repetition needed 
+% in principle exchange spatial requirement for timial requirement
+
+% two half-cycles Z and X
+% same version works for other version
+% order has some influence 
+%   -> first corrected => occurs more ofter in residual error
+%   -> first corrected => less circuit level error occur before => might be able to recover from hihger incomming errors
+% => order can be smartly chosen
+
+% time requirement on data qubits 2 cnots vs other :> way faster (constant in distance) assuming parrales execution of two qubit gates on distinct set of qubits possible (name possible implementation, frederike paper)
+% 2n cnots + 2 whole encoding circuits + more than next neighbour interaction
+% reduces problem to state synthesis, as claimed by steane
+
+% note to not mix up with steane code, which is an encoding, which works with Steane Type error correction, as it is a CSS code
+
 
 
