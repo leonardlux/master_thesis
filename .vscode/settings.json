@@ -1,8 +1,13 @@
 {
     "cSpell.words": [
         "Abelian",
+        "anticommutator",
+        "CNOT",
         "eigenstates",
         "Gottesmann",
-        "qubits"
+        "qubits",
+        "qudits",
+        "Shor",
+        "Wavefunction"
     ]
 }

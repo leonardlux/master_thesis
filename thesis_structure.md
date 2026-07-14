@@ -1,6 +1,7 @@
 # ToDo:
 
 # stuff to add
+
 1. General definition of a QEC code
     + encoding and recovery
         + and describe all the parts in detail
@@ -11,30 +12,30 @@
 3. include example of noise and describe it as stochastic! (show channel!!)
 
 4. discuss connection, maybe include this somewhere
-    + logical error rate
+    + logical error rate <- how does each of the following influences this?!
     + correctable errors 
     + and distance
     + threshold 
 
 6. noise model
     + equations and exmaple circuits?
+    + go into more detail behind the assumption of $t$ weight errors -> and why we can call them t weight errros
+
+7. code capcatiy model, as a quantum state transportation case and only noise while transporting
+
+# new stuff
+
+4. Syndrome extraction 
+    + Basic 
+    + Steane Type syndrome extraction
+
+5. Correction and Pauli Frame Tracking
 
 might go into the appendix
 4. describe finite size scaling approach.
     + and how to bootstrap errors!
     + also maybe at a later point?!
 
-# new stuff
-
-5. Correction and Pauli Frame Tracking
-
-4. Syndrome extraction 
-    + Basic 
-    + Steane Type syndrome extraction
-
-
-Morgen: 
-kontrolle und verbesserung (?!)
 
 
 
