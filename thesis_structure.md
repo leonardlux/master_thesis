@@ -23,20 +23,52 @@
 
 7. code capcatiy model, as a quantum state transportation case and only noise while transporting
 
+8. computation relation between different error syndromes if both errors are applied consecutive
+
 # new stuff
-
-4. Syndrome extraction 
-    + Basic 
-    + Steane Type syndrome extraction
-
-5. Correction and Pauli Frame Tracking
 
 might go into the appendix
 4. describe finite size scaling approach.
     + and how to bootstrap errors!
     + also maybe at a later point?!
 
+4. Syndrome extraction 
+    + add circuit for steane type error correection
 
+0. add principle of fault tolerant check and independency of qec cycles
+
+
+
+not used anymore:
+% @inproceedings{grover_search_algo,
+%     author = {Grover, Lov K.},
+%     title = {A fast quantum mechanical algorithm for database search},
+%     year = {1996},
+%     isbn = {0897917855},
+%     publisher = {Association for Computing Machinery},
+%     address = {New York, NY, USA},
+%     url = {https://doi.org/10.1145/237814.237866},
+%     doi = {10.1145/237814.237866},
+%     booktitle = {Proceedings of the Twenty-Eighth Annual ACM Symposium on Theory of Computing},
+%     pages = {212–219},
+%     numpages = {8},
+%     location = {Philadelphia, Pennsylvania, USA},
+%     series = {STOC '96}
+%     }
+
+% % Chemistry molecule algo      
+% @article{chemistry_example_algo,
+% author = {Alán Aspuru-Guzik  and Anthony D. Dutoi  and Peter J. Love  and Martin Head-Gordon },
+% title = {Simulated Quantum Computation of Molecular Energies},
+% journal = {Science},
+% volume = {309},
+% number = {5741},
+% pages = {1704-1707},
+% year = {2005},
+% doi = {10.1126/science.1113479},
+% URL = {https://www.science.org/doi/abs/10.1126/science.1113479},
+% eprint = {https://www.science.org/doi/pdf/10.1126/science.1113479},
+% abstract = {The calculation time for the energy of atoms and molecules scales exponentially with system size on a classical computer but polynomially using quantum algorithms. We demonstrate that such algorithms can be applied to problems of chemical interest using modest numbers of quantum bits. Calculations of the water and lithium hydride molecular ground-state energies have been carried out on a quantum computer simulator using a recursive phase-estimation algorithm. The recursive algorithm reduces the number of quantum bits required for the readout register from about 20 to 4. Mappings of the molecular wave function to the quantum bits are described. An adiabatic method for the preparation of a good approximate ground-state wave function is described and demonstrated for a stretched hydrogen molecule. The number of quantum bits required scales linearly with the number of basis functions, and the number of gates required grows polynomially with the number of quantum bits.}}
 
 
 # Master Thesis Structure
