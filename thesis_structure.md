@@ -25,6 +25,18 @@
 
 8. computation relation between different error syndromes if both errors are applied consecutive
 
+# feedback not implemented yet
+
+0. rework the chapter titles 
+1. QEC cycle as numbered enviorment 
+2. cosets of centralizer image, do it with the structure before ? at least discuss
+3. What to say about nkd codes?
+4. cosets of stabilizer group and logical cosets -> make those point clearer earlier -> discuss at some point with maarten
+5. states and quotient elements is the similiar as the logical operations and implementation of such operators  (not 1-to-1) 
+6. computation relation between different error syndromes, two errors happening in the same detection circuit
+7. add results to the abstract
+8. use \emph{}
+
 # new stuff
 
 might go into the appendix

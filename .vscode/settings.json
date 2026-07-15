@@ -4,13 +4,19 @@
         "anticommutation",
         "anticommutator",
         "CNOT",
+        "commutant",
         "eigenspace",
         "eigenstates",
         "Gottesmann",
+        "graphlike",
+        "MWPM",
         "Paulis",
+        "plaquette",
         "qubits",
         "qudits",
         "Shor",
+        "toric",
+        "unrotated",
         "Wavefunction"
     ]
 }
