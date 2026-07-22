@@ -1,0 +1,137 @@
+
+
+\chapter{Thresholds}\label{ssec:threshold_theorem}
+
+The cornerstone of QEC codes and their usefulness is based on the threshold theorem. 
+It states that, even under the assumption that all components are noisy,
+we can still arbitrary reduce the logical error rate $p_{log}$ of the encoded qubit, 
+given that the error rates of the noisy components $p_{phy}$ is below a certain threshold $p_{th}$ if we use a fault tolerant QEC code \cite{gottesmann_book,topological_quantum_memory}.
+In short, if the error rate is below this threshold the QEC code can suppress errors faster than they occur.
+
+We can reduce the logical error rate for a fixed physical noise rate by increasing the distance $d$ of the code if the fixed physical noise rate is below the threshold.
+The overhead in the number of qubits has been shown to be polynomial for the surface code \cite{topological_quantum_memory}.
+Note that, while below the threshold each additional qubit reduces the logical error probability, above the threshold the logical probability rises with increased code distance.
+
+Based on this theorem we do not need to realize perfect qubits in an experiment to enable arbitrarily long quantum computations.
+Instead we can use QEC codes to suppress the logical error rates to levels, where long quantum computations become feasible.  
+This makes quantum computational possible, as we do not need to create perfect qubits, just decent enough qubits to enable quantum computing, if we utilize QEC codes.
+
+The threshold is a key characteristic of a QEC setup.
+It describes the physical noise rate at which scaling up the QEC setup becomes advantageous.
+Codes with higher threshold can be used with less optimal qubits and might therefore be advantageous.
+% We will determine the threshold for the surface code with different choices of error model, syndrome extraction circuit and decoder in this thesis.
+% \textcolor{red}{Put ref to result here}.
+
+There are different possible approaches to determine the threshold of a QEC setup.
+It can be determined through a mapping to statistical physics models for some QEC setup, including the surface code under code capacity noise\footnote{Note that under code capacity noise the syndrome extraction circuit is neglectable.}.
+For those models, we can identify a phase transition between an ordered and unordered phase at the threshold \cite{fundamental_thresholds,topological_quantum_memory}.
+
+In this thesis we will use a numerical approach to determine the threshold for different configurations as described in the following section.
+
+\section{Numerical Determination of Thresholds}
+
+To numerical determine the threshold we first simulate the quantum memory experiment.
+In this thesis we keep the encoding (see section \ref{sec:kitaev_surface_code}) constant 
+and vary the choice of error model (section \ref{ssec:error_models}), syndrome extraction circuit (section \ref{ssec:syndrome_extraction}), decoder (section \ref{sec:decoding_problem_general}) and the logical observable.
+For each of those QEC configuration we calculate the logical error rate $p_{log}$ for different physical error rates $p_{phy}$ and code distances $d$.
+
+We calculate the logical error rate $p_{log,d}(p_{phy})$ by simulating the quantum circuit.
+The simulation start with the data qubit in a known state dependent on the observable we want to measure.
+If we want to measure the logical $\bar{Z}$ ($\bar{X}$) observable we encode the data qubit at the start of our experiment in the logical encoded $\ket{0}_L$  ($\ket{+}_L$) state.
+We then simulate the circuit with the given error model and syndrome extraction circuit to generate measurement results for the logical observable and syndromes, using the quantum simulator \texttt{stim} \cite{stim}.
+In the last step we use the choosen decoder, to decode the syndrome returning a prediction for the occurred error.
+Utilizing pauli frame tracking (see section \ref{sec:pauli_frame_tracking}) we can compare the predicted measurement with the result of the simulation. 
+We count the number of times the prediction disagrees with the simulation result $n_{errors}$ to calculate the logical error rate for a given number of shots $n_{shots}$ 
+\begin{equation}
+    p_{log} = n_{errors}/n_{shots}.
+\end{equation}
+The uncertainty on the logical error rate $\delta_{p_{log}}$ is then
+\begin{equation}
+    \delta_{p_{log}} = \sqrt{\frac{p_{log}(1-p_{log})}{n_{shots}}}.
+\end{equation}
+
+Note that in this approach we only detect $X$-type or $Z$-type logical errors, dependent on the choice of logical observable, $\bar{Z}$ or $\bar{X}$ respectively.
+We therefore also only decode for one of those error types at a time and can only predict the logical error rate for one of those errors.
+This is due to our choice of initial state.
+We can not detect if an logical $X$-type ($Z$-type) error occurred if we use a $\ket{+}_L$ ($\ket{0}_L$) state, given that those error operators are eigenstate of those logical operators.
+\textcolor{green}{Is this following line useful? it is interesting to know that it is possible, but once again i did not do that.}
+One could realize a simulation detecting both type of errors at the same time using a reference system to create an initial pure state, as used in \cite{quantum_data_processing,fundamental_thresholds} and referred to as coherent information setup.
+
+
+An example of how the logical error curves $p_{log,d}(p_{phy})$ look like can be seen in figure \ref{}.
+\textcolor{red}{Include graphic here? (or should i refer to result part)}
+
+For the asymptotic behavior of the logical error rate, for small physical noise rates, we can state the following:
+The fault tolerant distance $d$ code is guaranteed to correct $t=(d-1)/2$ independent faults, each with a noise rate proportional to the physical noise rate $p_{phy}$.
+Therefore we require $t+1$ fault to cause a logical error, resulting in a logical error rate which scales in leading order as 
+\begin{equation}
+    \lim_{p_{phy} \rightarrow 0} p_{log} \propto  p_{phy}^{(t+1)}= p_{phy}^{((d+1)/2)}.
+\end{equation}
+
+% Necessary lines?
+Above the threshold $p_{phy}>p_{th}$ each increase in the code distance $d$ leads to an increased logical noise rate $p_{log}$.
+Below the threshold $p_{phy}<p_{th}$ the threshold theorem predicts that with increased code distances the logical error rate is increasingly suppressed.
+At the threshold the logical error rate curves for different distances cross.
+
+The threshold correspond to the critical value in the physical noise rate of the first-order phase transition, as shown in \cite{fundamental_thresholds}.
+Therefore we can use methods from finite-size scaling analysis to identify the value of the threshold. 
+
+\subsection{Data Collapse Method}
+
+We use the \emph{Data Collapse Method} (DCM) to determine the threshold, utilizing the logical error rate curves $p_{log,d}(p_{phy})$ for different code distances $d$ that we simulated \cite{pyfssa}.
+
+We can identify the system size of our problem as the code distance $d$.
+The system, which is parameterized by the physical error rate $p_{phy}$, undergoes a phase transition at the critical noise rate corresponding to the threshold $p_{th}$.
+For our case the order parameter is the logical error rate $p_{log}$. 
+Utilizing the fact that the phase transition is a phase transition of first order, we can adapt the DCM to 
+\begin{equation}
+    p_{log,d}(p_{phy}) = f\left( d^{1/\nu} \cdot(p_{phy}-p_{th})\right),
+    \label{eq:data_collapse_method}
+\end{equation}
+where $f(x)$ is the dimensionless scaling function for finite sizes and $\nu$ is the critical exponent, associated with the phase transition \cite{pyfssa}. 
+
+Following equation \ref{eq:data_collapse_method}, plotting $y=p_{log,d}(p_{phy})$ against $x=d^{1/\nu} \cdot(p_{phy}-p_{th})$ should collapse the simulated data onto one curve, corresponding to the scaling function $f(x)$, 
+under the assumption that we use the correct threshold $p_{th}$ and critical exponent $\nu$.
+
+We can turn this relation around and determine the values of threshold $p_{th}$ and the critical exponent $\nu$, using that all data points should collapse under the correct choice of those values.
+To realize this approach, we first estimate values for the critical exponent $\tilde{\nu}$ and threshold $\tilde{p}_th$.
+We then use those estimates to calculate the values we want to plot against one another, which we will refer to by $x$ and $y$, using 
+\begin{align}
+    x&=d^{1/\tilde{\nu}} \cdot(p_{phy}-\tilde{p}_{th}) 
+    \label{eq:data_collapse_x}
+    \\
+    y&=p_{log,d}(p_{phy})
+\end{align}
+We sort those data points by their $x$-values and index them as $x_i$ and $y_i$. 
+We calculate a weighted difference $\Delta y_i$ between the data points and its expect value $\bar{y}_i$, which is given by linear interpolation of its neighboring data points (eq. \ref{eq:dcm_bar_y}).
+We use the uncertainty on the logical error rate $\delta_{p_{log}}=\delta_y$ to compute a weighted difference between each data point $y_i$ and its expected value $\bar{y}_i$ (eq. \ref{eq:dcm_error_propagation}\& eq. \ref{eq:dcm_weighted_difference}). 
+\begin{align}
+\bar{y} &= \frac{(x_{i+1} - x_i)\,y_{i-1} - (x_{i-1} - x_i)\,y_{i+1}}{x_{i+1} - x_{i-1}} \label{eq:dcm_bar_y}\\
+\delta_{\Delta y_i}^2 &= \delta_{y_i}^2 + \left(\frac{\delta_{y_{i-1}} (x_{i+1} - x_i)}{x_{i+1} - x_{i-1}}\right)^2 + \left(\frac{\delta_{y_{i+1}}(x_{i-1} - x_i)}{x_{i+1} - x_{i-1}}\right)^2 \label{eq:dcm_error_propagation} \\
+\Delta y_i&= \frac{(y_i - \bar{y}_i)^2}{\delta_{\Delta y_{i}}^2} \label{eq:dcm_weighted_difference}
+\end{align}
+By minimizing the weighted difference $\Delta y_i$ all data points should fall onto a curve.
+
+We can task the optimizer to find the minimal value for the mean of all weighted differences $\Delta y_i$, by optimizing the threshold $p_{th}$ and critical exponent $\nu$.
+The optimizer we utilize is \texttt{scipy.optimize.minimize} from the \texttt{scipy} package \cite{Scipy}.
+The decoder repeats the steps described above, recalculating the equations with new estimates of the threshold and critical exponent, until it minimizes the values within the given tolerance\footnote{As technical detail we will use the Nelder-Mead method with a tolerance of $10^{-5}$ \cite{Scipy}.}.
+It then returns the values for the threshold $p_{th}$ and the critical exponent $\nu$, which have the minimal mean weighted difference between data points and their interpolation. 
+We can then use those values to see how well such an optimization process, collapsed the data onto a curve, as shown in figure \ref{}.
+\textcolor{red}{Put figure here!}
+
+To calculate an estimated error for the threshold we use bootstrapping:
+We randomly resample each determined logical error rate selecting randomly a logical error rate from its normal distribution, defined by the logical error rate $p_{log}$ and its associated uncertainty$\delta_{p_{log}}$.
+Following this we redo the whole optimization process with this resampled logical error rate as input.
+This process is repeated multiple times, obtaining a distribution of thresholds.
+Lastly we identify the width of the central $95\%$ of this threshold distribution, as the two times the estimated error of the determined threshold.
+\textcolor{green}{Should I go into more detail/resemble the line above as an equation? or should i show such an image?}
+Using this method we can quantify how the uncertainty of the logical error rates propagated onto the threshold we determine for of the QEC code setup. 
+
+The code used to implement the DCM and for bootstrap the uncertainty was adapted from code kindly provided by my one of my supervisors, Luis Colmenarez.
+
+With the above described approach, we can determine the threshold $p_{th}$ and an associated error, given the logical error rate $p_{log,d}(p_{phy})$ for different code distances $d$.
+\textcolor{red}{Maybe go into more detail, either derive the dcm method from the finite scaling ansatz or show how the data points are weighted}
+
+
+
+

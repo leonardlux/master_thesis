@@ -25,6 +25,12 @@
 
 8. computation relation between different error syndromes if both errors are applied consecutive
 
+9. fssa include images as examples
+9.1 redo all calculations and half the error -> bootstrap interval of 95% is two times the standard deviation!
+
+10. find paper about bootstrapping
+10.1 include image and extend calculations explaining this process
+
 # feedback not implemented yet
 
 0. rework the chapter titles 
@@ -38,11 +44,6 @@
 8. use \emph{}
 
 # new stuff
-
-might go into the appendix
-4. describe finite size scaling approach.
-    + and how to bootstrap errors!
-    + also maybe at a later point?!
 
 4. Syndrome extraction 
     + add circuit for steane type error correection

@@ -653,9 +653,10 @@ This will be done in section \textcolor{red}{Put reference here!}.
 
 
 % done until here :Parttttyyyy:!
+
 \section{Decoder}\label{sec:decoding_problem_general}
 
-We refer to the classical algorithms solving the decoding problem as decoders.
+We refer to the classical algorithms solving the decoding problem as \emph{decoders}.
 They try to predict the occurred error, or the logical part of it, based on the observed syndrome. 
 
 % To shortly recap, given the error syndrome we can identify the cosets of the centralizer to which the error belongs.
@@ -667,9 +668,9 @@ They try to predict the occurred error, or the logical part of it, based on the 
 % } about the logical state of the codeword or the logical operator applied. 
 % The decoder therefore needs to use a different approach do predict which logical component might have occurred.
 
-The syndrome only identifies the cosets of the centralizer containing the error. 
-As discussed in the previous section, successful recovery additionally requires to correct prediction of the logical component of the error, which is determined by the coset of the stabilizer group the error belongs to.
-To infer this information we rely on an error model as an additional resource.
+The syndrome is only capable of identifying the coset of the centralizer containing the error. 
+As discussed in the previous section, successful recovery additionally requires the correct prediction of the logical component of the error, which is determined by the coset of the stabilizer group the error belongs to.
+To infer this information we rely on an error model as an additional resource to be utilized in the decoding algorithm.
 
 The error model assigns a probability $\text{Pr}(E)$ to each error operator $E$, which can be used by the decoder to determine which error or set of errors has likely occurred. 
 The error models used in this thesis are introduced in section \ref{ssec:error_models}.
@@ -677,47 +678,51 @@ The error models used in this thesis are introduced in section \ref{ssec:error_m
 We will use two different decoding strategies in this thesis.
 The first is called \emph{Maximum Likelihood Decoding} (MLD). 
 This decoding approach has the highest likelihood of returning a successful recovery.
-It can be summarized, in the context of stabilizer codes, as determining the coset of the stabilizer group, in the coset of the centralizer with the corresponding syndrome, with the highest total probability of occurring.
-As such we need to compare the total probability of each coset, for which we take into account all errors.
-In return we are able to determine the recovery operation with the highest probability of a successful recovery.
+It can be summarized, in the context of stabilizer codes, as determining the coset of the stabilizer group, in the coset of the centralizer with the corresponding syndrome, that has the highest total probability of occurring.
+As such we need to compare the total probability of each coset consistent with the syndrome, for which we need to take into account all errors.
+In return we are able to determine the recovery operation that has the highest likelihood of resulting in a successful recovery for the given error model and syndrome.
 We will go into more detail in the following section \ref{ssec:general_ML_decoder}. 
 
 % For general stabilizer codes, solving the MLD problem has been shown to be a $\# P$-hard \cite{MP_sharp_P_hard}.
 
 The second decoding approach considered in this thesis is called \emph{Minimum Weight Perfect Matching} (MWPM).
-Compared to MLD, it generally achieves a lower probability of successful recovery but can generally be solved more efficiently. 
 MWPM uses structures in the interaction between stabilizers and occurred errors to identify the most likely error event consistent with the observed syndrome.
+Compared to MLD, it generally achieves a lower probability of successful recovery but can generally be solved more efficiently. 
 We will go into more detail in the section \ref{ssec:general_MWMP_decoder}. 
 
-The main difference between MLD and MWPM is that MLD determines the overall most likely recovery by identify the logical error with highest total probability, obtained by summing over all corresponding physical errors. 
-In contrast MWPM identifies the single most likely physical error consistent with the measured syndrome.
+The main difference between MLD and MWPM is that MLD determines the recovery with the overall highest success probability by identify the logical error with highest total probability of occurring, obtained by summing over all corresponding physical errors. 
+In contrast MWPM identifies a single error event which is most likely physical and consistent with the measured syndrome.
 
 The number of possible syndromes scales exponentially with the distance of the code for the surface code\footnote{This will be discussed in detail in section \ref{sec:kitaev_surface_code}.}.
 As such it becomes unfeasible to compute a look up table ahead of time for larger code distances. 
-But under certain conditions\footnote{We will discuss those conditions a bit when we talk about Pauli frame tracking \ref{sec:pauli_frame_tracking}.} we need to be able to correct the errors in real time or close to it \cite{terhal_qec_formalism}.
+Under certain conditions\footnote{We will discuss those conditions a bit when we talk about Pauli frame tracking \ref{sec:pauli_frame_tracking}.} we need to be able to correct the errors in real time or close to it \cite{terhal_qec_formalism}.
 Therefore efficient decoding techniques are relevant to enable real time decoding and correction of occurred errors during QEC cycles. 
+The method in this thesis does not require syndrome to be decoded in time but we still benefit from the reduced computational time. 
 
 
 \subsection{Maximum Likelihood Decoding}\label{ssec:general_ML_decoder}
 
 In this section we will formalize the \emph{Maximum Likelihood Decoding} (MLD) strategy for stabilizer codes \cite{mld_decoding_intro_luis}.
-The MLD problem consists of identify the logical coset\footnote{We can and will once again disregard overall phase of this logical operator.} of the stabilizer group $\bar{L}_MLD\mathcal{S}$, in the centralizer with the corresponding syndrome, with the highest total probability of occurring, for the given error model.
+The MLD problem consists of identify the coset, identified by the logical component $\bar{L}_{MLD}$, of the stabilizer group, 
+in the centralizer with the corresponding syndrome $\sigma$, with the highest total probability of occurring, for the given error model.
 We can formalize this as
 \begin{equation}
     \bar{L}_{\text{MLD};\sigma} = \arg \max_{\bar{L} \in  {\bar{\mathcal{P}}}} \text{Pr}(E_\sigma \bar{L} \mathcal{S}), 
 \end{equation}
 where $\bar{L}_{\text{MLD}}$ is the prediction for the logical component of the error and
 $\text{Pr}(E_\sigma \bar{L}\mathcal{S})$ is the total probability of the cosets of the stabilizer group $\mathcal{S}$. 
-The representative error $E_\sigma$ fixes the syndrome the measured syndrome. 
-We then maximize over the logical components $\bar{L} \in {\bar{\mathcal{P}}}$, taking all cosets in the centralizer into account.
+The representative error $E_\sigma$ is based on the measured syndrome. 
+The MLD decoder chooses as the argument the logical component $\bar{L} \in {\bar{\mathcal{P}}}$ with the highest total coset probability, 
+taking all cosets in the centralizer into account by taking all possible logical components into account. 
+Note that we use the phase-normalized set of operators, as the global phase does not influence our recovery.
 
 We can expend this equation in terms of probabilities of individuals Pauli operators as 
 \begin{eqnarray}
     \bar{L}_{\text{MLD};\sigma} = \arg \max_{\bar{L} \in  {\bar{\mathcal{P}}}} \sum_{S \in \mathcal{S}} \text{Pr}(E\bar{L}S). 
 \end{eqnarray}
-The number of operators in this summation grows exponentially with the distance of the codes as the number of stabilizer elements of the stabilizer group grows exponentially\footnote{
+The number of operators in this summation grows exponentially with the distance of the codes as the number of stabilizer elements of the stabilizer group grows exponentially with the distance of the code\footnote{
     This will be shown in the section introducing the surface code (section \ref{sec:kitaev_surface_code}) where we discuss in detail how the number of generators of the stabilizer group scale with code distance. 
-} with the distance of the code.
+}.
 
 Note that by taking all possible operators into account the ML decoder takes the degeneracy of errors into account.
 As such the MLD finds the coset with the highest combined probability of all errors, not only the error with the highest probability.
@@ -733,19 +738,22 @@ Dependent on the specific model and its symmetries, some of those classical diso
 For those we can identify a phase change in the model at the threshold probability, which we will discuss in section \ref{ssec:threshold_theorem}. 
 For some combinations of QEC and error model the MLD problem has been shown to be efficiently solvable \cite{efficient_decoding_algorithm}.
 
+We will go into more detail about this approach and what adaptions we need to make to adjust for the syndrome extraction process in section \ref{}. 
+\textcolor{red}{Put reference here}.
+
 If we can solve the MLD problem exactly, we can calculate the success rate of the MLD $p_{\text{success}}$ exactly, 
 by summing over the probabilities of the most likely cosets 
 \begin{equation}
     p_{\text{success}} = \sum_{\sigma \in \{0,1\}^m} \text{Pr}(\bar{L}_{\text{MLD};\sigma}\mathcal{S}).
 \end{equation}
-We will use such a exactly calculated optimal threshold to test our setup in \textcolor{red}{Put reference here}.
+We will use such a exactly calculated optimal threshold as a reference to which we can compare the results of the code capacity approach\textcolor{red}{Put reference here}.
 
 
 \subsection{Minimum Weight Perfect Matching}\label{ssec:general_MWMP_decoder}
 
-The second decoding strategy is called Minimum Weight Perfect Matching (MWPM)\cite{pymatching,pymatching_loger_paper}.
+The second decoding strategy utilized in this thesis is called \emph{Minimum Weight Perfect Matching} (MWPM)\cite{pymatching,pymatching_loger_paper}.
 We can summarize the goal of MWPM as finding the physical error operator with the highest probability of occurring consistent with the observed syndrome.
-To highlight the downside of this approach as we determine a single operator, we are not taking the degeneracy of possible errors into account or 
+The downside of this approach is that we determine a single error operator, we are not taking the degeneracy of possible errors into account or 
 even the possibility that different logical classes/cosets could have multiple errors with the lowest weight\footnote{
     Note as well that there exist approaches where the degeneracy is also included in such maximum probability decoders \cite{degeneracy_enhanced_mp_decoding}.
 }.
@@ -753,49 +761,52 @@ even the possibility that different logical classes/cosets could have multiple e
 The MWPM decoder is based on mapping the error model with the stabilizers onto a Detector Error Model (DEM) which we then map onto a weighted graph, called the matching graph.
 
 To get from the error model to the DEM, we determine how each error mechanism changes the bits of the syndrome.
-We represent each bit of the syndrome as a detector and if the bit is changed by an error we say that the error triggered the corresponding detector.
-We can then use the connection between physical error mechanism and those detectors, by associating each error mechanism with bit of the syndrome they flip.
-This correspondence to identifying with which generator of the stabilizer group the error mechanism anticommutes.
+We represent each bit of the syndrome as a detector. 
+An error mechanism triggers such an detector if the corresponding bit is changed by the error.
+Mapping which error mechanism triggers which detectors is therefore equivalent to identifying which generator of the stabilizer group anticommutes with which error mechanism.
 The DEM contains the mapping which error mechanism trigger which detectors.
+This mapping will be used to construct the matching graph \cite{pymatching,pymatching_loger_paper}.
 
-
-To keep tack of logical changes we label each error in the DEM with the additional information on how the associated error mechanism commutes with the logical observable.
-For this we first need to fix a certain realization of logical operator, which is done by fixing the set $\bar{\mathcal{P}}$. 
-We then label the each error mechanism that anticommutes with the logical observable.
-This labeling will be used to determine the effect of the determined most probable error on the chosen implementation logical observable. 
-We therefore can predict how the measurement of chosen implementation of the logical observable would change.
-If the final error includes an odd number of anticommutating error mechanisms the most probable error will itself anticommute with the logical operator, changing its value.
-For an even number we do not expect the measurement of the chosen implementation\footnote{
-    Note here that even if for one choice of the logical operator, the measurement does not change. 
-    A different implementation of the same logical operator could anticommute with the predicted error and therefore result in a flipped measurement. 
-} logical operator to change. 
-
-If each error mechanism triggers at most\footnote{For the surface codes errors on the edge only trigger one detector. To obtain an graphlike error model we can introduce a boundary node into our graph \cite{pymatching_loger_paper}.} two detectors, we can refer to the DEM as a graphlike error model.
+If each error mechanism triggers at most two detectors, we can refer to the DEM as a graphlike error model.
 For this to be a valid assumption we might need to decompose the $Y$-type errors into $X$-type errors and $Z$-type errors ($Y = i XZ$), to ensure the graphlike property of our error model.
-We will at this point assume\footnote{This is a valid assumption for the surface code \cite{topological_quantum_memory}.} that we have such an error model.
+We will at this point assume\footnote{This is a valid assumption for the surface code, if we introdcue boundary notes into our graph for errors connecting to the boundary \cite{topological_quantum_memory,pymatching_loger_paper}.} that we have such an error model.
 We then solve the $X$-type and $Y$-type MWPM decoding problems independently.
 
-We can map this graph like error model onto a matching graph by representing each detector as a node and each error mechanism as an edge.
-Each edge represents an\footnote{Or multiple errors if all of them have the same effect.} error $E$ and is weighted $w(E)$ by the probability of the error $\text{Pr}(E)$ with
+We map this graph like error model onto a matching graph by representing the detector as  nodes and error mechanism as edges.
+Each edge represents an\footnote{
+    Or multiple errors if all of them have the same effect. Then we weight the corresponding edge with the combined probability.
+    } error $E$ and is weighted $w(E)$ by the probability of the error $\text{Pr}(E)$ with
 \begin{equation}
     w(E) = \log \left( \frac{1-\text{Pr}(E)}{\text{Pr}(E)}\right).
 \end{equation}
-Each edge connects the nodes, which represent the detectors that the associated error mechanism triggers. 
+Each edge connects the nodes, which represent the detectors that the associated error mechanism triggers \cite{pymatching,pymatching_loger_paper}. 
 
 The MWPM decoder then identifies the most probable error event consistent with the syndrome.
 Finding a error consistent with the syndrome correspondence to finding a set of edges, such that all triggered detectors have an odd number of incident edges and non triggered detectors have an even number of incident matches.
 To choose the most probable of such configurations we need to find the set of edges, that fulfills the above condition with the lowest total weight $\sum_E w(E)$. 
 Note at this point that we are following here the definition of an minimum weight embedded matching, which is a variation of the MWPM problem. 
-It is the basis of PyMatching the MWPM decoder which we are going to use \cite{pymatching_loger_paper}. 
+It is the basis of \texttt{PyMatching}, the implementation of th MWPM decoder which we are going to use \cite{pymatching_loger_paper}. 
+\textcolor{green}{should i name the algorithm (this blossom one) that is used to find the minimum weight machting? or should i say that it can be found in the paper?}
 
-After finding such a set the decoder then returns the prediction if the logical observable commutes or anticommutes with the predicted error, by combining the labels on the predicted edges, as previously described. 
-As such it predicts the change of the logical observable due to the error.
+To keep tack of how the logical operator changes under the predicted error, we label each error in the DEM, respectively each edge in the matching graph, with the additional information on how the associated error mechanism commutes with the logical observable.
+This implements the Pauli frame tracking (see section \ref{sec:pauli_frame_tracking}) approach directly in the decoder. 
+As a basis we need to fix a realization of logical operator, which is measured at the end of the circuit, and therefore which measurement result we want to predict.
+We label each edge whose associated error mechanism anticommutes with the logical observable.
+This labeling will be used to determine the effect of the determined most probable error on the observed logical observable. 
+If the set of edges represent the most likely error includes an odd number of edges labeled to anticommute with the logical operator, we can conclude that the most probable error mechanism represented by those edges anticommutes with the logical observable.
+This anticommutation of the error with the logical observable results in us predicting a flipped observable measurement at the end of the simulation, by the principles of Pauli frame tracking. 
+For an even number we do not expect the measurement of the chosen implementation\footnote{
+    Note here that even if for one choice of the logical operator, the measurement does not change. 
+    A different implementation of the same logical operator could, just differing by a stabilizer, could anticommute with the predicted error and therefore result in a flipped measurement. 
+    This is the reason we need to fix the logical observable used in the beginning, if we want to utilize the Pauli frame tracking approach.
+} logical operator to change. 
+If the prediction agrees with the observed logical measurement at the end of the circuit our prediction was successful, without needing to reconstruct the exact error mechanism.
 
-We could also use the configuration of edges to reconstruct the predicted occurred error.
-But as we are only performing a memory experiment with only Clifford operation we can postpone the decoding to after the circuit is done executing and then reinterpret the results, as discussed in the section \ref{sec:pauli_frame_tracking} discussing Pauli frame tracking. 
-The above explained process already included the commutation of the predicted error with the observed measurement and therefore directly predicts the expected measurement. 
-% I could spent some time here elaborating the true and complete difference and why what is useful but his might make sense to do at a later point.
-% prediction of observable instead of prediction of logical component in the coset
+Note that the mapping between errors and the nodes of the graph is not necessary a $1-to-1$ mapping, as we can map multiple errors with the same effects in the DEM to a single edge with the combined probability. 
+This improves the performance of the MWPM approach, taking a small part of the degeneracy of the errors into account, and simplifies the matching graph, but complicates mapping the set of edges back to a concrete error event. 
+As multiple error events might fit to the set of edges.
+But because all of them have the same effect on the circuit, it is in principle irrelevant which one we would choose to implement, if we would like to implement it as the recovery operation.
+Resulting from this discussion we can see, that using the Pauli frame tracking approach instead of determining the actual predicted error, results in having to do less computations while arriving at the same result for our use case.
 
 \textcolor{green}{I should get rid of the next paragraph, correct @Maarten?}
 The use of the detectors which just represent changes of bits in the syndrome instead of the absolute value of the syndrome, relates to the isomorphism between the codespace and the other orthogonal subspaces of the Hilbert space.
@@ -807,32 +818,31 @@ We will discuss this principle in more detail in section \ref{sec:pauli_frame_tr
 For now lets close this comparison between MWPM and ML decoding by once again pointing out that MWPM find the most probable single error event, while ML finds most likely coset and as such the most likely occurred logical operation.
 
 
-
 % Specific things used
 
+% proof read until here so far
+
 \section{Surface Code}\label{sec:kitaev_surface_code}
-% Maybe move this block to a later point?
+\textcolor{green}{Should I move this block up before the decoder block as part of the QEC code block? then I could make the Decoder block its own chapter}
 
-The specific QEC code from the class of the stabilizer codes we are using is the surface\footnote{We use the unrotated version because an efficient MLD decoder exist for this QEC code \cite{efficient_decoding_algorithm}.} code \cite{kitaev_surface_code,other_surface_code_paper}, which is can be derived from the toric code \cite{kitaev_toric_code}.
-The difference between the toric code and the surface code is the change from periodic boundary conditions of the toric code to open boundaries for the surface code.
-The above papers and the paper by Dennis \cite{topological_quantum_memory} are the references of this chapter.
-
-The surface code is a well established QEC code, that is used due to it advantageous properties.
-One of those advantageous properties is that the surface code can\footnote{We can and will use a syndrome extraction circuit that requires more than NN interaction and therefore this is only partly valid.} be constructed using only next neighbor interactions.
+The specific QEC code from the class of the stabilizer codes we are using is the surface\footnote{
+    We use the unrotated version because an efficient MLD decoder exist for this QEC code \cite{efficient_decoding_algorithm}.
+    } code \cite{kitaev_surface_code,other_surface_code_paper}. 
+The surface code is closely related to the toric code \cite{kitaev_toric_code}.
+The difference between the toric code and the surface code is the change from periodic boundary conditions of the toric code, to open boundaries for the surface code \cite{topological_quantum_memory}.
 
 To visualize the toric code of distance $d$, we arrange $n=d^2 + (d-1)^2$ physical qubits on a $d \times d$ lattice,
 by placing the qubits on the nodes connecting the sites of the lattice.
-Note that for the surface code with open boundary conditions we additionally remove the notes connecting the upper most lattice sites to form a rough boundary.
-The resulting constructing can be seen in figure \ref{fig:surface_code_explaination} a), with the associated indexing we are using for the qubits.
+For the surface code with open boundary conditions we additionally remove the edges connecting top and bottom lattice sites to form two rough boundaries.
+The resulting constructing can be seen in figure \ref{fig:surface_code_explaination} a).
+%, with the associated indexing we are using for the qubits.
 
-As described in section \ref{sec:stabilizer_formalism} to specify a QEC code of the class of stabilizer codes, we define the stabilizer group of the code.
-We can define the stabilizer group of the surface code by fixing a set of generators of the stabilizer group. 
-This set can be split up into site and plaquette stabilizers\footnote{
-    They are generators of the group but we only refer to them as site and plaquette stabilizers.
-}.
+As described in section \ref{sec:stabilizer_formalism}, we can specify a stabilizer code by fixing the set of generators of the stabilizer group.
+For the surface code this set can be split up into site and plaquette stabilizers.
 The site stabilizers are placed on the sites of the lattice and act (nontrivial) on each physical qubit sitting on edges incident to this site with a $X$-type Pauli operator.
 The plaquette stabilizers are places in the middle of each cell and operate with a $Z$-type Pauli operator on each physical qubit sitting on the edges of this cell.
 The placement of both is visualized in figure \ref{fig:surface_code_explaination} b) and c).
+The surface code is part of the class of CSS codes \cite{CSS1,CSS2}, as the stabilizer generators can be split up into two separate groups, plaquette and site stabilizers, each only consisting of either $X$-type or $Z$-type stabilizers.
 
 We can formalize site stabilizers as 
 \begin{equation}
@@ -847,8 +857,9 @@ where $B_i$ are the edges forming the cell of the $i$-th plaquette stabilizer.
 
 Note that the site and plaquette stabilizers in the bulk act on $4$ qubits each, whereas the generators on the edge only act on $3$ qubits each.
 
-We can easily check that all generators commute because site and plaquette stabilizers always overlap on an even number of qubits, either $0$ or $2$. 
-And site and plaquette stabilizers trivially commute with other stabilizers of their type.
+We can easily check that all generators commute, given each site always overlap on an even number of qubits, either $0$ or $2$, with all plaquette stabilizer and vice versa.
+Site and plaquette stabilizers trivially commute with other stabilizers of their type, given that they are either only of $X$- or $Z$-type.
+
 
 We defined $m=2d(d-1)$ linear independent generators.
 Therefore we can encode
@@ -857,7 +868,9 @@ Therefore we can encode
 \end{equation} 
 logical qubit.
 
-The associated logical operators are the logical bit-flip $\bar{Z}$, a string of $Z$-type Paulis connecting\footnote{The need for the logical operators to connect the boundaries can be traced back to the toric code and its non contractable loops.} the rough boundaries (top and bottom),
+The associated logical operators are the logical bit-flip $\bar{Z}$, a string of $Z$-type Paulis connecting\footnote{
+    The need for the logical operators to connect the boundaries can be traced back to the toric code and its non contractable loops.
+    } the rough boundaries (top and bottom),
 and the logical phase-flip $\bar{X}$, a string of $X$-type Paulis connecting the smooth boundaries (left and right site).
 One representation of each is shown in figure \ref{fig:surface_code_explaination}.
 As the logical operators need to connect the boundaries, we can identify the code distance $d$ as the minimal number of qubits along such a line, which is the length of the lattice.
@@ -872,7 +885,7 @@ As the logical operators need to connect the boundaries, we can identify the cod
 \end{figure}
 
 
-We can scale the surface code by increasing the size of the square and therefore the distance.
+The surface codes scales by increasing the size of the lattice and therefore the code distance $d$. 
 The surface code scales with code distance $d$ as 
 \begin{equation}
     [[n= d^2 + (d-1)^2, k=1, d]].
@@ -890,390 +903,51 @@ Given that the syndromes scales exponentially with the distance, it would be wis
 
 Luckily for us, such an algorithm exist for maximum likelihood decoding for the surface code for a certain set of error models \cite{efficient_decoding_algorithm}.
 This algorithm is the reason we choose to use the surface code.
+We could use any CSS code as an underlying encoding for Steane type error correction, because in all CSS codes logical CNOT gates can be implemented transversely. 
 
-Note the surface code is part of the class of CSS codes \cite{CSS1,CSS2}. 
-Given that its stabilizers either consists of only $X$-type or only $Z$-type stabilizers. % correct argumentation?
-And as such the logical $CNOT$ operation is realized as transversal $CNOT$ gates.
-
-We can use any CSS code as an underlying encoding for Steane type error correction. 
-As stated above we choose the unrotated surface code due to the existence of an efficient MLD decoder.
 
 % Should I talk about syndrome extraction and state initilization 
 
+\section{Recovery and Pauli Frame Tracking}\label{sec:pauli_frame_tracking}
 
-\section{Fault Tolerance and Error Models}\label{sec:fault_tolerance}
+The last step of a QEC cycle is the recovery and in this section we discuss a way to implement this recovery without applying any operation onto the state, but by reinterpreting the measurements.
 
-In the previous section we implicitly assumed that errors only happen at a specific point in our quantum circuit.
-Right after we encoded our state and then they stop occurring when we want to extract the syndrome and recover the state.
-This is assumption is not well motivated as in realistic implementations, error can occur in every part of the circuit and with every gate applied.
-Therefore we need to change our error model.
-We will talk about the specific error models we will look at in this thesis in section \ref{ssec:error_models}, and the one that is described above is called the circuit level error model.
-
-At this point we introduce the notion of fault tolerance in relation to QEC codes.
-The concept of fault tolerance describes how our QEC code behaves under the condition that faults happen during its execution.
-Given that all components of a circuit can fail, we can not expect of our QEC code to recover the original state.
-For fault tolerance we change the requirements.
-If we previously had a distance $d$ QEC circuit, that was able to correct $t$ errors, we now require of our fault tolerant circuit distance $d$ circuit, that $t$ faults lead to at most $t$ errors at the end of the QEC cycle.
-As such the resulting state should be a correctable one with the same circuit given the noiseless assumption \cite{gottesmann_book}.
-We refer as such a QEC as distance preserving and we will refer to the error remaining after the QEC cycle as the residual error.
-
-One reason $t$ faults could lead to more than $t$ faults at the end of a circuit is so called error propagation, which we will talk about using the example of a CNOT gate.
-
-\subsection{CNOT Gate}\label{ssec:cnot_gate}
-As an example for error propagation and because we will use its properties later we will shortly discuss the CNOT gate.
-
-It is a two qubit gate and implements the controlled NOT operation.
-At especially important for the use case in this paper we look at how propagates errors $E$ \cite{gottesmann_book}.
-As the CNOT operation is unitary and hermitian we can write
-\begin{equation}
-    \text{CNOT} \ E\ket{\Psi} = \text{CNOT } E\text{ CNOT} \ \text{CNOT} \ket{\Psi}.
-\end{equation}
-The propagated error is therefore $\text{CNOT } E \text{ CNOT}$.
-We can identify that an error $E = X \otimes I$, will be propagated to become $X \otimes X$.
-Here the first element of the tensor product is the error acting on the control qubit and the second is acting on the target qubit of the CNOT gate. 
-As such the CNOT gate propagates $X$-type errors from the control bit onto the target bit. 
-% Show a circuit diagram for CNOT gates!
-
-We can identify such a propagation also in the other direction.
-$E = I \otimes Z$, will become $Z \otimes Z$, which tells us that $Z$-type errors propagate from the target qubit onto the control qubit.
-
-As such even if the CNOT gate itself is not faulty, if we an error is propagated through a CNOT gate, the number of errors in the circuit is increased.
-And the CNOT gate propagates errors in both directions from control onto the target and vice versa.
-
-We will later show that we can use this error propagation property of CNOT gates to our advantage in section \textcolor{red}{Put ref to syndrome extraciton here}.
-
-% this might be a subsection 
-\subsection{Threshold Theorem}\label{ssec:threshold_theorem}
-
-The cornerstone of QEC codes and there usefulness is based on the threshold theorem, which states that even under the assumption that all components are noisy we can still arbitrary reduce the logical error rate of the logical qubit, given that the error rates of the noisy components is below a certain threshold \cite{gottesmann_book},\cite{topological_quantum_memory}.
-As such we can if we the physical error rate is below the threshold we can reduce the logical error rate by using more resources.
-This can be done for surface codes by increasing the distance $d$ of the code.
-The overhead in the number of qubits has been shown to be polynomial \cite{topological_quantum_memory}.
-
-Based on this theorem we not need to realize perfect qubits in an experimental setting to be able to realize arbitrarily long quantum computations
-Instead we can use QEC codes to suppress the logical error rates to levels where long quantum computations become feasible.  
-This makes quantum computational possible as awe do not need to create perfect qubits, just enough decent qubits, to enable quantum computing.
-
-% A bit useless
-Note that will below the threshold each additional qubit reduces the logical error probability, above the threshold the logical probability actually rises for each qubit added.
-
-The threshold is QEC and error model dependent.
-The threshold is an important quantity of a QEC codes. 
-Codes with higher threshold can be used with less optimal qubits and therefore might enable quantum computation where other QEC codes still fail. 
-
-The threshold can be determined through mapping to statistical physics models, as alluded to in section \ref{sec:ML_decoding}. 
-In those models we can identify a phase change between an ordered and unordered state at the threshold \cite{fundamental_thresholds},\cite{topological_quantum_memory}.
- 
-We can also determine the threshold using numerical simulations of the QEC code with an associated error model.
-This will be the approached used in this thesis.
-To determine the threshold we compute the logical error rate for different distances and different physical error rates. 
-Above the threshold the higher distance codes should have a higher logical error rate, whereas there increased distance results in a lower logical error rate below the threshold.
-Given that we want to determine the location of a phase transition, when we want to locate the threshold, we can use finite-size scaling analysis to determine the value of the threshold give the data.
-\textcolor{red}{Put ref here or add a chapter later to explain the finite-size scaling methods.}
-
-We can also state an asymptotic expectation for the scaling below the threshold.
-We will assume at this point that we will only choose codes with odd distances $d$ for practical purposes.
-In addition we assume that every noise process has a probability proportional to $p_{\text{phy.}}$ 
-\begin{equation}
-    \text{Pr}(E) \propto p_{\text{phy.}}.
-\end{equation}
-As our distance $d$ code is guaranteed to correct $t=(d-1)/2$ faults, assuming it is fault tolerant.
-Therefore we need at least $t+1$ noise processes to create a logical error.
-We Should expect the asymptotic behavior for physical noise rates towards zero to behave like
-\begin{equation}
-    \lim_{p_{\text{phy.}}\rightarrow 0} p_{\text{log}} \approx p_{\text{phy.}}^{t+1} = p_{\text{phy.}}^{(d+1)/2}.
-\end{equation}
-Here we discarded terms of higher order in $p_{\text{phy.}}$ as they are suppressed by the asymptotic limit.
-
-% TODO this subsection
-\subsubsection{Finite-Size Scaling Analysis}
-
-
-% those as well
-\subsection{Error Models}\label{ssec:error_models}
-
-The threshold of the QEC code depends also on the chosen error model.
-In this subsection we will introduce the two different error models uses in this thesis.
-These two error models are standard noise model \cite{mld_decoding_intro_luis}.
-
-\subsubsection{Code Capacity Noise Model}\label{sssec:code_capacity_error_model}
-
-For the code capacity noise model we apply independent errors onto the data qubits after we have encoded the logical qubits.
-There are no other locations in the circuits where errors occur.
-As such we implicitly assume that all gates in the encoding, syndrome extraction and associated ancilla qubits and measurements are faultless.
-This is the simplest noise model \cite{mld_decoding_intro_luis}. 
-
-This model can be realized by applying a depolarizing, bit-flip or phase-flip noise channels. 
-
-% Show circuit diagram?
-% or equations?
-
-
-\subsubsection{Circuit Level Noise Model}\label{sssec:circuit_level_noise}
-
-The other noise model we will use is the so called circuit level noise model.
-This is designed to be more realistic, as we model all gates and measurements to be faulty.
-Here we assume for simplicity that each elementary gate and measurement can fail independently, each with the error probability $p$. 
-
-In general one assigns errors to every operation which include state preparation, single- and two-qubits gates and measurements\footnote{
-It is also common to include idling errors, errors on qubits not acted on.
-But due to the construction of our circuit we decided against using those.
-}.
-This means that our whole decoding process is faulty as well, as we will see and discuss later.
-
-Only fault tolerant QEC codes show distance preserving properties under this error model.
-
-Note here that these errors propagate through the circuit, as discussed in section \ref{ssec:cnot_gate}, during the QEC cycle, which leads to correlated errors being spread over multiple qubits and having influence on multiple syndromes. 
-
-% show noise model as circuit or equations?
-% make note about residual error check
-
-
-\subsection{Syndrome Extraction}\label{ssec:syndrome_extraction}
-% ToDo add reference to syndrome part to this chapter
-So far we defined the syndrome as the eigenvalues of the generators of the stabilizer group.
-We also discovered that they are the essential input to the decoding problem and therefore essential to the whole QEC process.
-Therefore we need to be able to determine the syndrome by measuring the generators of the stabilizer group without destroying the logical state or changing it, or at least without introducing a non-recoverable residual error.
-For this task we need additional qubits, so called ancillas and we need to couple those to the data qubits, which store our encoded state. 
-
-For a fault tolerant QEC code we need to be able to measure the eigenvalues of the generators without introducing too much errors, such that the residual error is still correctable.
-Moreover we need to discuss what happens to the syndrome under the influence of errors during the syndrome extraction process and how they can change the syndrome and therefore impact the decoding problem. 
-
-% Motivate Steane type error correction a bit more.
-We will start by introducing the basic approach to measure the eigenvalue of any Pauli operator and how we can use this to determine the syndrome for the surface code in section \ref{sssec:standard_syndrome_extraction_circuit}.
-Following this we will discuss so called Steane Type Error Correction \cite{steane_type_EC_og_paper}.
-
-
-\subsubsection{Standard Surface Code Syndrome Extraction Circuit}\label{sssec:standard_syndrome_extraction_circuit}
-
-\begin{figure}
-    \centering 
-    \begin{quantikz}
-        \lstick{$q_1$} & & \gate{P_1} & & & & & \\
-        \lstick{$q_2$} & & & \gate{P_2} & & & & \\
-        \lstick{$q_3$} & & & & \gate{P_3} & & & \\
-        \lstick{$q_4$} & & & & & \gate{P_4} & & \\
-        \lstick{$\ket{0}$} & \gate{H} & \ctrl{-4} & \ctrl{-3} & \ctrl{-2} & \ctrl{-1} & \gate{H} & \meter{Z}
-    \end{quantikz}
-    \caption{Quantum circuit to measure the eigenvalue of an arbitrary Pauli $P = P_1 \otimes P_2 \otimes P_3 \otimes P_4$, using one extra ancilla qubit.}
-    % Should I make a point about the phase being \pm 1 and not complex?
-    \label{circ:arb_pauli_measure_eigenvalues}
-\end{figure}
-
-
-We can measure the eigenvalue of an arbitrary Pauli operator $P = P_1 \otimes P_2 \otimes P_3 \otimes P_4$, supported on 4 qubits, using one ancilla qubit, as shown in \ref{circ:arb_pauli_measure_eigenvalues} \cite{gottesmann_book}.
-
-As already introduced in section \ref{sec:kitaev_surface_code}, the generators of the surface code can be chosen to take the form of plaquette and site stabilizer.
-To measure the eigenvalues of each generator we can place each needed ancilla in the middle of each stabilizer, on the sites of the lattice for $X$-type site stabilizer and in the plaquettes for $Z$-type plaquette stabilizers, as shown in figure \ref{fig:surface_code_explaination}.
-The advantage of placing the ancilla qubits in those positions is that we only need next-neighbor interaction to realize the syndrome extraction circuit. 
-We can then realize both types of stabilizer generators using the construction for general Paulis shown in figure \ref{circ:arb_pauli_measure_eigenvalues}, which can be simplified to the circuits shown in \ref{circ:standard_syndrome_X_stabilizer} and \ref{circ:standard_syndrome_Z_stabilizer} \cite{topological_quantum_memory}.
-
-% TODO: Adapt order to have fastest possible order?!
-% And to minipages
-% Z-stabilizer
-\begin{figure}
-    \centering 
-    \begin{quantikz}
-        \lstick{$q_1$} & \ctrl{4} & & & &  \\
-        \lstick{$q_2$} & & \ctrl{3} & & &  \\
-        \lstick{$q_3$} & & & \ctrl{2} & &  \\
-        \lstick{$q_4$} & & & & \ctrl{1} &  \\
-        \lstick{$\ket{0}$} & \targ{} & \targ{} & \targ{} & \targ{-1} & \meter{Z}
-    \end{quantikz}
-    \caption{Quantum circuit to measure the eigenvalue of a $Z$-type plaquette stabilizer $S_Z = Z_1 \otimes Z_2 \otimes Z_3 \otimes Z_4$, using an ancilla qubit.}
-    % Should I make a point about the phase being \pm 1 and not complex?
-    \label{circ:standard_syndrome_Z_stabilizer}
-\end{figure}
-
-% X-stabilizer
-\begin{figure}
-    \centering 
-    \begin{quantikz}
-        \lstick{$q_1$} & \targ{} & & & & \\
-        \lstick{$q_2$} & & \targ{} & & & \\
-        \lstick{$q_3$} & & & \targ{} & & \\
-        \lstick{$q_4$} & & & & \targ{} & \\
-        \lstick{$\ket{+}$}  & \ctrl{-4} & \ctrl{-3} & \ctrl{-2} & \ctrl{-1} & \meter{X} 
-    \end{quantikz}
-    \caption{Quantum circuit to measure the eigenvalue of a $X$-type site stabilizer $S_X = X_1 \otimes X_2 \otimes X_3 \otimes X_4$, using an ancilla qubit. Here we absorbed the Hadamard gates into the initial state and into the measurement, changing those.}
-    % Should I make a point about the phase being \pm 1 and not complex?
-    \label{circ:standard_syndrome_X_stabilizer}
-\end{figure}
-
-Given those circuits we can discuss how all possible errors of a circuit level noise model propagate through the circuit and how they influence the result.
-Therefore we can determine if our circuit is fault tolerant.
-Comparing both circuits we can identify a symmetry between the $X$-type and $Z$-type extraction, as they have the form circuit only differing by a change of basis.
-As such and because we can express $Y=iXZ$, we can discuss the elemental error process in one of those circuit and it applies to both.
-Therefore we limit our view onto $Z$-type plaquette stabilizers extraction circuit. 
-We can then apply the results to the $X$-type site stabilizer extraction circuit by relabeling $X$-type errors to $Z$-type errors and vice versa.
-
-Starting with incoming errors, which are the errors already present on the data qubit before we start our syndrome extraction circuit.
-These would be the only errors for a code capacity error model and the circuit is by definition built to detect those.
-Given that we look at the circuit which extract the plaquette stabilizer syndromes, the incoming $X$-type errors are propagated to the ancilla qubits, while $Z$-type errors commute with the control side of the CNOT gate.
-As a result we can detect each of those errors individual and the circuit behaves as expected.
-
-Looking at possible errors on the initialization of the ancilla qubit, we can determine that a possible $Z$-error would be propagated onto each data qubit and therefore realize the stabilizer we want to measure.
-Due to stabilizer equivalence we can ignore this error.
-A possible $X$-type error would not be propagated onto the data qubits, but it would change the result of the measurement, and is therefore in principle a measurement error.
-We will discuss the influence of measurement errors at the end.
-
-The next possible fault location in a circuit level noise model are after each CNOT gate.
-Here each possible $X$-type error on the ancilla qubit is in principle a measurement error.
-For $Z$-type errors only those that can propagate onto data qubits are relevant.
-$Z$-type errors after the last CNOT can be neglected, as they do neither propagate to the data qubits nor affect the measurement outcome.
-Errors after the first and third CNOT are equivalent, up to a stabilizer, to a weight one error $Z$-error on the data qubits and therefore do not reduce the distance.
-Here we used stabilizer equivalence 
-\begin{equation}
-    I \otimes Z_2 \otimes Z_3 \otimes Z_4 = Z_1 \cdot S_Z,
-\end{equation} 
-to rewrite a weight-three error as an equivalent weight-one error and a stabilizer. 
-In contrast, a $Z$-type error after the second CNOT gate will propagate through the following two CNOT gates and will produce a correlated weight-2 error on the data qubits.
-Such an error is called a hook error \cite{topological_quantum_memory}.
-By choosing the CNOT ordering such that the resulting hook errors do not align with the logical operator, we can assure that these correlated errors to not result in a lower weight logical operator.
-It still takes $t + 1$ independent errors events to realize a logical operator, and the distance of our code ist preserved.
-
-Lastly we take a look at the effect of measurement errors.
-A single measurement error leads two to detection events separated in time, a so called time like error. 
-As an example take an circuit without errors on the data qubit only with two measurement error, sharing the type of stabilizer they act on.
-Such two measurement errors are indistinguishable from the syndrome of a chain of data qubits error connecting those to stabilizer.
-If our decoder then assumes that the chain of data qubits is the error that has occurred, the correction would be the same chain again. 
-By applying the correction we would introduce a chain of errors connecting those two stabilizer onto the previous error free stabilizer.
-As such we might have introduced an error of higher weight than two onto our logical error with just two errors.
-This could possibly introduce a logical operator in cases where the data qubits are not free of errors to begin with.
-
-To overcome this problem we need to repeat the syndrome extraction, to construct a syndrome history, which we then can decode.
-Measurement errors then appear as error separated by time instead of by space and we can decode this three dimensional space time matching problem, using the MWPM decoder.
-Note that for a finite time interval measurement errors in the last syndrome extraction step, are never distinguishable from spatial errors \cite{topological_quantum_memory}. 
-A possible solution for this is the overlapping recovery method introduced by Dennis et al. in \cite{topological_quantum_memory}.
-
-% I also need more argumentation here
-We perform $d$ rounds of syndrome extraction to form the syndrome history for a single round of the QEC code.
-As such the time direction has the same dimension as the space directions.
-
-We will use an approximation in this thesis, by giving the decoder access to a final noiseless syndrome extraction circuit.
-This in combination with a noiseless syndrome to start with, gives the decoder all necessary resources to be able to distinguish time like errors from space like errors.
-Note that this is an strong assumption leading to a better performing code, but we can use this as an upper bound for the possible performance capabilities of this standard syndrome extraction circuit. 
- 
-We can summarize the resources needed for each QEC cycle, in which we perform $d$ rounds of syndrome extraction. 
-For this we count the number of ancilla qubits $n_{\text{ancilla}}$ required, note that we assume here that we can reset and measure them fast enough to reuse them for each of the $d$ rounds of syndrome extraction.
-If this is not the case the number of required qubits is $n_{\text{ancilla}}'= d \cdot n_{\text{ancilla}}$. 
-Then we are interested in the number of measurements performed $n_{\text{meas.}}$, the time steps required $n_{\text{time}}$, assuming we can perform CNOTs on a disjoint set of qubits in parallel.
-And lastly the number of CNOT gates required $n_{\text{CNOT}}$.
-The results are
-\begin{align}
-    n_{\text{ancilla}} &= m = 2d^2 -2d \\
-    n_{\text{meas.}} &=  m \cdot d = 2d^3 -2d^2 \\
-    n_{\text{time}} &= 4 d \\
-    n_{\text{CNOT}} &= (4m - 4(d-1)) \cdot d = 8d^3 - 4 d^2 -4d \\
-\end{align}
-,where $m$ is the number of generators of the stabilizer group and $d$ is the distance of the code. 
-
-We will refer to this method of syndrome extraction as Standard Syndrome Extraction (SSE) and we will use this as a baseline to which we compare the Steane type error correction. 
-
-\subsubsection{Stean Type Error Correction}\label{sssec:steane_type_error_correction_intro}
-
-The main topic of this thesis is determining the threshold of Steane Type Error Correction (STEC) and to compare it with the SSE.
-As such we need do introduce STEC, which is named after Steane \cite{steane_type_EC_og_paper}.
-
-As STEC can be used as a syndrome extraction circuit for CSS codes \cite{gottesmann_book}.
-It is based the fact that for all CSS codes the logical CNOT ($\bar{\text{CNOT}}$) is transversal.
-We can then perform a logical trivial circuit while using the properties of CNOTs gates, as introduced in section \ref{ssec:cnot_gate}, to propagate the error onto ancilla qubits.
-
-The main difference is that we require two verified logical encoded qubits as a resource and we need a platform which enables more than next neighbor interaction\footnote{Such as the platform used in \cite{friederike_steane}.}.
-For this additional cost we get a syndrome extraction circuit which only takes a constant amount of time and therefore also limit the interaction of the ancilla qubits with the data qubits.
-
-To formalize the logic behind STEC, we introduce the notation $\ket{\Phi}_L$ is the logical codeword state, and $\ket{+}_L = 1/\sqrt{2} (\ket{0}_L + \ket{1})$ is the logical encoded ancilla state \cite{friederike_steane}.
-We can then use the logical CNOT gate to perform the operation
-\begin{equation}
-    \text{C}^{\text{data}}\text{NOT}^{\text{anc.}}(\ket{\Phi}_L \otimes \ket{+}_L) = \ket{\Phi}_L \otimes \ket{+}_L.
-\end{equation}
-In the error free case this is a trivial operation on both logical qubits, as the ancilla $\ket{+}_L$ qubit is in an eigenstate of the logical $\bar{X}$ operation.
-
-But for cases where there is a $X$-type errors on the $i$th data qubit, written as $X_i$, the error will get propagate through the CNOTs acting between the individual logical and ancilla qubit.
-The error will end up in the same location on the ancilla qubit
-\begin{equation}
-    \text{C}^{\text{data}}\text{NOT}^{\text{anc.}} (X_i^{\text{data}} \otimes I^{\text{anc.}} ) (\ket{\Phi}_L \otimes \ket{+}_L) = X_i^{\text{data}} \ket{\Phi}_L \otimes X_i^{\text{anc.}}\ket{+}_L.
-\end{equation}
-We can then construct the measurements of $Z$-type stabilizer generators by measuring each qubit in the $Z$-basis and recombining the measurement results to construct the measurement of the generators of the stabilizer group.
-Note that we can also reconstruct the logical measurement of the $\bar{Z}$ of the ancilla, but the result will be random and will not give us any information about the state of the encoded data qubit.
-
-While we use the propagation of errors from the data qubit onto the ancilla qubit, the propagation in the other direction still contributes to a residual error.
-The whole process is fault tolerant by construction, since the logical CNOT is transversal and therefore can only propagate at most one error onto each encoded code block.
-Moreover each measurement error will behave like a single data qubit, and as such is also fault tolerant. 
-This is because we measure each qubit at once and afterwards recombine, we can observe that each measurement error correspond to a single error on a data qubit, leading to two flipped syndrome bits on the corresponding adjacent stabilizers\footnote{In the case of the bulk, but this is enough to clarify this point.}.
-Note here the difference to the previous method, where a single measurement error only flipped a single syndrome bit.
-
-The decoding problem with those syndromes than corresponds to the task of decoding the error on the ancilla qubit, including the measurement errors. 
-The difference between the data qubit and the ancilla qubit will be accepted as part of residual error, as it at most introduces an error on the data qubit for each occurred error and is therefore still fault tolerant.
-Therefore a single round of syndrome extraction suffices to enable a fault tolerant QEC cycle.
-
-The method described above is able to determine the $Z$-type part of the syndrome which detects $X$-errors.
-Due to symmetry the detection circuit for $Z$-type errors, so the measurement of the $X$-type stabilizer generators works nearly identical.
-
-We only change the ancilla to $\ket{0}_L$ and switch the orientation of the logical CNOT gate, using the ancilla as control qubit and having the data qubit as a target.
-Therefore $Z$-type errors will be propagated onto the ancilla where they will be measured by the parity checks and $Z$-type errors will contribute to the residual error.
-
-We will refer to each of those constructions as half-cycles.
-Note that we can influence the composition of the residual error by the choice of order of those half-cycles.
-The type of error which we will correct first will occur more often in the residual error for circuit level noise. 
-This is because there are more possible locations for errors that are not contributing to the corresponding syndrome part.
-We will show this again in \textcolor{red}{Put ref to propagated error model here.}.
-
-We can use this asymmetry in the order also to our advantage. 
-The error that is correct first has the advantage that less are added through circuit level noise by the syndrome extraction circuit, as such it might be able to recover from some errors that otherwise might obtain to much weight when their syndrome is extracted later.
-Therefore the ordering of the circuit can be used to optimize if whatever is placed between QEC cycles is more susceptible to one kind of error or produces one kind of error more often. 
-
-Note that in our case for a memory experiment with multiple rounds the ordering does not matter, as we effectively get a symmetric bulk after the first and before the last correction.
-As long as we want to correct\footnote{Or in our case if we want to pretend to correct both type of errors.} both type of errors there is no advantage in changing the order from an alternating ordering for a memory experiment.
-
-We can quantify the resources needed for the cases where we want to use STEC to extract the syndrome for a logical qubit encoded in the surface code of distance $d$ with
-\begin{align}
-    n_{\text{ancilla}} &= 2n = 2 (d^2 + (d-1)^2) =  4d^2 -4d +2 \\
-    n_{\text{meas.}} &= 2n  = 4d^2 -4d +2  \\
-    n_{\text{time}} &= 2  \\
-    n_{\text{CNOT}} &= 2n  =   4d^2 -4d +2\\
-\end{align}
-Note that we only take the time into account where the data qubits are needed, therefore we ignore the time steps needed for the measurement of the ancilla qubits and the time needed to encode the ancilla qubits.
-The basis for this assumption is that we do not block the logical qubit, and the preparation and measurement can be done in parallel, to continued operations on the qubit.
-But this is also only a minor detail, the core advantage is that the time needed is constant and therefore independent of the distance of the code.
-Note as well that for those calculations of resources we neglected the resources needed for the encoding of the logical ancilla states.
-
-The whole approach of STEC can be seen as a way to reduce the problem of syndrome extraction to a syndrome of state synthesis \cite{steane_type_EC_og_paper}. 
-As such the exact choice of a preparation circuit will influence the performance of the STEC approach. 
-But for a functioning QEC code we anyways have to find a way to fault tolerantly and verifiable create an basis state.
-Therefore this problem is not only required by STEC. 
-
-Note that we require that we know the syndrome of the used ancilla state with certainty.
-Otherwise we face the same problem described in the previous chapter, in uncertain syndrome errors lead to the possible implementation of high weight errors.
-This would also stop the STEC from working properly.
-For this thesis we assume that we have access to such ancilla states, with a determined syndrome and independent errors on each data qubit of the ancilla. 
-
-To summarize we can highlight that STEC is an approach to syndrome extraction which enables constant in time syndrome readout, no matter the distance of the code, at the cost of preparing a more complex ancilla state. 
-In the process STEC minimizes the coupling between the data registry and the ancilla qubits and therefore reduces the noise obtained from the ancillas. 
-The costs is that we have to find a way to prepare fault tolerant logical encoded qubits with a trusted syndrome, a task which need to solve anyways to obtain a completely functioning QEC code. 
-
-% TODO add circuits
-
-\section{Pauli Frame Tracking}\label{sec:pauli_frame_tracking}
-
-The last step of a QEC cycle is the recovery and in this section we discuss a way to implement this recovery without applying any operation onto the state.
-
-The process we are going to use is called Pauli Frame Tracking \cite{pauli_frame_tracking_knill}.
-The basic idea follows is based on concept that we already introduced surround the introduction of equation \ref{eq:pauli_rewriting_stabilizer_formalism}.
-We can treat the recovery the same way as the errors, splitting it up into a canonical representation of the syndrome $E_\sigma$, determined through the extracted syndrome, and a logical component $\bar{L}$ given by the decoder.
+This approach is called Pauli Frame Tracking \cite{pauli_frame_tracking_knill}.
+The approach is based on the isomorphism between the error subspaces and codespace.
+And closely related to the concept of splitting the Pauli into different parts, as shown in equation \ref{eq:pauli_rewriting_stabilizer_formalism}. 
+We can treat the recovery the same way as the errors\footnote{The stabilizer parts is once again neglectable, as is the phase.}, separating it into a canonical representation of the syndrome $E_\sigma$, determined through the extracted syndrome, and a logical component $\bar{L}$ given by the decoder.
 This combination is the so-called Pauli frame.
 
 As we have discussed already in section \ref{ssec:syndrome}, each syndrome can be associated with an subspace which is isomorphic to the codespace.
-It is therefore not really necessary to apply the canonical representation of the syndrome $E_\sigma$ as a correction to the circuit, to map the state back to the $+1$ eigenspace of all generators of the Pauli group. 
-We can also redefine our codespace to be the orthogonal space in which the state is now placed, which is isomorphic to the codespace.
-This can be done by taking the logical XOR of the new error syndrome with syndrome of the redefined codespace in classical post processing.
-Or by redefining the generators of the stabilizer group, switching the signs of the generators to redefine the trivial syndrome to point to the codespace. 
+We can then just redefine the error subspace, in which the state currently lies, as the new codespace.
+It is therefore not necessary to apply the canonical representation of the syndrome $E_\sigma$ as a correction to the circuit, to map the state back to the $+1$ eigenspace of all generators of the stabilizer group. 
+We could just change the sign of the generators, such that the trivial syndrome points to this new subspace.
+This redefinitions of the signs of the generators can be done in post processing\footnote{
+    I use the term \emph{post processing} here to refer to processing applied to the final measurements.
+    As such those operations can be done independently of the execution of the circuit.
+} by taking the logical XOR of the measured error syndrome with syndrome of the redefined codespace.
 
 Under the assumption that the circuit consists of only Clifford gates\footnote{
 Note that to be able to perform general quantum computations we need to be able to also perform non-Clifford operations. 
 In those cases we need to be able to apply the correction in time \cite{terhal_qec_formalism}. 
 But because we are only interested in a quantum memory simulation, we do not face this problem. 
-}, we can also postpone the logical correction to a reinterpretation of the measurements.
-The basis for this is that we can commute the Pauli frame through the complete circuit, as Clifford gates map Paulis to Paulis.
-The Pauli frame is therefore only needed in the post processing after the execution of the circuit, and not while executing the circuit for our case.
- 
+}, we can postpone the logical correction and just reinterpretation the result of the observable measurements.
+The basis for this is that we can commute the Pauli frame through the complete circuit, as Clifford gates map Pauli operators to Pauli operators.
+The exact Pauli frame is therefore only needed in the post processing after the execution of the circuit, and not while executing the circuit for Clifford only circuits.
+And we can predict the logical observable we observable we would expect to see, or the change to it, by analyzing how the Pauli frame commute with the observable. 
+
+\textcolor{red}{Maybe use a few equations to show that we can reduce the correction problem for only paulis + clifford circuit to a commutation or anticommutation problem.}
+% As such we can perform multiple rounds of error correction after another without applying any operation to the system.
+% To give an example lets start in a known state $\ket{0}_L$ with the trivial syndrome $\sigma_0$, followed by two independent rounds of QEC with the syndromes $\sigma_1$ and $\sigma_2$.
+% We label the occurred errors by $E_1 = E_{\sigma_1} \bar{L}_1 S_1$ and $E_2 = E_{\sigma_2} \bar{L}_2 S_2$, following the notation from equation \ref{eq:pauli_rewriting_stabilizer_formalism} $E_\sigma$ is the canonical representation of the syndrome, $\bar{L}$ is an logical operator and $S$ is an element of the stabilizer group. 
+% In addition the simulation return measurement of the logical observable $\bar{Z}$ at the end of the circuit as $z$
+% \begin{equation}
+%     \bar{Z} E_2 E_1 \ket{0}_l = z E_2 E_1 \ket{0}_L.
+% \end{equation}
+% We can identify the value of $z$ as the commutation relation of $\bar{Z}$ with the errors $E_1$ and $E_2$.
+% Given that all those operators are Paulis\footnote{Given the complete circuits is made up of Clifford gates those Paulis stay Paulis.} they either commute and anticommute
+
+
+
+
+
