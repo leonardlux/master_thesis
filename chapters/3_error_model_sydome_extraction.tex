@@ -1,12 +1,158 @@
-\chapter{Error Models and Syndrome Extraction}\label{sec:fault_tolerance}
+\chapter{Error Models and Fault Tolerance}\label{ssec:error_models}
 
-In the previous chapter we implicitly assumed that errors only happen at a specific point in our quantum circuit.
-In realistic implementations, error can occur in every part of the circuit, with every gate applied, measurement taken and on each initialized individual qubit.
-We will refer to this more realistic as the \emph{circuit level noise model}.
+We previously assumed that errors only happen at a specific point in our quantum circuit, namely before we extract the syndrome.
+A more realistic model would assume that errors can occur in every part of the circuit, with every gate applied, measurement taken and on each initialized individual qubit, and therefore also during the syndrome extraction.
+We will refer to this more realistic as the \emph{circuit level noise model}, and we will define it in more detail in section \ref{sssec:circuit_level_noise}. 
 The model where errors only appear after the state preparation on the data qubit is called the \emph{code capacity model}.
-We will discuss both of those models in more detail in section \ref{ssec:error_models}.
 
-At this point we introduce the notion of fault tolerance in relation to QEC codes.
+The threshold of the QEC code depends significantly on the choice of the error model.
+In this subsection we will introduce the two different error models uses in this thesis.
+
+
+\section{Code Capacity Noise Model}\label{sssec:code_capacity_error_model}
+
+For the \emph{code capacity} noise model we apply independent errors onto the data qubits after we have encoded the logical qubits.
+There are no other locations in the circuits where errors occur.
+The placement in the circuit is visualized in figure \ref{circ:code_capacity_noise}.
+As such we implicitly assume that all gates in the encoding, syndrome extraction and associated ancilla qubits and measurements are faultless.
+This is the simplest noise model \cite{mld_decoding_intro_luis}. 
+
+This model can be realized by applying a depolarizing, bit-flip or phase-flip noise channels. 
+We will implement it by either applying a bit flip ($X$) noise channel on each data qubit after encoding the logical $\ket{0}_L$ state, in cases where we measure the logical $\bar{Z}$ observable at the end of the circuit.
+When we measure the logical $\bar{X}$ at the end of the circuit, we will apply a phase flip ($Z$) error onto the data qubits after initializing the logical $\ket{+}_L$ state.
+
+Both noise channel, $\varepsilon_X(\rho)$ is the bit-flip and $\varepsilon_Z(\rho)$ is the phase-flip error channel, are proportional to $p_{phy}$, taking the form on each data qubit 
+\begin{align}
+    \varepsilon_{X}(\rho) = (1-p_{phy}) \rho + p_{phy} \cdot X \rho X \label{eq:bit_flip_channel}\\
+    \varepsilon_{Z}(\rho) = (1-p_{phy}) \rho + p_{phy} \cdot Z \rho Z\label{eq:phase_flip_channel}.
+\end{align}
+
+\begin{figure}[h]
+    \begin{center}
+        \begin{quantikz}[wire types={q,n}]
+            \lstick{$\ket{\Psi}_L$}&\gate[style={noisy}]{\text{Noise}}&\gate[]{\text{Syndrome Extraction}}& \gate{\text{Recovery}}&\rstick{$\ket{\Psi }_L$} \\
+            &&\gate{Decoder}\vcw{-1}&\setwiretype{c}\vcw{-1}&\setwiretype{n}&
+        \end{quantikz}
+    \end{center}
+    \label{circ:code_capacity_noise} 
+    \caption{A quantum circuit visualizing the position of code capacity noise in the memory experiment. The noise will either be a phase- or a bit-flip channel, dependent on the observable measured.}
+\end{figure}
+
+
+\section{Circuit Level Noise Model}\label{sssec:circuit_level_noise}
+
+The second and more complex noise model we will use is the so called \emph{circuit level} noise model.
+This is designed to be more realistic, as we model all gates, measurements and qubits to be faulty.
+Here we assume for simplicity that each elementary gate and measurement can fail independently, each with the error probability $p_{phy}$. 
+
+In general one assigns errors to every operation which include state preparation, single- and two-qubits gates and measurements\footnote{
+It is also common to include idling errors, errors on qubits not acted on.
+But due to the construction of our circuit we decided against using those.
+}.
+This means that our whole decoding process is faulty as well.
+
+To implement this error model we use the following error channels:
+We simulate measurement errors by placing a bit- or phase-flip channel (eq. \ref{eq:bit_flip_channel} and eq. \ref{eq:phase_flip_channel} respectively) onto measured qubits before the measurement.
+Here we choose bit-flip errors before $Z$ measurement and phase-flip errors before $X$ measurement to simulate the measurement failing.
+
+For two qubit gates we apply two qubit depolarizing noise $\varepsilon_{D_2}$ on both qubits, $q1$ and $q2$, acted upon by the gate 
+\begin{equation}
+    \varepsilon_{D_2}(\rho) = (1-p_{phy}) \rho + \frac{p_{phy}}{15} \sum_{i=1}^{15} E_i \rho E_i,
+\end{equation}
+with
+\begin{equation}
+    E_i \in \{E_{q1} \otimes E_{q2} | E_k,E_l \in \{I,X,Y,Z\} \} \setminus \{I\otimes I \}.
+\end{equation}
+Here in contrast to the measurement noise channel we place the noise channel after the two qubit gate. 
+
+After initialization of each qubit we place a depolarizing one qubit noise channel $\varepsilon_{D_1}$ on each qubit
+\begin{equation}
+    \varepsilon_{D_1}(\rho) = (1-p_{phy}) \rho + \frac{p_{phy}}{3} \sum^3_{i=1} E_i \rho E_i,\  E_i \in \{ X, Y, Z \}.
+    \label{eq:depo_1_noise}
+\end{equation}
+
+An example circuit with and without the circuit level noise model applied can be seen in figure \ref{circ:circuit_level_noise_example}. 
+
+\begin{figure}[h]
+    \begin{center}
+            \begin{quantikz}
+        \lstick{$q_1$}&\targ{}&\ctrl{2}&&\\
+        \lstick{$q_2$}&\ctrl{-1}&&\meter{$X$}&\setwiretype{c}\\
+        \lstick{$q_3$}&&\targ{}&\meter{$Z$}&\setwiretype{c}\\
+    \end{quantikz}
+
+    \begin{quantikz}
+        % Data qubit
+        \lstick{$q_1$}&\gate[1,style={noisy},]{\varepsilon_{D1}}&   % 1: init
+        \targ{}&\gate[1,style={noisy}]{\varepsilon_{D2}}\wire[d][1]{q}&      % 2: 1. CNOT 
+        \ctrl{2}&\gate[1,style={noisy}]{\varepsilon_{D2}}\wire[d][2]{q}&     % 3: 2. CNOT
+        % &&                                                      % 4: 
+        &&\\                                                    % 5: 
+        % 0 ancilla qubit
+        \lstick{$q_2$}&\gate[1,style={noisy},]{\varepsilon_{D1}}&      % 1: init
+        \ctrl{-1}&\gate[1,style={noisy}]{\varepsilon_{D2}}&                  % 2: 1. CNOT
+        &&                                                      % 3: 2. CNOT
+        % \gate[]{H}&                                             % 4: 1. change basis aka H
+        % & 
+        % \gate[1,style={noisy},]{D_1}&                           %    2: Error (No errors on H)
+        \gate[1,style={noisy},]{\varepsilon_Z}&\meter{$X$}&\setwiretype{c}\\% 5: stabilizer measurement
+        % p ancilla qubit 
+        \lstick{$q_3$}&\gate[1,style={noisy},]{\varepsilon_{D1}}&      % 1: init
+        &&                                                      % 2: 1. CNOT
+        \targ{-2}&\gate[1,style={noisy}]{\varepsilon_{D2}}&                  % 3: 2. CNOT
+        % &&                                                      % 4: 
+        \gate[1,style={noisy},]{\varepsilon_X}&\meter{$Z$}&\setwiretype{c}\\% 5: stabilizer measurement
+    \end{quantikz}
+    \end{center}
+    \label{circ:circuit_level_noise_example} 
+    \caption{
+        In this figure we show an example circuit on top, with gates and measurements acting on three physical qubits $q_1,q_2$ and $q_3$, including initialization, two qubit gates and measurements of different observables.
+        The lower circuit diagram shows the same circuit after we have applied the circuit level noise model. 
+    }
+\end{figure}
+
+In this thesis we assume that we have access to fault tolerantly prepared logical encoded states.
+As such we do not model the state preparation of those states completely, but just encoded them noiseless and then place independent depolarizing noise on each qubit of the resulting state to mimic a fault tolerant encoding procedure.
+We choose to assume that because the fault tolerant preparation for arbitrary distance codes is for itself a hard task to realize.
+
+We can already state that only fault tolerant QEC codes show distance preserving properties under this error model, and we will introduce the concept of fault tolerance in section \ref{sec:fault_tolerance}.
+Note here that these errors propagate through the circuit, as we will discuss in the following section \ref{ssec:cnot_gate}, during the QEC cycle, which leads to correlated errors being spread over multiple qubits. 
+
+% show noise model as circuit or equations?
+% make note about residual error check
+
+
+\subsection{CNOT Gate}\label{ssec:cnot_gate}
+
+Error do not only appear in the circuit at fixed position they also propagate through the circuit as shown by the example of the CNOT gate. 
+
+It is a two qubit gate and implements the controlled NOT operation.
+Especially important for the use case in this paper is how this gates propagates errors $E$ \cite{gottesmann_book}.
+As the CNOT operation is unitary and hermitian we can write
+\begin{equation}
+    \text{CNOT} \ E\ket{\Psi} = \text{CNOT } E\text{ CNOT} \ \text{CNOT} \ket{\Psi}.
+\end{equation}
+The propagated error is therefore $\text{CNOT } E \text{ CNOT}$.
+We can identify that an error acting only on the first qubit of the CNOT gate $E = X \otimes I$, will be propagated to become a error acting on both qubits $X \otimes X$.
+Here the first element of the tensor product is the error acting on the control qubit and the second is acting on the target qubit of the CNOT gate. 
+As such the CNOT gate propagates $X$-type errors from the control bit onto the target bit. 
+% Show a circuit diagram for CNOT gates!
+
+We can identify such a propagation also in the other direction.
+$E = I \otimes Z$, will become $Z \otimes Z$, which tells us that $Z$-type errors propagate from the target qubit onto the control qubit.
+
+Even if the CNOT gate itself is not faulty, an error propagated through a CNOT gate, can lead to an increase in the total number of errors present in the circuit. 
+And given that errors can occur at all possible locations in the circuit we need to design the circuit carefully to keep the propagation of errors under control, which will be formalized in the next section about fault tolerance.
+
+We will later show that we can use this error propagation property of CNOT gates to our advantage in section \textcolor{red}{Put ref to syndrome extraciton here}.
+
+% Proofread until here :D
+
+\subsection{Fault Tolerance}\label{sec:fault_tolerance}
+
+% task for tomorrow morning
+
+At this point we introduce the notion of \emph{Fault Tolerance} in relation to QEC codes.
 The concept of fault tolerance describes how our QEC code behaves under the condition that faults happen during its execution.
 Given that all components of a circuit can fail, we can not expect of our QEC code to recover the original state.
 For fault tolerance we change the requirements.
@@ -16,70 +162,10 @@ We refer as such a QEC as distance preserving and we will refer to the error rem
 
 One reason $t$ faults could lead to more than $t$ faults at the end of a circuit is so called error propagation, which we will talk about using the example of a CNOT gate.
 
-\subsection{CNOT Gate}\label{ssec:cnot_gate}
-As an example for error propagation and because we will use its properties later we will shortly discuss the CNOT gate.
-
-It is a two qubit gate and implements the controlled NOT operation.
-At especially important for the use case in this paper we look at how propagates errors $E$ \cite{gottesmann_book}.
-As the CNOT operation is unitary and hermitian we can write
-\begin{equation}
-    \text{CNOT} \ E\ket{\Psi} = \text{CNOT } E\text{ CNOT} \ \text{CNOT} \ket{\Psi}.
-\end{equation}
-The propagated error is therefore $\text{CNOT } E \text{ CNOT}$.
-We can identify that an error $E = X \otimes I$, will be propagated to become $X \otimes X$.
-Here the first element of the tensor product is the error acting on the control qubit and the second is acting on the target qubit of the CNOT gate. 
-As such the CNOT gate propagates $X$-type errors from the control bit onto the target bit. 
-% Show a circuit diagram for CNOT gates!
-
-We can identify such a propagation also in the other direction.
-$E = I \otimes Z$, will become $Z \otimes Z$, which tells us that $Z$-type errors propagate from the target qubit onto the control qubit.
-
-As such even if the CNOT gate itself is not faulty, if we an error is propagated through a CNOT gate, the number of errors in the circuit is increased.
-And the CNOT gate propagates errors in both directions from control onto the target and vice versa.
-
-We will later show that we can use this error propagation property of CNOT gates to our advantage in section \textcolor{red}{Put ref to syndrome extraciton here}.
-
-% those as well
-\subsection{Error Models}\label{ssec:error_models}
-
-The threshold of the QEC code depends also on the chosen error model.
-In this subsection we will introduce the two different error models uses in this thesis.
-These two error models are standard noise model \cite{mld_decoding_intro_luis}.
-
-\subsubsection{Code Capacity Noise Model}\label{sssec:code_capacity_error_model}
-
-For the code capacity noise model we apply independent errors onto the data qubits after we have encoded the logical qubits.
-There are no other locations in the circuits where errors occur.
-As such we implicitly assume that all gates in the encoding, syndrome extraction and associated ancilla qubits and measurements are faultless.
-This is the simplest noise model \cite{mld_decoding_intro_luis}. 
-
-This model can be realized by applying a depolarizing, bit-flip or phase-flip noise channels. 
-
-% Show circuit diagram?
-% or equations?
 
 
-\subsubsection{Circuit Level Noise Model}\label{sssec:circuit_level_noise}
 
-The other noise model we will use is the so called circuit level noise model.
-This is designed to be more realistic, as we model all gates and measurements to be faulty.
-Here we assume for simplicity that each elementary gate and measurement can fail independently, each with the error probability $p$. 
-
-In general one assigns errors to every operation which include state preparation, single- and two-qubits gates and measurements\footnote{
-It is also common to include idling errors, errors on qubits not acted on.
-But due to the construction of our circuit we decided against using those.
-}.
-This means that our whole decoding process is faulty as well, as we will see and discuss later.
-
-Only fault tolerant QEC codes show distance preserving properties under this error model.
-
-Note here that these errors propagate through the circuit, as discussed in section \ref{ssec:cnot_gate}, during the QEC cycle, which leads to correlated errors being spread over multiple qubits and having influence on multiple syndromes. 
-
-% show noise model as circuit or equations?
-% make note about residual error check
-
-
-\subsection{Syndrome Extraction}\label{ssec:syndrome_extraction}
+\chapter{Syndrome Extraction}\label{ssec:syndrome_extraction}
 % ToDo add reference to syndrome part to this chapter
 So far we defined the syndrome as the eigenvalues of the generators of the stabilizer group.
 We also discovered that they are the essential input to the decoding problem and therefore essential to the whole QEC process.
@@ -94,7 +180,7 @@ We will start by introducing the basic approach to measure the eigenvalue of any
 Following this we will discuss so called Steane Type Error Correction \cite{steane_type_EC_og_paper}.
 
 
-\subsubsection{Standard Surface Code Syndrome Extraction Circuit}\label{sssec:standard_syndrome_extraction_circuit}
+\section{Conventional Surface Code Syndrome Extraction}\label{sssec:standard_syndrome_extraction_circuit}
 
 \begin{figure}
     \centering 
@@ -220,7 +306,7 @@ The results are
 
 We will refer to this method of syndrome extraction as Standard Syndrome Extraction (SSE) and we will use this as a baseline to which we compare the Steane type error correction. 
 
-\subsubsection{Stean Type Error Correction}\label{sssec:steane_type_error_correction_intro}
+\section{Stean Type Error Correction}\label{sssec:steane_type_error_correction_intro}
 
 The main topic of this thesis is determining the threshold of Steane Type Error Correction (STEC) and to compare it with the SSE.
 As such we need do introduce STEC, which is named after Steane \cite{steane_type_EC_og_paper}.

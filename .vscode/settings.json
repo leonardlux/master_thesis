@@ -16,6 +16,7 @@
         "qubits",
         "qudits",
         "Shor",
+        "STEC",
         "toric",
         "unrotated",
         "Wavefunction"

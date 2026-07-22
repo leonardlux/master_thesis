@@ -21,9 +21,8 @@
     + equations and exmaple circuits?
     + go into more detail behind the assumption of $t$ weight errors -> and why we can call them t weight errros
 
-7. code capcatiy model, as a quantum state transportation case and only noise while transporting
-
 8. computation relation between different error syndromes if both errors are applied consecutive
+    + shortly derive the xor relation used in pauli frame tracking
 
 9. fssa include images as examples
 9.1 redo all calculations and half the error -> bootstrap interval of 95% is two times the standard deviation!

@@ -45,7 +45,7 @@ We count the number of times the prediction disagrees with the simulation result
 \begin{equation}
     p_{log} = n_{errors}/n_{shots}.
 \end{equation}
-The uncertainty on the logical error rate $\delta_{p_{log}}$ is then
+The uncertainty on the logical error rate $\delta_{p_{log}}$ is 
 \begin{equation}
     \delta_{p_{log}} = \sqrt{\frac{p_{log}(1-p_{log})}{n_{shots}}}.
 \end{equation}
@@ -53,7 +53,7 @@ The uncertainty on the logical error rate $\delta_{p_{log}}$ is then
 Note that in this approach we only detect $X$-type or $Z$-type logical errors, dependent on the choice of logical observable, $\bar{Z}$ or $\bar{X}$ respectively.
 We therefore also only decode for one of those error types at a time and can only predict the logical error rate for one of those errors.
 This is due to our choice of initial state.
-We can not detect if an logical $X$-type ($Z$-type) error occurred if we use a $\ket{+}_L$ ($\ket{0}_L$) state, given that those error operators are eigenstate of those logical operators.
+We can not detect if a logical $X$-type ($Z$-type) error occurred if we use a $\ket{+}_L$ ($\ket{0}_L$) state, given that those error operators are eigenstate of those logical operators.
 \textcolor{green}{Is this following line useful? it is interesting to know that it is possible, but once again i did not do that.}
 One could realize a simulation detecting both type of errors at the same time using a reference system to create an initial pure state, as used in \cite{quantum_data_processing,fundamental_thresholds} and referred to as coherent information setup.
 
@@ -93,7 +93,7 @@ where $f(x)$ is the dimensionless scaling function for finite sizes and $\nu$ is
 Following equation \ref{eq:data_collapse_method}, plotting $y=p_{log,d}(p_{phy})$ against $x=d^{1/\nu} \cdot(p_{phy}-p_{th})$ should collapse the simulated data onto one curve, corresponding to the scaling function $f(x)$, 
 under the assumption that we use the correct threshold $p_{th}$ and critical exponent $\nu$.
 
-We can turn this relation around and determine the values of threshold $p_{th}$ and the critical exponent $\nu$, using that all data points should collapse under the correct choice of those values.
+We can turn this relation around and determine the values of threshold $p_{th}$ and the critical exponent $\nu$, using that the data points should collapse under the correct choice for those values.
 To realize this approach, we first estimate values for the critical exponent $\tilde{\nu}$ and threshold $\tilde{p}_th$.
 We then use those estimates to calculate the values we want to plot against one another, which we will refer to by $x$ and $y$, using 
 \begin{align}
@@ -111,6 +111,9 @@ We use the uncertainty on the logical error rate $\delta_{p_{log}}=\delta_y$ to 
 \Delta y_i&= \frac{(y_i - \bar{y}_i)^2}{\delta_{\Delta y_{i}}^2} \label{eq:dcm_weighted_difference}
 \end{align}
 By minimizing the weighted difference $\Delta y_i$ all data points should fall onto a curve.
+
+Note that given our approach we do not directly take the data point with the highest and lowest index into account. 
+They only contribute by determining the interpolation of the second or second to last data point. 
 
 We can task the optimizer to find the minimal value for the mean of all weighted differences $\Delta y_i$, by optimizing the threshold $p_{th}$ and critical exponent $\nu$.
 The optimizer we utilize is \texttt{scipy.optimize.minimize} from the \texttt{scipy} package \cite{Scipy}.
