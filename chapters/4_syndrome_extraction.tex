@@ -91,6 +91,7 @@ We can reduce the time needed for the implementation of this syndrome extraction
 We can quantify the resources needed to realize such a conventional syndrome extraction circuit for the code capacity case.
 Each generator requires an ancilla qubit to be measured ($n_{\text{ancilla}}= n_{\text{meas.}} = m $ ).
 As explained above we can implement an ordering of the CNOT gates that only requires four time steps ($n_{\text{time}} = 4 $).
+Note that we only count the time steps, where the syndrome extraction circuit is interacting and therefore occupying the data qubits. 
 For the number of required CNOT gates we need to take into account that the ancilla qubits on the boundary only connect three data qubits for the surface code, 
 which results in a total set of CNOTs of $n_{\text{CNOT}} = (4m - 4(d-1))$.
 For the surface code with code distance $d$ the resources needed for the conventional syndrome extraction circuit under code capacity noise can be therefore quantified as
@@ -222,92 +223,117 @@ We will use the conventional syndrome extraction method, with the assumption des
 
 \section{Steane Type Error Correction}\label{sssec:steane_type_error_correction_intro}
 
-The main topic of this thesis is determining the threshold of Steane Type Error Correction (STEC) and to compare it with the SSE.
-As such we need do introduce STEC, which is named after Steane \cite{steane_type_EC_og_paper}.
+The main topic of this thesis is determining the threshold of \emph{Steane-type error correction}(STEC) \cite{steane_type_EC_og_paper} and to compare it with the conventional syndrome extraction circuit.
+In comparison to the previously syndrome extraction circuit, STEC is inherently fault tolerant as such we can directly discuss it properties for the circuit level noise model.
 
-As STEC can be used as a syndrome extraction circuit for CSS codes \cite{gottesmann_book}.
-It is based the fact that for all CSS codes the logical CNOT ($\bar{\text{CNOT}}$) is transversal.
-We can then perform a logical trivial circuit while using the properties of CNOTs gates, as introduced in section \ref{ssec:cnot_gate}, to propagate the error onto ancilla qubits.
+STEC can be used as a syndrome extraction circuit for any CSS codes \cite{gottesmann_book}.
+It relies on two properties that all CSS codes possess \cite{CSS1,CSS2}:
+The stabilizer generators can be separated into $X$- and $Z$-type and the code has transversal logical CNOT ($\overline{\text{CNOT}}$) .
+A logical CNOT is called transversal if applying a physical CNOT between each qubit of the logical control block and the corresponding qubit of the logical target block realizes a logical CNOT gate. 
+Using the CNOT propagation properties introduces in section \ref{ssec:cnot_gate}, STEC implements a logical trivial circuit that propagates error from the data qubits onto the ancilla qubits, 
+where they can be measured without disturbing the encoded state.
 
-The main difference is that we require two verified logical encoded qubits as a resource and we need a platform which enables more than next neighbor interaction\footnote{Such as the platform used in \cite{friederike_steane}.}.
-For this additional cost we get a syndrome extraction circuit which only takes a constant amount of time and therefore also limit the interaction of the ancilla qubits with the data qubits.
+The main difference to the conventional syndrome extraction circuit in regards to required resources is that we require two verified logical encoded qubits 
+and we need a platform which enables more than next neighbor interaction on a plane\footnote{
+    Such as the platform used in \cite{friederike_steane} with ionized atoms and their long distances interactions, or one could utilize platform with stacked planes, enabling three dimensional next neighbor interactions.}.
+For this additional cost we get a syndrome extraction circuit which only takes a constant amount of time and therefore limits the interaction of the data qubits with the ancilla qubits.
 
-To formalize the logic behind STEC, we introduce the notation $\ket{\Phi}_L$ is the logical codeword state, and $\ket{+}_L = 1/\sqrt{2} (\ket{0}_L + \ket{1})$ is the logical encoded ancilla state \cite{friederike_steane}.
-We can then use the logical CNOT gate to perform the operation
+To formalize the logic behind STEC, we use a logical codeword state $\ket{\Phi}_L$, and an logical encoded ancilla state $\ket{+}_L = 1/\sqrt{2} (\ket{0}_L + \ket{1})$ \cite{friederike_steane}.
+We can the logical CNOT gate to perform a logical trivial operation
 \begin{equation}
-    \text{C}^{\text{data}}\text{NOT}^{\text{anc.}}(\ket{\Phi}_L \otimes \ket{+}_L) = \ket{\Phi}_L \otimes \ket{+}_L.
+    \overline{\text{C}}^{\text{data}}\overline{\text{NOT}}^{\text{anc.}}(\ket{\Phi}_L \otimes \ket{+}_L) = \ket{\Phi}_L \otimes \ket{+}_L.
 \end{equation}
 In the error free case this is a trivial operation on both logical qubits, as the ancilla $\ket{+}_L$ qubit is in an eigenstate of the logical $\bar{X}$ operation.
 
-But for cases where there is a $X$-type errors on the $i$th data qubit, written as $X_i$, the error will get propagate through the CNOTs acting between the individual logical and ancilla qubit.
-The error will end up in the same location on the ancilla qubit
+This circuit becomes useful when there is a $X$-type error on the $i$ th data qubit, written as $X_i$. 
+The error will propagate through the CNOTs acting between the individual logical and ancilla qubit and up on the ancilla state.
 \begin{equation}
-    \text{C}^{\text{data}}\text{NOT}^{\text{anc.}} (X_i^{\text{data}} \otimes I^{\text{anc.}} ) (\ket{\Phi}_L \otimes \ket{+}_L) = X_i^{\text{data}} \ket{\Phi}_L \otimes X_i^{\text{anc.}}\ket{+}_L.
+    \overline{\text{C}}^{\text{data}}\overline{\text{NOT}}^{\text{anc.}} (X_i^{\text{data}} \otimes I^{\text{anc.}} ) (\ket{\Phi}_L \otimes \ket{+}_L) = X_i^{\text{data}} \ket{\Phi}_L \otimes X_i^{\text{anc.}}\ket{+}_L.
 \end{equation}
-We can then construct the measurements of $Z$-type stabilizer generators by measuring each qubit in the $Z$-basis and recombining the measurement results to construct the measurement of the generators of the stabilizer group.
-Note that we can also reconstruct the logical measurement of the $\bar{Z}$ of the ancilla, but the result will be random and will not give us any information about the state of the encoded data qubit.
+We can measure each qubit of the encoded ancilla block in the $Z$-basis and recombine the results to reconstruct the generators of the stabilizer group, which are of $Z$-type.
+Those reconstructed $Z$-stabilizers are then used to define the $Z$-part of the syndrome of the code state, containing the information about possible occurred $X$-errors.
+This is called a half-cycle, and in this case the $Z$-type half-cycle, as we only extract half the syndrome.
 
-While we use the propagation of errors from the data qubit onto the ancilla qubit, the propagation in the other direction still contributes to a residual error.
-The whole process is fault tolerant by construction, since the logical CNOT is transversal and therefore can only propagate at most one error onto each encoded code block.
-Moreover each measurement error will behave like a single data qubit, and as such is also fault tolerant. 
-This is because we measure each qubit at once and afterwards recombine, we can observe that each measurement error correspond to a single error on a data qubit, leading to two flipped syndrome bits on the corresponding adjacent stabilizers\footnote{In the case of the bulk, but this is enough to clarify this point.}.
-Note here the difference to the previous method, where a single measurement error only flipped a single syndrome bit.
+While we use the propagation of errors from the data qubits onto the ancilla qubits, the propagation in the other direction still occurs.
+As such in our example at the same time as possible $X$ errors are propagated onto the ancilla qubits from the data qubits, 
+$Z$-type errors that might have previously occurred on the ancilla qubit are propagated onto the data qubits.
+Such errors then show up in the residual error or are caught in the following half-cycle, dependent on the ordering.
 
-The decoding problem with those syndromes than corresponds to the task of decoding the error on the ancilla qubit, including the measurement errors. 
-The difference between the data qubit and the ancilla qubit will be accepted as part of residual error, as it at most introduces an error on the data qubit for each occurred error and is therefore still fault tolerant.
-Therefore a single round of syndrome extraction suffices to enable a fault tolerant QEC cycle.
+Note that we can reconstruct the logical measurement of the $\bar{Z}$ of the ancilla, but the result will be random and will not give us any information about the state of the encoded data qubit.
 
 The method described above is able to determine the $Z$-type part of the syndrome which detects $X$-errors.
-Due to symmetry the detection circuit for $Z$-type errors, so the measurement of the $X$-type stabilizer generators works nearly identical.
-
+We can realize the $X$-type half cycles nearly identical, by just a change of basis.
+\textcolor{red}{check if change of basis is the correct phrasing here!}
 We only change the ancilla to $\ket{0}_L$ and switch the orientation of the logical CNOT gate, using the ancilla as control qubit and having the data qubit as a target.
 Therefore $Z$-type errors will be propagated onto the ancilla where they will be measured by the parity checks and $Z$-type errors will contribute to the residual error.
 
-We will refer to each of those constructions as half-cycles.
 Note that we can influence the composition of the residual error by the choice of order of those half-cycles.
 The type of error which we will correct first will occur more often in the residual error for circuit level noise. 
 This is because there are more possible locations for errors that are not contributing to the corresponding syndrome part.
 We will show this again in \textcolor{red}{Put ref to propagated error model here.}.
 
 We can use this asymmetry in the order also to our advantage. 
-The error that is correct first has the advantage that less are added through circuit level noise by the syndrome extraction circuit, as such it might be able to recover from some errors that otherwise might obtain to much weight when their syndrome is extracted later.
+The error that is correct first has the advantage that less are added through circuit level noise by the syndrome extraction circuit, 
+as such it might be able to recover from some errors that otherwise might obtain to much weight when their syndrome is extracted later.
 Therefore the ordering of the circuit can be used to optimize if whatever is placed between QEC cycles is more susceptible to one kind of error or produces one kind of error more often. 
 
 Note that in our case for a memory experiment with multiple rounds the ordering does not matter, as we effectively get a symmetric bulk after the first and before the last correction.
 As long as we want to correct\footnote{Or in our case if we want to pretend to correct both type of errors.} both type of errors there is no advantage in changing the order from an alternating ordering for a memory experiment.
 
-We can quantify the resources needed for the cases where we want to use STEC to extract the syndrome for a logical qubit encoded in the surface code of distance $d$ with
+The whole process is fault tolerant by construction, since the logical CNOT is transversal and therefore can only propagate at most one error onto each qubit of the encoded code block per occurred error.
+Taking a look at the measurement errors flips two syndrome bits, of the adjacent stabilizer of the corresponding type. 
+Measurement errors in the STEC therefore behave fundamentally different than measurement errors on the conventional syndrome extraction circuit.
+For STEC they have an identical effect as data qubit errors, as they flip the two adjacent stabilizers, they can still not be distinguished from actual data qubit errors, 
+but importantly in correcting those we only inject a weight one error per occurred measurement error.
+Therefore the fault tolerance property of the code is preserved even under the influence of measurement errors.
+
+To point out the difference between both methods: 
+In Steane-type error correction each measurement error is indistinguishable from a data qubit error on a single qubit, due to the error being on a qubit level, because we measure on a qubit level.
+For the conventional syndrome extraction circuit we measure on a stabilizer level, measuring a whole stabilizer per measurement, as such the measurement error is on a stabilizer level 
+and the measurement error is indistinguishable from a chain of errors on data qubit connecting to the next boundary\footnote{Or to the next measurement error} if we would not account for those.
+
+We therefore needed to adapt for the measurement errors by repeating the syndrome extraction process to be able to detect those. 
+But for STEC we are still FT even under the influence of measurement errors. 
+We therefore can assume our syndrome to be free of measurement errors and we tolerate the resulting errors in the residual error by the concept of fault tolerance.
+We will go into more detail in section \ref{ssec:stec_decoder_adaption} on how the decoder and the error model feed to them needs to be adapted for STEC. 
+
+We can quantify the resources needed for STEC for the surface code of distance $d$ with
 \begin{align}
     n_{\text{ancilla}} &= 2n = 2 (d^2 + (d-1)^2) =  4d^2 -4d +2 \\
     n_{\text{meas.}} &= 2n  = 4d^2 -4d +2  \\
     n_{\text{time}} &= 2  \\
     n_{\text{CNOT}} &= 2n  =   4d^2 -4d +2\\
 \end{align}
-Note that we only take the time into account where the data qubits are needed, therefore we ignore the time steps needed for the measurement of the ancilla qubits and the time needed to encode the ancilla qubits.
+Note that we only take the time steps into account where the data qubits are needed, therefore we ignore the time steps needed for the measurement of the ancilla qubits 
+and the time needed to encode the ancilla qubits.
 The basis for this assumption is that we do not block the logical qubit, and the preparation and measurement can be done in parallel, to continued operations on the qubit.
 But this is also only a minor detail, the core advantage is that the time needed is constant and therefore independent of the distance of the code.
-Note as well that for those calculations of resources we neglected the resources needed for the encoding of the logical ancilla states.
+Note as well that for those calculations of resources we neglected the resources needed for the encoding of the logical ancilla states,
+as we assume that we have access to fault tolerant logical encoded ancilla qubits.
+This is a major assumption.
+\textcolor{red}{Name some possible approaches here on how to prepare logical encoded ancilla state.}
 
 The whole approach of STEC can be seen as a way to reduce the problem of syndrome extraction to a syndrome of state synthesis \cite{steane_type_EC_og_paper}. 
 As such the exact choice of a preparation circuit will influence the performance of the STEC approach. 
-But for a functioning QEC code we anyways have to find a way to fault tolerantly and verifiable create an basis state.
-Therefore this problem is not only required by STEC. 
+But for a functioning QEC code we have to find a way to fault tolerantly and verifiable create an basis state independent of the problem of syndrome extraction.
+Therefore this problem is not only posed by STEC \cite{steane_type_EC_og_paper}. 
 
 Note that we require that we know the syndrome of the used ancilla state with certainty.
-Otherwise we face the same problem described in the previous chapter, in uncertain syndrome errors lead to the possible implementation of high weight errors.
-This would also stop the STEC from working properly.
+Otherwise we face the same problem described in the previous chapter for the measurement errors, an uncertain syndrome errors lead to the possible implementation of high weight errors.
 For this thesis we assume that we have access to such ancilla states, with a determined syndrome and independent errors on each data qubit of the ancilla. 
 
-To summarize we can highlight that STEC is an approach to syndrome extraction which enables constant in time syndrome readout, no matter the distance of the code, at the cost of preparing a more complex ancilla state. 
+To summarize we can highlight that STEC is an approach to syndrome extraction which enables constant in time syndrome readout, no matter the distance of the code, 
+at the cost of preparing a more complex ancilla state. 
 In the process STEC minimizes the coupling between the data registry and the ancilla qubits and therefore reduces the noise obtained from the ancilla qubits. 
-The costs is that we have to find a way to prepare fault tolerant logical encoded qubits with a trusted syndrome, a task which need to solve anyways to obtain a completely functioning QEC code. 
+The costs is that we have to find a way to prepare fault tolerant logical encoded qubits with a trusted syndrome, 
+a task which need to solve to obtain a completely functioning QEC code regardless of the choice of syndrome extraction circuit. 
 
 
 
-\section{Decoder Adaption for the Steane Type Error Correction}
+\subsection{Decoder Adaption for the Steane Type Error Correction}\label{ssec:stec_decoder_adaption}
 
-\subsection{MWPM Decoder}
+\subsubsection{MWPM Decoder}
 
-\subsection{Efficient ML Decoder}
+\subsubsection{Efficient ML Decoder}
 
-\subsubsection{Numerical Underflow and possible fixes}
+\paragraph{Numerical Underflow and possible Fixes}
