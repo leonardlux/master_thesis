@@ -31,8 +31,6 @@ By taking a look at the examples of a trapped ion setup, we can illustrate why a
 In the quantum computer the quantum information is stored in a single excited state of an ion.
 In comparison the classical information contained in one bit is stored in approximately $10^4$ electrons \cite{classical_bits_electrons}.
 Therefore one can intuitively understand that a qubit is intrinsically less robust, than a classical bit in regards to errors, without even taking quantum processes into account.
-% An because we still need to stay in the quantum regime we can not simply increase the number of electrons for each physical qubit, this would destroy/decohere the quantum information. % can one say it like this? 
-% This is the approach to make my mother understand why we need QEC.
 
 To mitigate the influence of errors and safeguard the quantum information against errors, quantum error correction (QEC) codes were developed. %should put same papers here
 Quantum error-correction codes differ from classical error-correcting codes. 
@@ -59,7 +57,7 @@ The encoding used in this thesis belongs to this class of codes.
 Before that we discuss how we can correct errors at all, given that there are an endless amount of errors that can occur in the section about Pauli errors \ref{sec:pauli_errors}.
 % could also make sense to first introduce pauli errors. 
 
-% should I include a more general definition of QECC and an abstract circuit example or equations, to explain what exactly defines a QECC.
+% should I include a more general definition of QEC code and an abstract circuit example or equations, to explain what exactly defines a QEC code.
 % namely encoding + information extraction + decoding + correction
 
 % This is new at this position so adapt the previous and later text
@@ -136,7 +134,7 @@ A fact that we use to define the codespace.
 
 We can use the $n$-qubit Pauli group as a basis to express any quantum channel. 
 As it spans the space of all $n$-qubit linear operations.
-% Should I here discuss more the superoperators: maarten commentet this here in feedback 1
+% Should I here discuss more the Superoperators: Maarten commented this here in feedback 1
 Which will become important when we discuss general errors.
 
 We will refer to $X$-type Pauli operator as bit-flip, as this error flips the $\ket{0}$ state to the $\ket{1}$ state and vice versa 
@@ -652,7 +650,7 @@ This will be done in section \textcolor{red}{Put reference here!}.
 % Discuss here the difference influences on logical error rate?
 
 
-% done until here :Parttttyyyy:!
+% done until here, including Maartens feedback ... at least most of it :Party:!
 
 \section{Decoder}\label{sec:decoding_problem_general}
 
@@ -769,7 +767,7 @@ This mapping will be used to construct the matching graph \cite{pymatching,pymat
 
 If each error mechanism triggers at most two detectors, we can refer to the DEM as a graphlike error model.
 For this to be a valid assumption we might need to decompose the $Y$-type errors into $X$-type errors and $Z$-type errors ($Y = i XZ$), to ensure the graphlike property of our error model.
-We will at this point assume\footnote{This is a valid assumption for the surface code, if we introdcue boundary notes into our graph for errors connecting to the boundary \cite{topological_quantum_memory,pymatching_loger_paper}.} that we have such an error model.
+We will at this point assume\footnote{This is a valid assumption for the surface code, if we introduce boundary notes into our graph for errors connecting to the boundary \cite{topological_quantum_memory,pymatching_loger_paper}.} that we have such an error model.
 We then solve the $X$-type and $Y$-type MWPM decoding problems independently.
 
 We map this graph like error model onto a matching graph by representing the detector as  nodes and error mechanism as edges.
@@ -786,7 +784,7 @@ Finding a error consistent with the syndrome correspondence to finding a set of 
 To choose the most probable of such configurations we need to find the set of edges, that fulfills the above condition with the lowest total weight $\sum_E w(E)$. 
 Note at this point that we are following here the definition of an minimum weight embedded matching, which is a variation of the MWPM problem. 
 It is the basis of \texttt{PyMatching}, the implementation of th MWPM decoder which we are going to use \cite{pymatching_loger_paper}. 
-\textcolor{green}{should i name the algorithm (this blossom one) that is used to find the minimum weight machting? or should i say that it can be found in the paper?}
+\textcolor{green}{should i name the algorithm (this blossom one) that is used to find the minimum weight matching? or should i say that it can be found in the paper?}
 
 To keep tack of how the logical operator changes under the predicted error, we label each error in the DEM, respectively each edge in the matching graph, with the additional information on how the associated error mechanism commutes with the logical observable.
 This implements the Pauli frame tracking (see section \ref{sec:pauli_frame_tracking}) approach directly in the decoder. 
@@ -872,13 +870,13 @@ The associated logical operators are the logical bit-flip $\bar{Z}$, a string of
 and the logical phase-flip $\bar{X}$, a string of $X$-type Paulis connecting the smooth boundaries (left and right site).
 One representation of each is shown in figure \ref{fig:surface_code_explaination}.
 As the logical operators need to connect the boundaries, we can identify the code distance $d$ as the minimal number of qubits along such a line, which is the length of the lattice.
-% Should I make a connection here to the noncontrcatable loops of the toric code?
+% Should I make a connection here to the noncontractable loops of the toric code?
 
 
 \begin{figure}[]
     \centering
     \includegraphics[width=0.8\linewidth]{graphics/surface_code_sketch.jpg}
-    \caption{Figure showing the configuration of the surface code. A proper caption will follow when I redo this image properly. I should change the logical X to the top row, to follow the defintion used in my python code.}
+    \caption{Figure showing the configuration of the surface code. A proper caption will follow when I redo this image properly. I should change the logical X to the top row, to follow the definition used in my python code.}
     \label{fig:surface_code_explaination}
 \end{figure}
 
@@ -904,7 +902,7 @@ This algorithm is the reason we choose to use the surface code.
 We could use any CSS code as an underlying encoding for Steane type error correction, because in all CSS codes logical CNOT gates can be implemented transversely. 
 
 
-% Should I talk about syndrome extraction and state initilization 
+% Should I talk about syndrome extraction and state initialization 
 
 \section{Recovery and Pauli Frame Tracking}\label{sec:pauli_frame_tracking}
 
