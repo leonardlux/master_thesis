@@ -1,0 +1,160 @@
+\chapter{Results}\label{chapter:results}
+
+Having introduced all the necessary components we can start looking at the results.
+What follows is a rough outline of the results chapter with reference to the previous chapters and section in which we introduced the necessary concepts.
+
+In the results chapter we look at the thresholds (see section \ref{ssec:threshold_theorem}) of different configurations.
+All of those configurations are encoded in the surface code (see section \ref{sec:kitaev_surface_code}) with varying code distance $d$.
+We change the applied error model (see section \ref{ssec:error_models}) and the syndrome extraction circuit (see section \ref{ssec:syndrome_extraction}),
+with the goal of characterizing the Steane-type error correction circuit (see section \ref{sssec:steane_type_error_correction_intro}). 
+
+In the first section (section \ref{sec:results_code_capacity}) we will test our implementation of STEC by comparing the observed threshold of the simulation under the code capacity noise model, 
+with analytically predicted thresholds, to show that everything works as expected.
+Here we will also highlight the performance and problems with ML decoding, namely the numerical underflow issue, further discussed in the appendix \ref{chapter:numerical_underflow}, 
+and we will go through an example of the data collapse method of finite size scaling analysis, as introduced in section \ref{eq:data_collapse_method}, applied to our simulated data.
+
+This is followed by the characterization of STEC under circuit level noise, in section \ref{sec:results_circuit_lvl}.
+Here we use the conventional syndrome extraction circuit, as described in section \ref{sssec:standard_syndrome_extraction_circuit}, as a reference to which we compare STEC.
+Looking at the threshold of a single QEC cycle utilizing STEC syndrome extraction, in section \ref{ssec:results_circ_single_cycle}, 
+we can highlight the observed difference in ordering and show the influence that the choice of decoding algorithm has on the results. 
+We will discuss separately how the decoding algorithm of the residual error, which is required as described in section \ref{sec:fault_tolerance}, influences the results in subsection \ref{sssec:ml_ft_decoding}.
+
+We can then further characterize STEC by simulating and analyzing multiple consecutive independent QEC cycles, as shown in section \ref{ssec:results_circ_multiple_cycles}.
+This analysis shows the relevance of the incoming error and points towards a stable threshold, that is reached after multiple rounds.
+Comparing the STEC approach to the conventional syndrome extraction, or at least to the upper bound of it, due to our simplifying assumptions as described in \ref{ssec:conv_se_circ_lvl_noise_adaption}, 
+will give us an estimate that the threshold of STEC is higher thant that of the conventional approach by a factor of approximately two.
+
+The final conclusion of those results will then be drawn in chapter \ref{chapter:conclusion}.
+
+\section{Code Capacity}\label{sec:results_code_capacity}
+
+We start our result chapter by simulating the STEC extraction circuit with a code capacity noise model, 
+to get thresholds which we can compare to predicted analytical threshold for the ML \cite{topological_quantum_memory} and MWPM \cite{efficient_decoding_algorithm,MWPM_threshold_paper} case.
+
+We use in this case four different configuration, consisting of two possible choices of observable, and corresponding error model, and two choice of decoding algorithms.
+In this simulation we always use the STEC extraction circuit.
+For the observable we either measure the logical $\bar{Z}$ observable, in combination with a code capacity model implementing bit-flip errors ($X$-errors) after the initialization,
+or we measure the $\bar{X}$ observable, while simulating a circuit with phase-flip errors ($Z$-errors) as the noise source.
+Regarding the decoder algorithm we use the two decoding algorithm introduced in section \ref{sec:decoding_problem_general}, either MWPM or ML decoding.
+Note that for this case the ML decoder is exact, as it assumes either bit-flip or phase-flip noise, which is the case in this example.
+
+For each of those measurement series we perform the analysis, described in the threshold chapter \ref{ssec:threshold_theorem}, to determine the threshold.
+To show the intermediate results and highlight some aspects of this approach we have discussion and describe the process and its intermediate results in section \ref{ssec:results_example_process}.
+
+
+
+% Discuss results first before going into details about how those are obtained?!
+% good agreement 
+% ml might show finite size effects, might want to switch to distance 7 (show 3,5,7) 
+
+
+\subsection{Example Process and Intermediate Results}\label{ssec:results_example_process}
+
+In the following we will show and discuss the analysis and intermediate results in the process to determining the threshold of the configuration 
+where we observed logical $\bar{Z}$ observable and decode the syndrome using the efficient ML decoder.
+
+We use the \texttt{stim} library to construct and simulate the quantum circuit, with the designated noise model, to obtain the syndrome and observable measurement, the logical $\bar{Z}$ in this case. 
+The syndromes are then decoded using the decoder of choice, adapted to this noise model and circuit.
+Utilizing Pauli frame tracking, introduced in section \ref{sec:pauli_frame_tracking}, we can check if the measurement agrees with the predicted recovery or if the recovery would have been unsuccessful.
+Based on those results we can determine the logical error rate $p_{log}$.
+
+We repeat this simulation multiple times, while varying the code distance $d$ of the surface code of the simulated quantum circuit, and the physical noise rate $p_{phy}$ of the noise model.
+Each of those simulations is itself repeat a number of times which we will refer to as the number of shots $n_{shots}$, where each shots results in a logical observable that need to be predicted.
+
+We can then plot the logical error rate $p_{log}$ against the physical error rate $p_{phy}$ for the multiple code distance $d$ we simulated. 
+As explained in section \ref{sec:kitaev_surface_code}, we limit ourselves to odd distance codes and we furthermore start our analysis at distance $d=5$ to avoid some finite size effects. 
+We will discuss those finite size effects in more detail towards the end of this chapter.
+For the physical error rate $p_{phy}$ we limited by physics to the interval $0 < p_{phy}<1 $.
+To use reasonable physical error rates $p_{phy,i}$ for the noise model we use physical error rates which are equally spaced on a logarithmic scale around an expected threshold $\tilde{p}_{th}$
+\begin{equation}
+    p_{phy,i} = \tilde{p}_{th} \cdot 10^{k\cdot i}, \ 0 < k < 1, \ i \in \{-N,...,N\}.
+\end{equation}
+We will further limit the interval in a later step of the analysis. 
+% name scaling convention for physical error rate, logspace, equaly distacne .... so on and so on 
+The results can be seen in figure \ref{fig:results_code_capcity_Z_ml_p_log_p_phy} for the logical $\bar{Z}$ observable, under circuit level noise and using the efficient ML decoder.
+
+We can spot the approximate location of the threshold as the point where the logical error rates of different code distances cross, as described in section \ref{ssec:threshold_theorem}. 
+The asymptotic behavior described by equation \ref{eq:p_log_asymptotic_behavior}, can also be identified toward low physical error rates.
+
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.6\linewidth]{graphics/circ_ml_z_log_error_rate_complete_rejection_rate.pdf}
+    \caption{
+        \textcolor{red}{update this image to be the correct image!!!}
+        }
+    \label{fig:results_code_capcity_Z_ml_p_log_p_phy}
+\end{figure}
+
+Given that we here used the ML decoder, we encounter the numerical underflow problem in this implementation, as shown by the faint blue line in figure \ref{fig:results_code_capcity_Z_ml_p_log_p_phy}.
+The faint blue line shows the rejection rate and we reject those shots in which we detected the numerical underflow problem during the decoding process.
+Here we can state that in the interval in which we are interest in, the interval around the thresholds, the numerical rejection rate is low enough to be ignored.
+This problem and possible solutions are further discussed in the appendix in section \ref{chapter:numerical_underflow}. 
+Note that the MWPM decoder does not suffer from the same problem. 
+
+To correctly determine the threshold we continue our analysis with the data collapse method.
+For this we limit the interval of interest to the one shown in figure \ref{fig:results_code_capcity_Z_ml_p_log_p_phy_small_window}.
+This interval is chosen to be centered around the observed threshold and limited to be close to the phase transition for the finite size scaling analysis.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.6\linewidth]{graphics/circ_ml_z_log_error_rate_complete_rejection_rate.pdf}
+    \caption{
+        \textcolor{red}{update this image to be the correct image!!! should be cut out of plog against pphy of the interval used for fssa}
+        }
+    \label{fig:results_code_capcity_Z_ml_p_log_p_phy_small_window}
+\end{figure}
+
+The data collapse method, described in section \ref{eq:data_collapse_method}, collapse the data points of the chosen interval, shown in figure \ref{fig:results_code_capcity_Z_ml_p_log_p_phy_small_window},
+onto a single curve and in this process the critical exponent and the threshold are determined. 
+Looking at the collapsed data point on a curve, as shown in figure \ref{fig:results_code_capcity_Z_ml_p_log_p_phy_collapsed_data}, is an indication if this method was successful.
+We therefore show the curves of all of those fitting used in this thesis in the appendix in section \ref{appendix:data_collapse_figures}. 
+For this case the data collapse method worked and we were able to correctly determine the threshold.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.6\linewidth]{graphics/circ_ml_z_log_error_rate_complete_rejection_rate.pdf}
+    \caption{
+        \textcolor{red}{update this image to be the correct image!!! should be collapsed curve}
+        }
+    \label{fig:results_code_capcity_Z_ml_p_log_p_phy_collapsed_data}
+\end{figure}
+
+This method can fail if we use a wrong initial estimate for the threshold.
+Including the distance $d=3$ also leads to a worse behavior, as the finite size effects become stronger and our assumption behind the data collapse method become less valid.
+\textcolor{red}{show example for low distances?}
+
+
+\section{Circuit Level}\label{sec:results_circuit_lvl}
+
+% shortly introduce circuit level as the design where the syndrome extraction circuit difference becomes relevant
+% motivate again why circuit level and refer back to previous section about circuit level encoding
+
+% shortly discuss the numerical underflow issue of the decoder then point to the appendix for further reference and discussion
+
+\subsection{Single QEC Cycle}\label{ssec:results_circ_single_cycle}
+% repeat the setup as described in the previous chapter 
+
+% highlight use of mwpm perfect matching as a residual weight decoding approach
+
+% Show single round circuit level noise behaviour 
+
+% point out the differences:
+% difference in decoding, once again
+% difference in ordering -> hard to judge apriori which should be higher
+
+% lead to influence of incomming error -> motivated repeated syndrome extraction and decoding 
+
+% compare to conventional syndrome extraction circuit,
+% comment on the different amount of ressources required 
+% name again the simplfying assumption of conventional decoding!
+
+\subsubsection{ML Decoding Residual Error}\label{sssec:ml_ft_decoding}
+
+% discuss decoding of residual error using an ml decoder
+% error rate approximated using the physical error rate, not exact just testing
+
+\subsection{Multiple independent QEC Cycles}\label{ssec:results_circ_multiple_cycles}
+
+% talk about implementation 
+

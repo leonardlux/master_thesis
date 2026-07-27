@@ -262,40 +262,45 @@ Such errors then show up in the residual error or are caught in the following ha
 Note that we can reconstruct the logical measurement of the $\bar{Z}$ of the ancilla, but the result will be random and will not give us any information about the state of the encoded data qubit.
 
 The method described above is able to determine the $Z$-type part of the syndrome which detects $X$-errors.
-We can realize the $X$-type half cycles nearly identical, by just a change of basis.
-\textcolor{red}{check if change of basis is the correct phrasing here!}
+We can realize the $X$-type half cycles nearly identical.
 We only change the ancilla to $\ket{0}_L$ and switch the orientation of the logical CNOT gate, using the ancilla as control qubit and having the data qubit as a target.
-Therefore $Z$-type errors will be propagated onto the ancilla where they will be measured by the parity checks and $Z$-type errors will contribute to the residual error.
+Therefore $Z$-type errors will be propagated onto the ancilla where they will be measured by the parity checks and $X$-type errors will contribute to the residual error.
 
 Note that we can influence the composition of the residual error by the choice of order of those half-cycles.
-The type of error which we will correct first will occur more often in the residual error for circuit level noise. 
-This is because there are more possible locations for errors that are not contributing to the corresponding syndrome part.
-We will show this again in \textcolor{red}{Put ref to propagated error model here.}.
+The type of error which we will correct first will occur more often in the residual error for circuit level noise, 
+due to the errors being propagated from the ancilla qubits on the data qubits being of different type depending on the type of half-cycle.
+Note that the errors propagated onto the data qubits by the first half-cycle are detected by the second half-cycle.
+As such the errors propagated through the CNOT of the second half-cycle are part of the undetectable residual error\footnote{
+    The noise introduced by the CNOT gate itself is also part of the residual error, but this noise is itself symmetric, and we therefore do not discuss it here.
+} and those errors are only of one type. 
 
-We can use this asymmetry in the order also to our advantage. 
-The error that is correct first has the advantage that less are added through circuit level noise by the syndrome extraction circuit, 
-as such it might be able to recover from some errors that otherwise might obtain to much weight when their syndrome is extracted later.
+We can use the asymmetry in the order to our advantage. 
+The first corrected has the advantage of a lower number of possible circuit level error locations in the syndrome extraction circuit before the syndrome extraction.
+It might therefore be able to recover from some errors that would obtain an uncorrectable weight if they were extracted later in the circuit. 
 Therefore the ordering of the circuit can be used to optimize if whatever is placed between QEC cycles is more susceptible to one kind of error or produces one kind of error more often. 
 
-Note that in our case for a memory experiment with multiple rounds the ordering does not matter, as we effectively get a symmetric bulk after the first and before the last correction.
-As long as we want to correct\footnote{Or in our case if we want to pretend to correct both type of errors.} both type of errors there is no advantage in changing the order from an alternating ordering for a memory experiment.
+Note that for a memory experiment with multiple rounds the ordering we effectively get a symmetric bulk between the first and last correction.
+As such the ordering effect should become less relevant.
 
-The whole process is fault tolerant by construction, since the logical CNOT is transversal and therefore can only propagate at most one error onto each qubit of the encoded code block per occurred error.
-Taking a look at the measurement errors flips two syndrome bits, of the adjacent stabilizer of the corresponding type. 
-Measurement errors in the STEC therefore behave fundamentally different than measurement errors on the conventional syndrome extraction circuit.
-For STEC they have an identical effect as data qubit errors, as they flip the two adjacent stabilizers, they can still not be distinguished from actual data qubit errors, 
-but importantly in correcting those we only inject a weight one error per occurred measurement error.
+The whole process is fault tolerant by construction, since the logical CNOT is transversal\footnote{
+    As the whole STEC is transversal the different qubit of a codeblock do not share any interaction. 
+    Therefore there is no path for an error to be propagated along onto two qubits of the same codeblock, assuming that error happen localized on qubits, which we do.
+} and therefore can only propagate at most one error onto each qubit of the encoded code block per occurred error.
+Taking a look at the measurement errors, they flip two syndrome bits of the adjacent stabilizer of the corresponding type. 
+Measurement errors in the STEC therefore behave fundamentally different from measurement errors in the conventional syndrome extraction circuit.
+For STEC they have an identical effect as data qubit errors, as they flip the two adjacent stabilizers. 
+We can still not distinguish the syndrome of a measurement error from the syndrome of a data qubit error, 
+but importantly in correcting those we only inject a data qubit error, which is of weight one, per occurred measurement error, if the decoder makes the wrong choice.
 Therefore the fault tolerance property of the code is preserved even under the influence of measurement errors.
 
 To point out the difference between both methods: 
-In Steane-type error correction each measurement error is indistinguishable from a data qubit error on a single qubit, due to the error being on a qubit level, because we measure on a qubit level.
-For the conventional syndrome extraction circuit we measure on a stabilizer level, measuring a whole stabilizer per measurement, as such the measurement error is on a stabilizer level 
-and the measurement error is indistinguishable from a chain of errors on data qubit connecting to the next boundary\footnote{Or to the next measurement error} if we would not account for those.
-
-We therefore needed to adapt for the measurement errors by repeating the syndrome extraction process to be able to detect those. 
+In Steane-type error correction each measurement error is indistinguishable from a data qubit error on a single qubit, due to the error being on a qubit level, as we measure on a qubit level.
+For the conventional syndrome extraction circuit we measure on a stabilizer level, measuring a whole stabilizer per measurement, as such the measurement error is on a stabilizer level. 
+Therefore the measurement error is indistinguishable from a chain of errors on data qubit connecting to the next boundary\footnote{Or to the next measurement error} if we would not account for those.
+We therefore needed to adapt for the measurement errors by repeating the syndrome extraction process to be able to distinguish between measurement errors and chains of errors.
 But for STEC we are still FT even under the influence of measurement errors. 
-We therefore can assume our syndrome to be free of measurement errors and we tolerate the resulting errors in the residual error by the concept of fault tolerance.
-We will go into more detail in section \ref{ssec:stec_decoder_adaption} on how the decoder and the error model feed to them needs to be adapted for STEC. 
+We therefore can assume our syndrome to be free of measurement errors and tolerate the resulting errors in the residual error by the concept of fault tolerance.
+We will go into more detail in section \ref{ssec:stec_decoder_adaption} on how the decoder and the error model fed to them needs to be adapted for STEC. 
 
 We can quantify the resources needed for STEC for the surface code of distance $d$ with
 \begin{align}
@@ -304,10 +309,9 @@ We can quantify the resources needed for STEC for the surface code of distance $
     n_{\text{time}} &= 2  \\
     n_{\text{CNOT}} &= 2n  =   4d^2 -4d +2\\
 \end{align}
-Note that we only take the time steps into account where the data qubits are needed, therefore we ignore the time steps needed for the measurement of the ancilla qubits 
+Note that only count the time steps where the data qubits are acted on by the syndrome extraction circuit, therefore we ignore the time steps needed for the measurement of the ancilla qubits 
 and the time needed to encode the ancilla qubits.
-The basis for this assumption is that we do not block the logical qubit, and the preparation and measurement can be done in parallel, to continued operations on the qubit.
-But this is also only a minor detail, the core advantage is that the time needed is constant and therefore independent of the distance of the code.
+The fact that STEC is constant in time even for the circuit level noise case is a major advantage of STEC in comparison with the conventional syndrome extraction circuit. 
 Note as well that for those calculations of resources we neglected the resources needed for the encoding of the logical ancilla states,
 as we assume that we have access to fault tolerant logical encoded ancilla qubits.
 This is a major assumption.
@@ -319,8 +323,10 @@ But for a functioning QEC code we have to find a way to fault tolerantly and ver
 Therefore this problem is not only posed by STEC \cite{steane_type_EC_og_paper}. 
 
 Note that we require that we know the syndrome of the used ancilla state with certainty.
-Otherwise we face the same problem described in the previous chapter for the measurement errors, an uncertain syndrome errors lead to the possible implementation of high weight errors.
-For this thesis we assume that we have access to such ancilla states, with a determined syndrome and independent errors on each data qubit of the ancilla. 
+Otherwise we face the same problem described in the previous chapter regarding the measurement errors: 
+an uncertain syndrome errors lead to the possible implementation of high weight errors, as we once again have syndrome level errors.
+For this thesis we assume that we have access to ancilla states with a fixed and known syndrome in addition to independent depolarizing errors on each data qubit of the ancilla. 
+We place those independent depolarizing errors on top of the ancilla to model the requirement that those are only needed to be prepared fault tolerantly in a circuit level noise model.
 
 To summarize we can highlight that STEC is an approach to syndrome extraction which enables constant in time syndrome readout, no matter the distance of the code, 
 at the cost of preparing a more complex ancilla state. 
@@ -328,12 +334,93 @@ In the process STEC minimizes the coupling between the data registry and the anc
 The costs is that we have to find a way to prepare fault tolerant logical encoded qubits with a trusted syndrome, 
 a task which need to solve to obtain a completely functioning QEC code regardless of the choice of syndrome extraction circuit. 
 
-
-
 \subsection{Decoder Adaption for the Steane Type Error Correction}\label{ssec:stec_decoder_adaption}
 
-\subsubsection{MWPM Decoder}
+We will use this section to discuss how we need to adapt the STEC approach, with a focus on the decoding process, for either a code capacity noise model or a circuit level noise model. 
 
-\subsubsection{Efficient ML Decoder}
+Starting with the code capacity case.
+As the syndrome extraction circuit design does not make a difference for the code capacity case we can trivially use the same decoding principles with the same error model independently of the extraction circuit choice. 
+As such we should obtain the same threshold regardless of the choice of extraction circuit, only dependent on the decoder and its performance as discuss in section \ref{sec:decoding_problem_general}.
 
-\paragraph{Numerical Underflow and possible Fixes}
+The problem becomes more interesting for the circuit level noise model.
+Where we needed to adapt the conventional syndrome extraction circuit to guarantee fault tolerance, such an adaption was not needed for the STEC approach, as it is FT by design. 
+We already pointed out, that measurement errors in STEC are of qubit level and as such can be fault tolerantly regarded as part of the residual error.
+As such we do not need to take them into account and resulting from this we can assume the syndrome extracted by STEC to be free of measurement noise, as a true representation of only data qubit errors.
+
+Looking at the circuit construction, we can then reinterpret the task of the decoder as the task of correcting the error accumulated on the ancilla qubit.
+This for the code capacity case is the identical problem, 
+but for the circuit level noise model we accept that we inject the difference of data qubit errors, between the logical ancilla qubit and the logical data qubit, as an error on the data qubit in the recovery.
+As previously argued such an error is still preserves the fault property of the circuit. 
+
+What changes by this reasoning is the noise model we use as part of the decoding.
+Instead of taking into account the probability of a given error on the qubit of the encoded data block, we instead want to quantify the probability of the logical encoded ancilla block. 
+To determine this error model we meed to propagate the noise models onto the ancilla qubits to optimize our decoding process. 
+Due to the transversal property of the syndrome extraction and noise model, it suffices to look at a single data and ancilla qubit pair and its associated errors.
+
+It is a trivial task to find the propagated error model for the code capacity case, as the depolarizing noise channel sits only on the data qubit after the initialization.
+The $X$($Z$)-component of each error is propagated along the CNOT gate of the $Z$($X$)-type half cycle onto the corresponding ancilla qubit, where it is then measured.
+Note that the $Y$-error, which is also part of the depolarizing noise, is partly propagated onto both half cycles. 
+As such the resulting error model is identical and we do not need to make any adaptions to the error model for the code capacity case.
+
+This is different for the circuit level noise model.
+Here the task becomes more complex to the multitude of different noise sources, one for each gate, initialization and measurement.
+We will explicitly calculate the propagated noise model in the appendix, see section .\textcolor{red}{Add propagated noise model to the appendix!}
+
+The key result of this propagated model, is the model itself which we can use to perform maximum likelihood decoding on the ancilla.
+We also investigated if we could modify the different noise probabilities of the different sources of the circuit level noise model, to obtain a simpler noise model\footnote{
+    Here we refer to symmetric noise models, like bit- and phase-flip or depolarizing noise models. 
+    For a detailed description see section\textcolor{red}{Add propagated noise model to the appendix!}.
+} on the ancilla qubit, with the result that such an noise model does not exist for the low error rate regime we are interested in.
+For further details and an in-depth description see the appendix section \textcolor{red}{Add propagated noise model to the appendix!}.
+
+We will shortly summarize the results and implications on the two decoding approaches we use in the following two subchapter.
+
+\subsubsection{MWPM Decoder}\label{sssec:stec_decoder_adaption_MWPM}
+
+For STEC we have already discussed, that we can neglect the measurement errors in our decoding process, just accepting their existence and counting them towards the residual error.
+We are therefore in principle decoding a noiseless syndrome of the ancilla qubit, akin to the code capacity case for the underlying encoding, 
+where the specific error model of the code capacity case is determined by the error model propagated onto the ancilla qubit.
+
+The STEC circuit and the circuit level noise model is fully transversal, meaning that each qubit is acted on identically, regardless of the position in the encoded block.
+Based on this observation we can conclude that the resulting propagated error model is transversal, meaning that the error channel of each qubit has an identical form an identical probabilities.
+This results in all edges of the matching graph being equally weighted.
+And if we would change the probability of the circuit level noise model, we would just rescale this global weight, keeping the ratios between the edges fixed.
+Under those conditions the task of finding the mapping with the minium weight, is equivalent of finding the mapping with the minimum amount of edges.
+So the shortest connection between all triggered detectors on the detector graph.
+Therefore the MWPM decoder becomes independent of the actual probability $p_{phy}$ of the error model.
+
+So far we reduced the decoding task from a circuit level error model on the STEC circuit, to a code capacity noise model with arbitrary error rate $p_{phy}$.
+This can be furthermore simplified, as the MWPM decoder treats $X$- and $Z$-type errors independently \cite{pymatching_loger_paper}.
+
+We thus can decode both half cycle independently, and we can reduce our error model for the decoder to a bit- or phase-flip model, depended on which half-cycle of the circuit we want to decode ($Z-$ or $X-$ half-cycle).
+
+For our case the MWPM decoder is therefore identical to the MWPM decoder of a surface code under code capacity bit- or phase-flip noise.
+
+We will implement this decoder by constructing the corresponding detector error model using \texttt{stim} \cite{stim}, 
+from which we can then generate the decoder and solve the decoder problem using \texttt{PyMatching} \cite{pymatching_loger_paper}. 
+
+
+Due to the independence of the performance of actual probability of the noise model, we will also use this MWPM decoder for the decoding of the residual error, even when we use ML decoding to decoder the syndrome of the syndrome extraction circuit.
+\textcolor{red}{put a reference here}.
+
+
+\subsubsection{Efficient ML Decoder}\label{sssec:stec_decoder_adaption_ML}
+
+For the maximum likelihood decoding approach we need to take a slightly different approach.
+We can still use the transversal property to map the decoding problem back to a surface code with a changed error model, 
+but this decoder requires the actual probabilities and therefore we need to calculate the propagated error model, 
+as calculated in \textcolor{red}{put a reference here}.
+
+Because we are only decoding the syndrome of the ancilla and are neglecting the measurement errors, one could argue that the resulting that we are not doing maximum likelihood decoding anymore.
+But because we are using the same approach we will continue to refer to this method as ML decoding, leaving the question open if this is truly an ML approach for STEC.
+
+As mentioned in section \ref{sec:kitaev_surface_code} we explicitly choose the surface code to be able to use an efficient and precise ML decoding algorithm \cite{efficient_decoding_algorithm}.
+This decoding algorithm\footnote{
+    Note that the same paper also introduces an approximate ML decoder for correlated error models based on tensor networks.
+    Based on the the time limit of this work, we were not able to implement this decoding approach yet.
+} assumes that the noise model consists of either bit- or phase-flip error and as such only corrects one type of error at a time, similar to MWPM.
+Therefore we treat bit- and phase-flip error and the respective half-cycles independently, decoding them independently. 
+
+We will discuss some implementation difficulties in the appendix under section \ref{}.
+\textcolor{red}{put a reference to numerical underflow problem}
+

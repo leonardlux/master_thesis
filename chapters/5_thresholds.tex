@@ -66,6 +66,7 @@ The fault tolerant distance $d$ code is guaranteed to correct $t=(d-1)/2$ indepe
 Therefore we require $t+1$ fault to cause a logical error, resulting in a logical error rate which scales in leading order as 
 \begin{equation}
     \lim_{p_{phy} \rightarrow 0} p_{log} \propto  p_{phy}^{(t+1)}= p_{phy}^{((d+1)/2)}.
+    \label{eq:p_log_asymptotic_behavior}
 \end{equation}
 
 % Necessary lines?
@@ -76,7 +77,7 @@ At the threshold the logical error rate curves for different distances cross.
 The threshold correspond to the critical value in the physical noise rate of the first-order phase transition, as shown in \cite{fundamental_thresholds}.
 Therefore we can use methods from finite-size scaling analysis to identify the value of the threshold. 
 
-\subsection{Data Collapse Method}
+\subsection{Data Collapse Method}\label{ssec:data_collapse_method}
 
 We use the \emph{Data Collapse Method} (DCM) to determine the threshold, utilizing the logical error rate curves $p_{log,d}(p_{phy})$ for different code distances $d$ that we simulated \cite{pyfssa}.
 

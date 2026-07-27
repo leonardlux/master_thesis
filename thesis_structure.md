@@ -60,7 +60,24 @@ answer questions from the presentation
     + work in additivity of syndromes
 
 7. place final statement of seperation of paulis at the start of the chapter
+    + here i am talking about the basic intro chapter
 
+8. implementation of encoding ? 
+    + and how does this interact with STEC?
+
+10. propagated noise model appendix!
+
+11. mapping multiple errors to the same edges? is that happening? does this influence the argument of p beeing cyclic in the probability?
+
+12. numerical underflow in the appendix
+
+13. Danksagung 
+
+14. reedit error estimate on data collapse method
+
+15. name the adaption of the decoder to the different configurations more clearly?
+
+16. plot the asymptotic growth as fitted lines?
 
 # Master Thesis Structure
 
