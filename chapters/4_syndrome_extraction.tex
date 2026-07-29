@@ -10,7 +10,7 @@ For the circuit level noise model we require that the syndrome extraction circui
 As such it need to be fault tolerant in regards to the errors directly introduced on the data qubits by gates of the syndrome extraction circuit 
 and errors which are the result of a wrong choice of recovery operation based on a faulty syndrome that was feed to the decoder.
 We will discuss how to adapt syndrome extraction circuits and their associated decoding processes to circuit level noise, to enable a fault tolerant syndrome extraction, 
-in detail in the section \ref{} and \ref{}. \textcolor{red}{put ref here}
+in detail in the section \ref{ssec:conv_se_circ_lvl_noise_adaption} and section \ref{ssec:stec_decoder_adaption}. 
 
 This thesis in centered around the characterization of \emph{Steane Type Error Correction} (STEC), which is a type of syndrome extraction circuit design and will be introduced in section \ref{sssec:steane_type_error_correction_intro}.
 As a baseline and comparison we use the conventional syndrome extraction approach, shown in section \ref{sssec:standard_syndrome_extraction_circuit}.
@@ -190,7 +190,7 @@ Moreover the number of round required scaled with the code distance $d$ and as s
 Note that for a finite time interval measurement errors in the last syndrome extraction step, are never distinguishable from spatial errors. 
 A possible solution for this is the overlapping recovery method \cite{topological_quantum_memory}.
 
-\subsubsection{Assumptions and Resources}
+\subsubsection{Assumptions and Resources}\label{sssec:assumptions_conv_sec}
 
 Given that we want to use the conventional syndrome extraction circuit as an reference value we can make a few assumptions to simplify the decoding problem, 
 while at the same time obtaining an upper bound for this syndrome extraction circuits performance.
@@ -210,9 +210,9 @@ And lastly the number of CNOT gates required $n_{\text{CNOT}}$.
 The results are
 \begin{align}
     n_{\text{ancilla}} &= m = 2d^2 -2d \\
-    n_{\text{meas.}} &=  m \cdot d = 2d^3 -2d^2 \\
+    n_{\text{meas.}} &=  m \cdot d = 2d^3 -2d^2 \label{eq:measurements_conv_repeated}\\
     n_{\text{time}} &= 4 d \\
-    n_{\text{CNOT}} &= (4m - 4(d-1)) \cdot d = 8d^3 - 4 d^2 -4d \\
+    n_{\text{CNOT}} &= (4m - 4(d-1)) \cdot d = 8d^3 - 4 d^2 -4d \label{eq:cnots_conv_repeated} \\
 \end{align}
 ,where $m$ is the number of generators of the stabilizer group and $d$ is the distance of the code. 
 
@@ -305,9 +305,9 @@ We will go into more detail in section \ref{ssec:stec_decoder_adaption} on how t
 We can quantify the resources needed for STEC for the surface code of distance $d$ with
 \begin{align}
     n_{\text{ancilla}} &= 2n = 2 (d^2 + (d-1)^2) =  4d^2 -4d +2 \\
-    n_{\text{meas.}} &= 2n  = 4d^2 -4d +2  \\
+    n_{\text{meas.}} &= 2n  = 4d^2 -4d +2 \label{eq:measurements_stec} \\
     n_{\text{time}} &= 2  \\
-    n_{\text{CNOT}} &= 2n  =   4d^2 -4d +2\\
+    n_{\text{CNOT}} &= 2n  =   4d^2 -4d +2 \label{eq:cnot_stec}\\
 \end{align}
 Note that only count the time steps where the data qubits are acted on by the syndrome extraction circuit, therefore we ignore the time steps needed for the measurement of the ancilla qubits 
 and the time needed to encode the ancilla qubits.

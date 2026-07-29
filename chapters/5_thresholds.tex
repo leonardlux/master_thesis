@@ -39,7 +39,7 @@ We calculate the logical error rate $p_{log,d}(p_{phy})$ by simulating the quant
 The simulation start with the data qubit in a known state dependent on the observable we want to measure.
 If we want to measure the logical $\bar{Z}$ ($\bar{X}$) observable we encode the data qubit at the start of our experiment in the logical encoded $\ket{0}_L$  ($\ket{+}_L$) state.
 We then simulate the circuit with the given error model and syndrome extraction circuit to generate measurement results for the logical observable and syndromes, using the quantum simulator \texttt{stim} \cite{stim}.
-In the last step we use the choosen decoder, to decode the syndrome returning a prediction for the occurred error.
+In the last step we use the chosen decoder, to decode the syndrome returning a prediction for the occurred error.
 Utilizing pauli frame tracking (see section \ref{sec:pauli_frame_tracking}) we can compare the predicted measurement with the result of the simulation. 
 We count the number of times the prediction disagrees with the simulation result $n_{errors}$ to calculate the logical error rate for a given number of shots $n_{shots}$ 
 \begin{equation}
@@ -58,8 +58,7 @@ We can not detect if a logical $X$-type ($Z$-type) error occurred if we use a $\
 One could realize a simulation detecting both type of errors at the same time using a reference system to create an initial pure state, as used in \cite{quantum_data_processing,fundamental_thresholds} and referred to as coherent information setup.
 
 
-An example of how the logical error curves $p_{log,d}(p_{phy})$ look like can be seen in figure \ref{}.
-\textcolor{red}{Include graphic here? (or should i refer to result part)}
+An example of how the logical error curves $p_{log,d}(p_{phy})$ look like can be seen in figure \ref{fig:results_code_capcity_Z_ml_p_log_p_phy}.
 
 For the asymptotic behavior of the logical error rate, for small physical noise rates, we can state the following:
 The fault tolerant distance $d$ code is guaranteed to correct $t=(d-1)/2$ independent faults, each with a noise rate proportional to the physical noise rate $p_{phy}$.
@@ -120,8 +119,10 @@ We can task the optimizer to find the minimal value for the mean of all weighted
 The optimizer we utilize is \texttt{scipy.optimize.minimize} from the \texttt{scipy} package \cite{Scipy}.
 The decoder repeats the steps described above, recalculating the equations with new estimates of the threshold and critical exponent, until it minimizes the values within the given tolerance\footnote{As technical detail we will use the Nelder-Mead method with a tolerance of $10^{-5}$ \cite{Scipy}.}.
 It then returns the values for the threshold $p_{th}$ and the critical exponent $\nu$, which have the minimal mean weighted difference between data points and their interpolation. 
-We can then use those values to see how well such an optimization process, collapsed the data onto a curve, as shown in figure \ref{}.
-\textcolor{red}{Put figure here!}
+We can then use those values to see how well such an optimization process, collapsed the data onto a curve.
+An example is shown later in figure \ref{fig:results_code_capcity_Z_ml_p_log_p_phy_collapsed_data}.
+
+\subsubsection{Bootstrapping the Error}\label{sssec:bootstrapping_error}
 
 To calculate an estimated error for the threshold we use bootstrapping:
 We randomly resample each determined logical error rate selecting randomly a logical error rate from its normal distribution, defined by the logical error rate $p_{log}$ and its associated uncertainty$\delta_{p_{log}}$.

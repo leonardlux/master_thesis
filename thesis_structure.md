@@ -22,16 +22,9 @@
     + equations and exmaple circuits?
     + go into more detail behind the assumption of $t$ weight errors -> and why we can call them t weight errros
 
-8. computation relation between different error syndromes if both errors are applied consecutive
-    + shortly derive the xor relation used in pauli frame tracking
-
-9. fssa include images as examples
-9.1 redo all calculations and half the error -> bootstrap interval of 95% is two times the standard deviation!
-
 10. find paper about bootstrapping
 10.1 include image and extend calculations explaining this process
 
-11. utilize minipages for figures
 
 # feedback not implemented yet
 
@@ -41,16 +34,17 @@
 3. What to say about nkd codes?
 4. cosets of stabilizer group and logical cosets -> make those point clearer earlier -> discuss at some point with maarten
 5. states and quotient elements is the similiar as the logical operations and implementation of such operators  (not 1-to-1) 
-6. computation relation between different error syndromes, two errors happening in the same detection circuit
 7. add results to the abstract
 8. use \emph{}
 
 # new stuff
 
+IMPORTANT!!!
 4. Syndrome extraction 
     + add circuit for steane type error correection
 
 5. decoder adaptions to syndrome extraction circuit
+    + make those statements clearer
 
 answer questions from the presentation
 + talk about on what hardware platform this code can be implemented
@@ -58,6 +52,9 @@ answer questions from the presentation
 
 6. differentiation between error syndrome and state syndrome -> maybe rework after discussion
     + work in additivity of syndromes
+6. computation relation between different error syndromes if both errors are applied consecutive
+    + shortly derive the xor relation used in pauli frame tracking
+6. computation relation between different error syndromes, two errors happening in the same detection circuit
 
 7. place final statement of seperation of paulis at the start of the chapter
     + here i am talking about the basic intro chapter
@@ -68,16 +65,44 @@ answer questions from the presentation
 10. propagated noise model appendix!
 
 11. mapping multiple errors to the same edges? is that happening? does this influence the argument of p beeing cyclic in the probability?
+    + yes, it does, but ratio stays the same, is this clear??
 
 12. numerical underflow in the appendix
 
 13. Danksagung 
 
 14. reedit error estimate on data collapse method
+    + bootstrapping 
 
 15. name the adaption of the decoder to the different configurations more clearly?
 
-16. plot the asymptotic growth as fitted lines?
+17. link to my github repo in the appendix or as a citation?
+
+18. maybe resize images?
+
+11. utilize minipages for figures
+    + subplots!
+
+19. add all the collapsed data plots in the appendix 
+    + automate this process partly!
+
+20. name what is explicitly what is faultless in the circuit level model!! 
+    + faultless ft syndrome extraction and observable measurement? is this clear    
+    + explain observable measurement as a proxy for checking if the state is still ok 
+
+21. motivate in fssa why smallest distances should be excluded
+    + more than just by results!
+    + name the assumption for large d!
+
+22. include critical exponent results somewhere!
+    + in plots ?!
+
+23. single run example, show circuit lvl case in parallel as this is aruably more important for this thesis!!!
+    + at least add it to the appendix and discuss the results!
+    + add point our more if we switch?!o
+    + why add all use code capcity! argue a bit
+
+25. symmetry of surface code in regards to its observables! 
 
 # Master Thesis Structure
 

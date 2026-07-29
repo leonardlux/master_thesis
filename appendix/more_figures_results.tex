@@ -1,0 +1,40 @@
+\chapter{Additional Figures of the Result Chapter}
+
+\subsection{Additional Figures of the Example Process}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\linewidth]{graphics/code_capacity_ml_z_log_error_rate_complete_slopes.pdf}
+    \caption{
+            This figure shows the determined logical error rates $p_{log}$, of varying code distances $d$, plotted against the physical error rate $p_{phy}$ for the code capacity noise model with the logical $\bar{Z}$ observable.
+            This plots includes the fits of the logical error rate curves for small values of $p_{phy}$, for all distances.
+            The `exp' in the label denotes the determined exponent of the given fit.
+            The fits were performed on the lowest $20\%$ of data points as indicated by the `fit cutoff' line.
+        }
+    \label{fig:results_code_capcity_Z_ml_p_log_p_phy_slopes}
+\end{figure}
+
+\subsection{Additional Figures for Finite Size Discussion}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\linewidth]{graphics/finite_size_discussion/circ_ml_z_fssa.pdf}
+    \caption{
+        Results of the data collapse method if for circuit level noise model and $Z$ observable, using ML decoding. 
+        In this result we \emph{excluded} small distances $d \notin \{3,5\}$ from the analysis.
+        This is to be seen in contrast to figure \ref{fig:circ_ml_z_fssa_min_d3}, where included those distances in the data collapse analysis.
+        }
+    \label{fig:circ_ml_z_fssa}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\linewidth]{graphics/finite_size_discussion/circ_ml_z_min_d3_fssa.pdf}
+    \caption{
+        Results of the data collapse method if for circuit level noise model and $Z$ observable, using ML decoding. 
+        In this result we \emph{included} small distances $d \in \{3,5\}$ from the analysis.
+        This is to be seen in contrast to figure \ref{fig:circ_ml_z_fssa}, where excluded those distances in the data collapse analysis.
+        Note that the data point on this graph are more spread out, and do not collapse onto a line as clear as for the other case.
+        }
+    \label{fig:circ_ml_z_fssa_min_d3}
+\end{figure}
