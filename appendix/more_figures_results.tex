@@ -1,10 +1,11 @@
 \chapter{Additional Figures of the Result Chapter}
 
+% subsection sinnvoll??? how force alignment?
 \subsection{Additional Figures of the Example Process}
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=\linewidth]{graphics/code_capacity_ml_z_log_error_rate_complete_slopes.pdf}
+    \includegraphics[width=0.75\linewidth]{graphics/code_capacity_ml_z_log_error_rate_complete_slopes.pdf}
     \caption{
             This figure shows the determined logical error rates $p_{log}$, of varying code distances $d$, plotted against the physical error rate $p_{phy}$ for the code capacity noise model with the logical $\bar{Z}$ observable.
             This plots includes the fits of the logical error rate curves for small values of $p_{phy}$, for all distances.
@@ -37,4 +38,40 @@
         Note that the data point on this graph are more spread out, and do not collapse onto a line as clear as for the other case.
         }
     \label{fig:circ_ml_z_fssa_min_d3}
+\end{figure}
+
+\section{Additional Figures for Multiple Independent QEC Cycles}
+ 
+
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\linewidth]{graphics/finite_size_discussion/circuit_level_finite_distance.pdf}
+    \caption{
+        This figure shows the result of the shifting window analysis for the circuit level noise model, for the STEC circuit 
+        The underlying analysis behind the shown determined thresholds had access to three logical error rate curves of distances chosen according to equation \ref{eq:window_of_distances}. 
+        }
+    \label{fig:circuit_finite_size_analysis_shifting_window}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\linewidth]{graphics/multi_round/multi_round_ML_log.pdf}
+    \caption{
+            This plots shows the thresholds determined for different number of independent rounds.
+            The underlying configurations are based on the STEC circuit and are both utilizing the ML decoder during the QEC cycle. 
+            They differ in the observable measured, as indicated by the label. 
+        }
+    \label{fig:multi_round_ml}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\linewidth]{graphics/multi_round/multi_round_Z_obs_log.pdf}
+    \caption{
+            This plots shows the thresholds determined for different number of independent rounds.
+            The underlying configurations are both measuring the $Z$ observable, and are based on the STEC circuit.
+            They differ in the choice of decoder used during the QEC cycle, as indicated by the label. 
+        }
+    \label{fig:multi_round_obs_z}
 \end{figure}

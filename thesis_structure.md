@@ -104,6 +104,16 @@ answer questions from the presentation
 
 25. symmetry of surface code in regards to its observables! 
 
+26. check if i state the asymmetry part correctly  
+    + what is corrected first also appears more often in the residual error
+
+27. 1. und 2. prüfer müssen auf die arbeit!
+
+28. eidelstaatliche versicherung
+
+29. cutout the round 10 in multi cycle stuff
+    + show more grapppphs!
+
 # Master Thesis Structure
 
 # Title: Circuit Level Characterization of Steane Type Error Correction

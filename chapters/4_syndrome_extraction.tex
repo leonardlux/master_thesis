@@ -223,6 +223,21 @@ We will use the conventional syndrome extraction method, with the assumption des
 
 \section{Steane Type Error Correction}\label{sssec:steane_type_error_correction_intro}
 
+\begin{figure}
+    \centering
+    \begin{quantikz}
+        \lstick{$\ket{\Psi}_L$}&\qwbundle{n}&\targ{}&&\ctrl{2}&&\\%&&\gate{Z_R}&\gate{X_R}&\\
+        \lstick{$\ket{0}_L$}&\qwbundle{n}&\ctrl{-1}&\meter{X}&\setwiretype{c}&&\\%\gate{Decoder}\wire[u][1]{c}\\
+        \lstick{$\ket{+}_L$}&\qwbundle{n}&&&\targ{}&\meter{Z}&\setwiretype{c}%&\gate{Decoder}\wire[u][2]{c}
+    \end{quantikz}
+    \label{circ:steane_circ}
+    \caption{
+        Circuit diagram of a Steane-type error correction circuit. 
+        The order shown here is the order we will use in this thesis 
+    }
+\end{figure}
+
+
 The main topic of this thesis is determining the threshold of \emph{Steane-type error correction}(STEC) \cite{steane_type_EC_og_paper} and to compare it with the conventional syndrome extraction circuit.
 In comparison to the previously syndrome extraction circuit, STEC is inherently fault tolerant as such we can directly discuss it properties for the circuit level noise model.
 
