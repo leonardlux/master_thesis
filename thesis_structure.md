@@ -18,101 +18,99 @@
     + and distance
     + threshold 
 
-6. noise model
+5. noise model
     + equations and exmaple circuits?
     + go into more detail behind the assumption of $t$ weight errors -> and why we can call them t weight errros
 
-10. find paper about bootstrapping
-10.1 include image and extend calculations explaining this process
+6. find paper about bootstrapping
+    + 10.1 include image and extend calculations explaining this process
 
-
-# feedback not implemented yet
-
-0. rework the chapter titles 
-1. QEC cycle as numbered enviorment 
-2. cosets of centralizer image, do it with the structure before ? at least discuss
-3. What to say about nkd codes?
-4. cosets of stabilizer group and logical cosets -> make those point clearer earlier -> discuss at some point with maarten
-5. states and quotient elements is the similiar as the logical operations and implementation of such operators  (not 1-to-1) 
-7. add results to the abstract
-8. use \emph{}
-
-# new stuff
+7. rework the chapter titles 
+8. QEC cycle as numbered enviorment 
+9. cosets of centralizer image, do it with the structure before ? at least discuss
+10. What to say about nkd codes?
+11. cosets of stabilizer group and logical cosets -> make those point clearer earlier -> discuss at some point with maarten
+12. states and quotient elements is the similiar as the logical operations and implementation of such operators  (not 1-to-1) 
+13. add results to the abstract
+14. use \emph{}
 
 IMPORTANT!!!
-4. Syndrome extraction 
+15. Syndrome extraction 
     + add circuit for steane type error correection
 
-5. decoder adaptions to syndrome extraction circuit
+16. decoder adaptions to syndrome extraction circuit
     + make those statements clearer
 
-answer questions from the presentation
+17. answer questions from the presentation
 + talk about on what hardware platform this code can be implemented
 + go into detail about possible state preparation approaches
 
-6. differentiation between error syndrome and state syndrome -> maybe rework after discussion
+18. differentiation between error syndrome and state syndrome -> maybe rework after discussion
     + work in additivity of syndromes
-6. computation relation between different error syndromes if both errors are applied consecutive
+19. computation relation between different error syndromes if both errors are applied consecutive
     + shortly derive the xor relation used in pauli frame tracking
-6. computation relation between different error syndromes, two errors happening in the same detection circuit
+20. computation relation between different error syndromes, two errors happening in the same detection circuit
 
-7. place final statement of seperation of paulis at the start of the chapter
+21. place final statement of seperation of paulis at the start of the chapter
     + here i am talking about the basic intro chapter
 
-8. implementation of encoding ? 
+22. implementation of encoding ? 
     + and how does this interact with STEC?
 
-10. propagated noise model appendix!
+23. propagated noise model appendix!
 
-11. mapping multiple errors to the same edges? is that happening? does this influence the argument of p beeing cyclic in the probability?
+24. mapping multiple errors to the same edges? is that happening? does this influence the argument of p beeing cyclic in the probability?
     + yes, it does, but ratio stays the same, is this clear??
 
-12. numerical underflow in the appendix
+25. numerical underflow in the appendix
 
-13. Danksagung 
+26. Danksagung 
 
-14. reedit error estimate on data collapse method
+27. reedit error estimate on data collapse method
     + bootstrapping 
 
-15. name the adaption of the decoder to the different configurations more clearly?
+28. name the adaption of the decoder to the different configurations more clearly?
 
-17. link to my github repo in the appendix or as a citation?
+29. link to my github repo in the appendix or as a citation?
 
-18. maybe resize images?
+30. maybe resize images?
 
-11. utilize minipages for figures
+31. utilize minipages for figures
     + subplots!
 
-19. add all the collapsed data plots in the appendix 
+32. add all the collapsed data plots in the appendix 
     + automate this process partly!
 
-20. name what is explicitly what is faultless in the circuit level model!! 
+33. name what is explicitly what is faultless in the circuit level model!! 
     + faultless ft syndrome extraction and observable measurement? is this clear    
     + explain observable measurement as a proxy for checking if the state is still ok 
 
-21. motivate in fssa why smallest distances should be excluded
+34. motivate in fssa why smallest distances should be excluded
     + more than just by results!
     + name the assumption for large d!
 
-22. include critical exponent results somewhere!
+35. include critical exponent results somewhere!
     + in plots ?!
 
-23. single run example, show circuit lvl case in parallel as this is aruably more important for this thesis!!!
+36. single run example, show circuit lvl case in parallel as this is aruably more important for this thesis!!!
     + at least add it to the appendix and discuss the results!
     + add point our more if we switch?!o
     + why add all use code capcity! argue a bit
 
-25. symmetry of surface code in regards to its observables! 
+37. symmetry of surface code in regards to its observables! 
 
-26. check if i state the asymmetry part correctly  
+38. check if i state the asymmetry part correctly  
     + what is corrected first also appears more often in the residual error
 
-27. 1. und 2. prüfer müssen auf die arbeit!
 
-28. eidelstaatliche versicherung
-
-29. cutout the round 10 in multi cycle stuff
+39. cutout the round 10 in multi cycle stuff
     + show more grapppphs!
+
+40. fault-tolerant instead of fault tolerant or just FT, circuit-level, not circuit levle0
+
+41. more in conclusion and outlook?!
+
+42. conclusion take not that we have effects (finite size) leading to a suppressed threshold value
 
 # Master Thesis Structure
 

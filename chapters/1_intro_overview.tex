@@ -1,40 +1,83 @@
 \chapter{Introduction \& Overview}
 
-% 1. introduce Quantum computation and why is it interesting
-With quantum computing we can take advantage of quantum principles of entanglement and superposition,
-to solve several computational problems [Name here some examples]. 
+Quantum error correction (QEC) codes are needed to enable quantum computers to correct occurring errors and protect the encoded quantum information.  
+There are many different QEC codes and configurations, each with their own advantages and disadvantages.
+Deciding on a QEC code is always a compromise between those.
 
-
-
-
-% 2. introduce quantum error correction 
-% <- and why it is needed (read again gottesmann book)
-% -> multiple different components to a QEC code that can be optimized 
-% and where tradeoffs can be made
-
-Quantum error correction (QEC) codes are needed to enable quantum computers, 
-to correct occurring errors and stop the decoherence of the state.
-There are many different QEC codes each with their own up- and down sides, 
-deciding on a QEC code is always a compromise between those.
 
 % Motivation why Steane Type QEC is good
-% increasing number of qubits: historic overview (if possible)
 % And introduce Steane type QEC/steane type syndrome extraction
-With rapidly increasing number of qubits in different quantum computing platforms, 
-we could afford to pay the tradeoff of more physical qubits needed in exchange for a 
-faster/constant in time QEC cycle.
-% shortly name the requirements for the platform due to steane type syndrome extraction
+With the rapidly increasing number of qubits available on different quantum computing platforms, 
+we can afford to pay the tradeoff of using more physical qubits in exchange for a constant-time QEC cycle.
+A major part of each QEC cycle is the syndrome extraction circuit, 
+which is the method and design used to extract the information needed for the decoding and correction, the syndrome, from the encoded state without compromising the information contained within it. 
+A possible approach for such a syndrome extraction circuit is Steane-type error correction (STEC) \cite{steane_type_EC_og_paper}, 
+which enables constant-time syndrome extraction, 
+thereby limiting the interaction between the data and ancilla qubits 
+To realize STEC, we need a quantum computing platform that either support nearest-neighbor interaction in more than a plane, 
+or supports CNOT gates over long distances, for example, trapped-ion quantum computer \cite{friederike_steane}. 
+As a resource, STEC uses logically encoded ancilla qubits, which enables the constant-time syndrome extraction, 
+since the encoded property allows for a parallel readout of all stabilizers through the use of transversal logical CNOT gate.
+As such Steane-type error correction can be used for a variety of QEC codes, namely all CSS codes \cite{CSS1,CSS2}. 
+
 
 % Explain why we look at the quantity and under which conditions
-The performance of a code is characterized by the threshold, .... explanation...
-and to calculate this under realistic conditions we have to take into account that error occur in every part in the circuit even in the QEC itself, 
-so called circuit level noise
+The performance of a code is characterized by its threshold: 
+The physical noise rate below which an increase in the code distance leads to a reduced logical error rate.
+In other words, the thresholds marks the point at which scaling up the QEC code leads to a suppressed logical error rate.
+To calculate the threshold under realistic conditions, 
+we account for the fact that the entire computation can be faulty, including the QEC cycle itself,
+which is captured by the so-called circuit level noise model.
+
+We characterize the performance of Steane-type error correction by determining the thresholds of a QEC utilizing STEC.
+The resulting threshold is then used to compare the performance of STEC to different syndrome extraction approaches used with the same underlying code.
 
 \section{Overview of the Thesis}
 
-% Here is to guide the reader through the thesis
 
 The thesis is organized as follows:
 \begin{enumerate}
-    \item Here I will describe each chapter and what is described in there and why/what is interesting for the reader
+    % QEC
+    \item We start in chapter \ref{chapter:qec} with an introduction to QEC codes, focusing on stabilizer codes. 
+    Here we discuss the underlying structure and concepts used for quantum error correction, as well as what happens during a QEC cycle. 
+    The general task of the decoder, along with the underlying principles behind \emph{minimum weight perfect matching} (MWPM) and \emph{maximum likelihood} (ML) decoding will be introduced as part of this chapter in section \ref{sec:decoding_problem_general}, and the specific decoders in subsection \ref{ssec:general_MWMP_decoder} and \ref{ssec:general_ML_decoder} respectively.
+    We also introduce the specific QEC code used in this thesis, the surface code, in section \ref{sec:kitaev_surface_code}.
+    This chapter concludes with an introduction to Pauli frame tracking, in section \ref{sec:pauli_frame_tracking}, which is used instead of directly applying a correction. 
+    The chapter introduces the theoretic basis needed for the remainder of this thesis.
+
+    % Error models
+    \item The following chapter \ref{ssec:error_models} introduces the error models used in this thesis. 
+    We start with the basic \emph{code-capacity} error model in section \ref{sssec:code_capacity_error_model}.
+    This error model is later used only as a baseline to test our implementation and analysis, since the syndrome extraction circuit design does not influence the threshold under this noise setting, 
+    and since analytically calculated thresholds are available for comparison with our results. 
+    The more realistic and relevant \emph{circuit-level} noise model is introduced in the following section \ref{sssec:circuit_level_noise}, 
+    which includes a discussion of noise propagation through the circuit in subsection \ref{ssec:cnot_gate}.
+    and concludes with the introduction of the \emph{fault-tolerance} property of a circuit in subsection \ref{sec:fault_tolerance}. 
+
+    % syndrome extraction
+    \item This is followed by chapter \ref{ssec:syndrome_extraction}, which introduces the syndrome extraction circuits analyzed in this thesis. 
+    We start by introducing the conventional syndrome extraction circuit in section \ref{sssec:standard_syndrome_extraction_circuit}, 
+    focusing on the adaptation needed for circuit-level noise, which results in the required repetition of syndrome extraction circuit for a single QEC cycles and in adaptations the the decoder, 
+    as explained in subsection \ref{ssec:conv_se_circ_lvl_noise_adaption}.
+    This is followed by the introduction of \emph{Steane-type error correction} (STEC) in section \ref{sssec:steane_type_error_correction_intro}.
+    There, we discuss the fundamental properties enabling the STEC approach, with a special focus on its intrinsic fault tolerance. 
+    We continue with a discussion of the decoder adaptations needed for STEC in section \ref{ssec:stec_decoder_adaption}, for both MWPM and ML decoding.
+
+    % threshold theorem
+    \item The next chapter \ref{ssec:threshold_theorem} introduces the threshold and explains the process used to determine it based on Monte Carlo simulations of the circuit. 
+    Here, we utilize the so-called \emph{data collapse method}, which is based on finite-size scaling analysis and therefore exploits the phase-transition properties of the threshold.
+
+    % results
+    \item In the second-to-last chapter \ref{chapter:results}, we discuss the results of the simulations.
+    We start with a general discussion of the process and the intermediate results obtained on the path to determining the threshold, in section \ref{ssec:results_example_process}.
+    This is followed by section \ref{sec:results_code_capacity}, discussing the results for the code-capacity case and comparing those with values from the literature. 
+    We then continue to the main analysis in section \ref{sec:results_circuit_lvl}, which is based upon simulations utilizing the circuit-level noise model. 
+    We discuss the threshold for a single QEC cycle for STEC and compare it to the threshold of the conventional syndrome extraction circuit, in subsection \ref{ssec:results_circ_single_cycle}.
+    The same setup is then used to analyze the threshold behavior over multiple independent rounds of QEC, for both types of extraction circuit, in subsection \ref{ssec:results_circ_multiple_cycles}. 
+    In this chapter, we characterize the STEC circuit and investigate its properties and how they influence the threshold, based on different configurations of decoder and observable. 
+    This includes an extensive discussion of the effect the ordering of the half-cycles of the STEC circuit has on the threshold.  
+
+    \item We conclude this thesis with chapter \ref{chapter:conclusion}, in which we summarize the important findings of the previous chapter and contextualize those with the underlying assumptions of our approach.
+    We use this chapter to sketch an outlook on possible problems that might be worth investigating further, either to improve upon the results obtained in this thesis, or to further the investigation into and characterization of STEC.
+
 \end{enumerate}

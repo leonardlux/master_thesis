@@ -27,7 +27,7 @@ Both noise channel, $\varepsilon_X(\rho)$ is the bit-flip and $\varepsilon_Z(\rh
     \varepsilon_{Z}(\rho) = (1-p_{phy}) \rho + p_{phy} \cdot Z \rho Z \label{eq:phase_flip_channel}.
 \end{align}
 
-\begin{figure}[h]
+\begin{figure}[ht]
     \begin{center}
         \begin{quantikz}[wire types={q,n}]
             \lstick{$\ket{\Psi}_L$}&\gate[style={noisy}]{\text{Noise}}&\gate[]{\text{Syndrome Extraction}}& \gate{\text{Recovery}}&\rstick{$\ket{\Psi }_L$} \\
@@ -73,7 +73,7 @@ After initialization of each qubit we place a depolarizing one qubit noise chann
 
 An example circuit with and without the circuit level noise model applied can be seen in figure \ref{circ:circuit_level_noise_example}. 
 
-\begin{figure}[h]
+\begin{figure}[ht]
     \begin{center}
             \begin{quantikz}
         \lstick{$q_1$}&\targ{}&\ctrl{2}&&\\

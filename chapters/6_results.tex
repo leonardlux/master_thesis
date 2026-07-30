@@ -61,7 +61,7 @@ To use reasonable physical error rates $p_{phy,i}$ for the noise model we use ph
     p_{phy,i} = \tilde{p}_{th} \cdot 10^{k\cdot i}, \ 0 < k < 1, \ i \in \{-N,...,N\}.
 \end{equation}
 
-\begin{figure}[t]
+\begin{figure}[ht]
     \centering
     \includegraphics[width=\linewidth]{graphics/code_capacity_ml_z_log_error_rate_complete_rejection_rate.pdf}
     \caption{
@@ -87,7 +87,7 @@ We can quantize this interval with the upper and lower bound of approximately
 \end{equation}
 The exponents derived from this fit are noted in the table \ref{tab:fit_exponents}. 
 
-\begin{table}[h]
+\begin{table}[th]
     \centering
     \begin{tabular}{l|c|c}
         \hline
@@ -157,7 +157,7 @@ Note here that we also choose to excluded the two smallest distances $d\notin\{3
 leading to worse performance of our chosen method of determining the threshold.
 This aspect will be further discussed in section \ref{sssec:finite_size_min_d}.
 
-\begin{figure}[h]
+\begin{figure}[ht]
     \centering
     \includegraphics[width=\linewidth]{graphics/code_capacity_ml_z_log_error_rate_fssa_rejection_rate.pdf}
     \caption{
@@ -179,7 +179,7 @@ For this case the data collapse method worked and we were able to correctly dete
 
 We will discuss the determined threshold and the conclusion we can draw from it for the code capacity case in section \ref{sec:results_code_capacity}.
 
-\begin{figure}[h]
+\begin{figure}[th]
     \centering
     \includegraphics[width=\linewidth]{graphics/code_capacity_ml_z_fssa.pdf}
     \caption{
@@ -203,7 +203,7 @@ Given that we are considering a first-order transition, we would expect all logi
 But due to finite size effect the smaller distances cross the other curves before the threshold, as seen in the zoomed in data of figure \ref{fig:results_code_capcity_Z_ml_p_log_p_phy_min_d3_zoom}.
 For this graph we included the distances $d\in\{3,5\}$ in our analysis, here for the circuit level noise model, observing $\bar{Z}$ and once again decoding using the ML decoder.
 
-\begin{figure}[h]
+\begin{figure}[ht]
     \centering
     \includegraphics[width=\linewidth]{graphics/finite_size_discussion/circ_ml_z_min_d3_log_error_rate_zoom.pdf}
     \caption{
@@ -245,7 +245,7 @@ But this comes with a tradeoff of longer computations due to the exponential gro
 Therefore we usually start our analysis with distance $d=7$ and in cases where the aforementioned numerical underflow issues becomes problematic we use distance $d=5$ as a minimum distance.
 The latter will be the case for the repeated independent QEC cycles.
 
-\begin{figure}[h]
+\begin{figure}[ht]
     \centering
     \includegraphics[width=\linewidth]{graphics/finite_size_discussion/code_capacity_finite_distance.pdf}
     \caption{
@@ -294,7 +294,7 @@ We can conclude the short code capacity part, by stating that the observed thres
 The slight discrepancy can be traced back to finite size effects, which lead to a slightly reduced threshold.
 We will take this into account in our further analysis. 
 
-\begin{table}
+\begin{table}[ht]
     \centering
     \begin{tabular}{lccc}
         \hline
@@ -370,7 +370,7 @@ As the decoding algorithm we used a MWPM decoder with the assumption introduced 
 Here the assumption that the decoder has access to the syndrome of the residual error is a major assumption.
 The results for both of those configuration can be found in table \ref{tab:results_ft_test}, where they are labeled by `CON' to indicate the conventional syndrome extraction circuit.
 
-\begin{table}[h]
+\begin{table}[th]
     \centering
     \begin{tabular}{lcc}
     \hline
@@ -415,7 +415,7 @@ Further points of argumentation could be that we are actually decoding the ancil
 In comparison to the conventional syndrome extraction circuit, we can observe that the threshold for a single QEC cycle is approximately a factor three higher for the STEC syndrome extraction circuit.
 This difference in performance can be attributed to the different amount of resources required, which directly correlates to the possible locations for errors under circuit level noise. 
 As already stated, in section \ref{sssec:assumptions_conv_sec} and section \ref{sssec:steane_type_error_correction_intro} respectively, 
-the difference in resources is approximately of order $\mathcal{d}$, due to the requirement to repeat the conventional syndrome extraction circuit $d$-times to be able to detect measurement errors fault tolerantly.
+the difference in resources is approximately of factor $d$, due to the requirement to repeat the conventional syndrome extraction circuit $d$-times to be able to detect measurement errors fault tolerantly.
 Where the number of measurements requires scales with $\mathcal{O}(d^2)$ for STEC (equation \ref{eq:measurements_stec}), it scales with $\mathcal{O}(d^3)$ for the conventional circuit (equation \ref{eq:measurements_conv_repeated}), 
 The STEC circuit design requires CNOT gates of order  $\mathcal{O}(d^2)$ (equation \ref{eq:cnot_stec}) versus the CNOT gates with $\mathcal{O}(d^3)$ (equation \ref{eq:cnots_conv_repeated}).
 As such the conventional circuit offers more locations for possible errors to occur in comparison with the STEC circuit, for a certain code distance.
@@ -472,7 +472,7 @@ For the cases where the threshold does not change significantly we can conclude 
 
 % maybe write more here!?
 
-\begin{table}[h]
+\begin{table}[th]
     \centering
     \begin{tabular}{lcc}
     \hline
@@ -503,7 +503,7 @@ For the cases where the threshold does not change significantly we can conclude 
 
 In the last section of the result chapter we investigate how the threshold changes with repeated QEC cycles. 
 
-% stec independet cycles thanks to pauli frame tracking 
+% stec independent cycles thanks to pauli frame tracking 
 For the STEC syndrome extraction circuit those multiple QEC cycles are independent of one another, 
 as the decoder during each QEC cycle has only access to the syndrome of only that cycle. 
 After each cycles we perform the correction by Pauli frame tracking principles\footnote{
@@ -515,13 +515,13 @@ After each cycles we perform the correction by Pauli frame tracking principles\f
 enabling the independent decoding of the different syndromes.
 The STEC circuit is once again simulated for both observables and both decoding algorithm. 
 
-% conv decoder not independet 
+% conventional decoder not independent 
 As mentioned in section \ref{ssec:conv_se_circ_lvl_noise_adaption}, we do not independently decoder the different QEC cycles of the conventional syndrome extraction circuit.
 All syndromes of the different cycles and the residual syndrome are decoded together using a MWPM algorithm. 
 This is the major assumption on the site of conventional circuit.
 
 % limited set of distance
-We limit the code distances used for those simulation to $d \in {5,7,9}$.
+We limit the code distances used for those simulation to $d \in \{5,7,9\}$.
 The lower threshold is set at $d=5$ to limit the finite size effects shown in section \ref{sssec:finite_size_min_d}.
 The finite size effects for the circuit level noise model and a single QEC cycle are also shown in figure \ref{fig:circuit_finite_size_analysis_shifting_window}.
 Based on this figure we choose distance $d=5$ as a minium distance as a compromise.
@@ -543,7 +543,7 @@ The result of the simulation and determination of the thresholds can be seen in 
 The table \ref{tab:results_multi_round} contains the threshold values determined after 6 QEC cycles. 
 
 
-\begin{figure}[h]
+\begin{figure}[th]
     \centering
     \includegraphics[width=\linewidth]{graphics/multi_round/multi_round_all_log.pdf}
     \caption{
@@ -554,7 +554,7 @@ The table \ref{tab:results_multi_round} contains the threshold values determined
     \label{fig:multi_round_all}
 \end{figure}
 
-\begin{table}[h]
+\begin{table}[th]
     \centering
     \begin{tabular}{lcc}
     \hline
@@ -615,7 +615,7 @@ Comparing the different thresholds we can state that STEC syndrome extraction ha
     Note that the conventional syndrome extraction still has the advantage of a combined decoding of all syndromes, therefore its threshold should also be seen as kind of an upper bound.
     % find some literature values!!! for this decoding approach.
 }.
-\textcolor{red}{find some literature values for conv circ, to argue the performance as usual or representative.}
+\textcolor{red}{find some literature values for conventional circ, to argue the performance as usual or representative.}
 
 
 This is the result under the assumption that we have access to fault tolerantly prepared ancilla with the same error rate as individual initialized qubits. 
