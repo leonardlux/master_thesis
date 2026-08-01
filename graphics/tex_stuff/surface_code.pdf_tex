@@ -1,0 +1,97 @@
+%% Creator: Inkscape 1.4.4 (dcaf3e7d9e, 2026-05-05), www.inkscape.org
+%% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
+%% Accompanies image file 'surface_code.pdf' (pdf, eps, ps)
+%%
+%% To include the image in your LaTeX document, write
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics{<filename>.pdf}
+%% To scale the image, write
+%%   \def\svgwidth{<desired width>}
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics[width=<desired width>]{<filename>.pdf}
+%%
+%% Images with a different path to the parent latex file can
+%% be accessed with the `import' package (which may need to be
+%% installed) using
+%%   \usepackage{import}
+%% in the preamble, and then including the image with
+%%   \import{<path to file>}{<filename>.pdf_tex}
+%% Alternatively, one can specify
+%%   \graphicspath{{<path to file>/}}
+%% 
+%% For more information, please see info/svg-inkscape on CTAN:
+%%   http://tug.ctan.org/tex-archive/info/svg-inkscape
+%%
+\begingroup%
+  \makeatletter%
+  \providecommand\color[2][]{%
+    \errmessage{(Inkscape) Color is used for the text in Inkscape, but the package 'color.sty' is not loaded}%
+    \renewcommand\color[2][]{}%
+  }%
+  \providecommand\transparent[1]{%
+    \errmessage{(Inkscape) Transparency is used (non-zero) for the text in Inkscape, but the package 'transparent.sty' is not loaded}%
+    \renewcommand\transparent[1]{}%
+  }%
+  \providecommand\rotatebox[2]{#2}%
+  \newcommand*\fsize{\dimexpr\f@size pt\relax}%
+  \newcommand*\lineheight[1]{\fontsize{\fsize}{#1\fsize}\selectfont}%
+  \ifx\svgwidth\undefined%
+    \setlength{\unitlength}{355.21515133bp}%
+    \ifx\svgscale\undefined%
+      \relax%
+    \else%
+      \setlength{\unitlength}{\unitlength * \real{\svgscale}}%
+    \fi%
+  \else%
+    \setlength{\unitlength}{\svgwidth}%
+  \fi%
+  \global\let\svgwidth\undefined%
+  \global\let\svgscale\undefined%
+  \makeatother%
+  \begin{picture}(1,0.73746099)%
+    \lineheight{1}%
+    \setlength\tabcolsep{0pt}%
+    \put(0,0){\includegraphics[width=\unitlength,page=1]{surface_code.pdf}}%
+    \put(0.05528201,0.68810737){\color[rgb]{0.10196078,0.10196078,0.10196078}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$0$\end{tabular}}}}%
+    \put(0.17404375,0.68587832){\color[rgb]{0.10196078,0.10196078,0.10196078}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$1$\end{tabular}}}}%
+    \put(0.2920375,0.68587832){\color[rgb]{0.10196078,0.10196078,0.10196078}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$2$\end{tabular}}}}%
+    \put(0.11504692,0.62688146){\color[rgb]{0.10196078,0.10196078,0.10196078}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$3$\end{tabular}}}}%
+    \put(0.2322727,0.62911051){\color[rgb]{0.10196078,0.10196078,0.10196078}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$4$\end{tabular}}}}%
+    \put(0.29126952,0.57011411){\color[rgb]{0.10196078,0.10196078,0.10196078}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$7$\end{tabular}}}}%
+    \put(0.17404375,0.56788506){\color[rgb]{0.10196078,0.10196078,0.10196078}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$6$\end{tabular}}}}%
+    \put(0.05605001,0.56788506){\color[rgb]{0.10196078,0.10196078,0.10196078}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$5$\end{tabular}}}}%
+    \put(0.11427893,0.51111678){\color[rgb]{0.10196078,0.10196078,0.10196078}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$8$\end{tabular}}}}%
+    \put(0.05528201,0.45211988){\color[rgb]{0.10196078,0.10196078,0.10196078}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$10$\end{tabular}}}}%
+    \put(0.2322727,0.51111678){\color[rgb]{0.10196078,0.10196078,0.10196078}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$9$\end{tabular}}}}%
+    \put(0.17327575,0.45211988){\color[rgb]{0.10196078,0.10196078,0.10196078}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$11$\end{tabular}}}}%
+    \put(0.2920375,0.44989082){\color[rgb]{0.10196078,0.10196078,0.10196078}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$12$\end{tabular}}}}%
+    \put(0.40294425,0.61876185){\color[rgb]{0.10196078,0.10196078,0.10196078}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}$S_{X,1}$\end{tabular}}}}%
+    \put(0.81388807,0.66614155){\color[rgb]{0.10196078,0.10196078,0.10196078}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}$S_{Z,1}$\end{tabular}}}}%
+    \put(0.93522248,0.66614155){\color[rgb]{0.10196078,0.10196078,0.10196078}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}$S_{Z,2}$\end{tabular}}}}%
+    \put(0.81722867,0.5577832){\color[rgb]{0.10196078,0.10196078,0.10196078}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}$S_{Z,3}$\end{tabular}}}}%
+    \put(0.93188188,0.5577832){\color[rgb]{0.10196078,0.10196078,0.10196078}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}$S_{Z,4}$\end{tabular}}}}%
+    \put(0.81722867,0.45461743){\color[rgb]{0.10196078,0.10196078,0.10196078}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}$S_{Z,5}$\end{tabular}}}}%
+    \put(0.93188188,0.45461743){\color[rgb]{0.10196078,0.10196078,0.10196078}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}$S_{Z,6}$\end{tabular}}}}%
+    \put(0.52064896,0.61946724){\color[rgb]{0.10196078,0.10196078,0.10196078}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}$S_{X,2}$\end{tabular}}}}%
+    \put(0.63835363,0.62017265){\color[rgb]{0.10196078,0.10196078,0.10196078}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}$S_{X,3}$\end{tabular}}}}%
+    \put(0.40265521,0.50147349){\color[rgb]{0.10196078,0.10196078,0.10196078}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}$S_{X,4}$\end{tabular}}}}%
+    \put(0.52041145,0.50147349){\color[rgb]{0.10196078,0.10196078,0.10196078}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}$S_{X,5}$\end{tabular}}}}%
+    \put(0.6384111,0.50147349){\color[rgb]{0.10196078,0.10196078,0.10196078}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}$S_{X,6}$\end{tabular}}}}%
+    \put(0.42603804,0.34240588){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}$\bar{X}:$\end{tabular}}}}%
+    \put(0.71464276,0.17244657){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}$\bar{Z}$:\end{tabular}}}}%
+    \put(0.40926329,0.30712523){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\color{red}X$\end{tabular}}}}%
+    \put(0.52725704,0.30712523){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\color{red}X$\end{tabular}}}}%
+    \put(0.64525078,0.30712523){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\color{red}X$\end{tabular}}}}%
+    \put(0.76324453,0.30712523){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\color{blue}Z$\end{tabular}}}}%
+    \put(0.76324453,0.18913197){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\color{blue}Z$\end{tabular}}}}%
+    \put(0.76324453,0.07113774){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\color{blue}Z$\end{tabular}}}}%
+    \put(-0.00036837,0.69524936){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}a)\end{tabular}}}}%
+    \put(0.35263885,0.69410051){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}b)\end{tabular}}}}%
+    \put(0.70662012,0.69410051){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}c)\end{tabular}}}}%
+    \put(-0.00036837,0.31176965){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}d)\end{tabular}}}}%
+    \put(0.35263885,0.31062078){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}e)\end{tabular}}}}%
+    \put(0.70662012,0.31062078){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}f)\end{tabular}}}}%
+  \end{picture}%
+\endgroup%

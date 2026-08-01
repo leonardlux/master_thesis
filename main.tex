@@ -3,6 +3,7 @@
 \usepackage{main}
 \addbibresource{bibliography/references.bib}%
 
+\graphicspath{{graphics/tex_stuff/}{graphics/}{graphics/finite_size_discussion}{graphics/mutli_round}} % needed for inkscape to work properly
 \author{Leonard Lux}%
 \title{Circuit Level Characterization \\ of Steane-Type Error Correction}%
 \date{\today}%
@@ -22,6 +23,8 @@
 \cleardoublepage%
 % 
 \include{others/abstract}%
+\include{others/disclaimer_ai}
+\include{others/acknowledgements}
 %
 \cleardoublepage%
 %
@@ -40,6 +43,7 @@
 \pagenumbering{arabic}%
 \setcounter{page}{1}%
 %
+
 \include{chapters/1_intro_overview}%
 \include{chapters/2_quantum_memories}%
 \include{chapters/3_error_model_sydome_extraction}%
@@ -59,6 +63,7 @@
 \appendix%
 \renewcommand{\thepage}{\Alph{chapter}\ \arabic{page}}%
 %
+
 \setcounter{page}{1}%
 \include{appendix/propagated_error_model}%
 \include{appendix/numerical_underflow}%

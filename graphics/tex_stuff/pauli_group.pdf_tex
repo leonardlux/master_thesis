@@ -1,0 +1,131 @@
+%% Creator: Inkscape 1.4.4 (dcaf3e7d9e, 2026-05-05), www.inkscape.org
+%% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
+%% Accompanies image file 'pauli_group.pdf' (pdf, eps, ps)
+%%
+%% To include the image in your LaTeX document, write
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics{<filename>.pdf}
+%% To scale the image, write
+%%   \def\svgwidth{<desired width>}
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics[width=<desired width>]{<filename>.pdf}
+%%
+%% Images with a different path to the parent latex file can
+%% be accessed with the `import' package (which may need to be
+%% installed) using
+%%   \usepackage{import}
+%% in the preamble, and then including the image with
+%%   \import{<path to file>}{<filename>.pdf_tex}
+%% Alternatively, one can specify
+%%   \graphicspath{{<path to file>/}}
+%% 
+%% For more information, please see info/svg-inkscape on CTAN:
+%%   http://tug.ctan.org/tex-archive/info/svg-inkscape
+%%
+\begingroup%
+  \makeatletter%
+  \providecommand\color[2][]{%
+    \errmessage{(Inkscape) Color is used for the text in Inkscape, but the package 'color.sty' is not loaded}%
+    \renewcommand\color[2][]{}%
+  }%
+  \providecommand\transparent[1]{%
+    \errmessage{(Inkscape) Transparency is used (non-zero) for the text in Inkscape, but the package 'transparent.sty' is not loaded}%
+    \renewcommand\transparent[1]{}%
+  }%
+  \providecommand\rotatebox[2]{#2}%
+  \newcommand*\fsize{\dimexpr\f@size pt\relax}%
+  \newcommand*\lineheight[1]{\fontsize{\fsize}{#1\fsize}\selectfont}%
+  \ifx\svgwidth\undefined%
+    \setlength{\unitlength}{425.03452091bp}%
+    \ifx\svgscale\undefined%
+      \relax%
+    \else%
+      \setlength{\unitlength}{\unitlength * \real{\svgscale}}%
+    \fi%
+  \else%
+    \setlength{\unitlength}{\svgwidth}%
+  \fi%
+  \global\let\svgwidth\undefined%
+  \global\let\svgscale\undefined%
+  \makeatother%
+  \begin{picture}(1,0.3007287)%
+    \lineheight{1}%
+    \setlength\tabcolsep{0pt}%
+    \put(0,0){\includegraphics[width=\unitlength,page=1]{pauli_group.pdf}}%
+    \put(0.14785791,0.19192016){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{0}\smash{\begin{tabular}[t]{c}$\bar{I}$\end{tabular}}}}%
+    \put(0.2790462,0.19192016){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}$\bar{X}$\end{tabular}}}}%
+    \put(0.14785791,0.06073187){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}$\bar{Z}$\end{tabular}}}}%
+    \put(-0.00175045,0.13338426){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\mathcal{P}_n= $\end{tabular}}}}%
+    \put(0.92675854,0.13338427){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\cup ...$\end{tabular}}}}%
+    \put(0.34925217,0.13338426){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\cup$\end{tabular}}}}%
+    \put(0.63558063,0.13338426){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\cup$\end{tabular}}}}%
+    \put(0.21345208,0.27927162){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}$\mathcal{C}(S) $\end{tabular}}}}%
+    \put(0.5004007,0.27927163){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}$E_{\sigma_1}\mathcal{C}(S) $\end{tabular}}}}%
+    \put(0.78851235,0.27927163){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}$E_{\sigma_2}\mathcal{C}(S) $\end{tabular}}}}%
+    \put(0.2790462,0.06073187){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}$\bar{Y}$\end{tabular}}}}%
+    \put(0.08851151,0.24558719){\color[rgb]{0,0,0}\transparent{0.30000001}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}{\tiny$+1$}\end{tabular}}}}%
+    \put(0.18717603,0.24558719){\color[rgb]{0,0,0}\transparent{0.30000001}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}{\tiny$-1$}\end{tabular}}}}%
+    \put(0.08851151,0.14282845){\color[rgb]{0,0,0}\transparent{0.30000001}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}{\tiny$+i$}\end{tabular}}}}%
+    \put(0.18717603,0.14282845){\color[rgb]{0,0,0}\transparent{0.30000001}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}{\tiny$-i$}\end{tabular}}}}%
+    \put(0.22028135,0.24558719){\color[rgb]{0,0,0}\transparent{0.30000001}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}{\tiny$+1$}\end{tabular}}}}%
+    \put(0.31894587,0.24558719){\color[rgb]{0,0,0}\transparent{0.30000001}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}{\tiny$-1$}\end{tabular}}}}%
+    \put(0.22028135,0.14282845){\color[rgb]{0,0,0}\transparent{0.30000001}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}{\tiny$+i$}\end{tabular}}}}%
+    \put(0.31894587,0.14282845){\color[rgb]{0,0,0}\transparent{0.30000001}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}{\tiny$-i$}\end{tabular}}}}%
+    \put(0.10487161,0.22358702){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}$\mathcal{S}$\end{tabular}}}}%
+    \put(0.22028135,0.11467585){\color[rgb]{0,0,0}\transparent{0.30000001}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}{\tiny$+1$}\end{tabular}}}}%
+    \put(0.31894587,0.11467585){\color[rgb]{0,0,0}\transparent{0.30000001}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}{\tiny$-1$}\end{tabular}}}}%
+    \put(0.22028135,0.01191713){\color[rgb]{0,0,0}\transparent{0.30000001}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}{\tiny$+i$}\end{tabular}}}}%
+    \put(0.31894587,0.01191713){\color[rgb]{0,0,0}\transparent{0.30000001}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}{\tiny$-i$}\end{tabular}}}}%
+    \put(0.08851151,0.11467585){\color[rgb]{0,0,0}\transparent{0.30000001}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}{\tiny$+1$}\end{tabular}}}}%
+    \put(0.18717603,0.11467585){\color[rgb]{0,0,0}\transparent{0.30000001}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}{\tiny$-1$}\end{tabular}}}}%
+    \put(0.08851151,0.0119171){\color[rgb]{0,0,0}\transparent{0.30000001}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}{\tiny$+i$}\end{tabular}}}}%
+    \put(0.18717603,0.0119171){\color[rgb]{0,0,0}\transparent{0.30000001}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}{\tiny$-i$}\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=2]{pauli_group.pdf}}%
+    \put(0.85410609,0.19192018){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}$E_{\sigma_2}\bar{X}$\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=3]{pauli_group.pdf}}%
+    \put(0.72291785,0.19192018){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{0}\smash{\begin{tabular}[t]{c}$E_{\sigma_2}\bar{I}$\end{tabular}}}}%
+    \put(0.72291785,0.0607319){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}$E_{\sigma_2}\bar{Z}$\end{tabular}}}}%
+    \put(0.85431766,0.06073187){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}$E_{\sigma_2}\bar{Y}$\end{tabular}}}}%
+    \put(0.66357146,0.24558722){\color[rgb]{0,0,0}\transparent{0.30000001}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}{\tiny$+1$}\end{tabular}}}}%
+    \put(0.76223589,0.24558722){\color[rgb]{0,0,0}\transparent{0.30000001}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}{\tiny$-1$}\end{tabular}}}}%
+    \put(0.66357146,0.14282847){\color[rgb]{0,0,0}\transparent{0.30000001}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}{\tiny$+i$}\end{tabular}}}}%
+    \put(0.76223589,0.14282847){\color[rgb]{0,0,0}\transparent{0.30000001}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}{\tiny$-i$}\end{tabular}}}}%
+    \put(0.79534133,0.24558722){\color[rgb]{0,0,0}\transparent{0.30000001}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}{\tiny$+1$}\end{tabular}}}}%
+    \put(0.89400581,0.24558722){\color[rgb]{0,0,0}\transparent{0.30000001}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}{\tiny$-1$}\end{tabular}}}}%
+    \put(0.79534133,0.14282847){\color[rgb]{0,0,0}\transparent{0.30000001}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}{\tiny$+i$}\end{tabular}}}}%
+    \put(0.89400581,0.14282847){\color[rgb]{0,0,0}\transparent{0.30000001}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}{\tiny$-i$}\end{tabular}}}}%
+    \put(0.79534133,0.11467588){\color[rgb]{0,0,0}\transparent{0.30000001}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}{\tiny$+1$}\end{tabular}}}}%
+    \put(0.89400581,0.11467588){\color[rgb]{0,0,0}\transparent{0.30000001}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}{\tiny$-1$}\end{tabular}}}}%
+    \put(0.79534133,0.01191713){\color[rgb]{0,0,0}\transparent{0.30000001}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}{\tiny$+i$}\end{tabular}}}}%
+    \put(0.89400581,0.01191713){\color[rgb]{0,0,0}\transparent{0.30000001}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}{\tiny$-i$}\end{tabular}}}}%
+    \put(0.66357146,0.11467588){\color[rgb]{0,0,0}\transparent{0.30000001}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}{\tiny$+1$}\end{tabular}}}}%
+    \put(0.76223589,0.11467588){\color[rgb]{0,0,0}\transparent{0.30000001}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}{\tiny$-1$}\end{tabular}}}}%
+    \put(0.66357146,0.01191713){\color[rgb]{0,0,0}\transparent{0.30000001}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}{\tiny$+i$}\end{tabular}}}}%
+    \put(0.76223589,0.01191713){\color[rgb]{0,0,0}\transparent{0.30000001}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}{\tiny$-i$}\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=4]{pauli_group.pdf}}%
+    \put(0.56599489,0.19192018){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}$E_{\sigma_1}\bar{X}$\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=5]{pauli_group.pdf}}%
+    \put(0.43480655,0.19192018){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{0}\smash{\begin{tabular}[t]{c}$E_{\sigma_1}\bar{I}$\end{tabular}}}}%
+    \put(0.43480656,0.0607319){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}$E_{\sigma_1}\bar{Z}$\end{tabular}}}}%
+    \put(0.5659949,0.0607319){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}$E_{\sigma_1}\bar{Y}$\end{tabular}}}}%
+    \put(0.37546017,0.24558722){\color[rgb]{0,0,0}\transparent{0.30000001}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}{\tiny$+1$}\end{tabular}}}}%
+    \put(0.4741247,0.24558722){\color[rgb]{0,0,0}\transparent{0.30000001}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}{\tiny$-1$}\end{tabular}}}}%
+    \put(0.37546017,0.14282847){\color[rgb]{0,0,0}\transparent{0.30000001}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}{\tiny$+i$}\end{tabular}}}}%
+    \put(0.4741247,0.14282847){\color[rgb]{0,0,0}\transparent{0.30000001}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}{\tiny$-i$}\end{tabular}}}}%
+    \put(0.50723004,0.24558722){\color[rgb]{0,0,0}\transparent{0.30000001}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}{\tiny$+1$}\end{tabular}}}}%
+    \put(0.60589457,0.24558722){\color[rgb]{0,0,0}\transparent{0.30000001}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}{\tiny$-1$}\end{tabular}}}}%
+    \put(0.50723004,0.14282847){\color[rgb]{0,0,0}\transparent{0.30000001}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}{\tiny$+i$}\end{tabular}}}}%
+    \put(0.60589457,0.14282847){\color[rgb]{0,0,0}\transparent{0.30000001}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}{\tiny$-i$}\end{tabular}}}}%
+    \put(0.50723004,0.11467588){\color[rgb]{0,0,0}\transparent{0.30000001}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}{\tiny$+1$}\end{tabular}}}}%
+    \put(0.60589457,0.11467588){\color[rgb]{0,0,0}\transparent{0.30000001}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}{\tiny$-1$}\end{tabular}}}}%
+    \put(0.50723004,0.01191713){\color[rgb]{0,0,0}\transparent{0.30000001}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}{\tiny$+i$}\end{tabular}}}}%
+    \put(0.60589457,0.01191713){\color[rgb]{0,0,0}\transparent{0.30000001}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}{\tiny$-i$}\end{tabular}}}}%
+    \put(0.37546017,0.11467588){\color[rgb]{0,0,0}\transparent{0.30000001}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}{\tiny$+1$}\end{tabular}}}}%
+    \put(0.4741247,0.11467588){\color[rgb]{0,0,0}\transparent{0.30000001}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}{\tiny$-1$}\end{tabular}}}}%
+    \put(0.37546017,0.01191713){\color[rgb]{0,0,0}\transparent{0.30000001}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}{\tiny$+i$}\end{tabular}}}}%
+    \put(0.4741247,0.01191713){\color[rgb]{0,0,0}\transparent{0.30000001}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}{\tiny$-i$}\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=6]{pauli_group.pdf}}%
+  \end{picture}%
+\endgroup%

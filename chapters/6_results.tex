@@ -397,6 +397,12 @@ Looking at the gathered thresholds in table \ref{tab:results_circ_single_round},
 This behavior is due to the asymmetry of the circuit, as discussed in section \ref{sssec:steane_type_error_correction_intro}, 
 the difference in ordering of the half-cycles leads to one type of error being more susceptible to incoming error, while the other type of error is more prevalent in the residual error.
 This behavior is independent of the decoding algorithm chosen.
+The difference between the thresholds of those two observable is approximately $0.4\%$, where the logical $X$ observable achieves a higher threshold in comparison to the logical $Z$-observable.
+As our circuit is designed such that it extracts and therefore corrects $Z$-errors first, they have a lesser chance to obtain a critical mass through circuit-level noise, which would results in a flipped logical $X$ observable.
+This might result in the earlier syndrome extraction circuit, extracting a syndrome which the decoder can still repair, 
+whereas the later half-cycle has a higher probability of extracting a syndrome that has to many errors to be still correctable.
+This observation fits to the prediction made about the asymmetry in section \ref{sssec:steane_type_error_correction_intro}.
+
 
 Further analysis the importance of the incoming error against the relevance of the residual error can be made when we discuss the results of the different residual error decoding algorithm 
 and the repeated QEC cycles.

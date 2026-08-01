@@ -11,6 +11,7 @@
     + should i discuss this?
 
 3. include example of noise and describe it as stochastic! (show channel!!)
+    + partly done but discuss the stochastic part maybe more?!
 
 4. discuss connection, maybe include this somewhere
     + logical error rate <- how does each of the following influences this?!
@@ -26,23 +27,29 @@
     + 10.1 include image and extend calculations explaining this process
 
 7. rework the chapter titles 
+
 8. QEC cycle as numbered enviorment 
+
 9. cosets of centralizer image, do it with the structure before ? at least discuss
+
 10. What to say about nkd codes?
+    + should i say something or just cut it?!
+
 11. cosets of stabilizer group and logical cosets -> make those point clearer earlier -> discuss at some point with maarten
+
 12. states and quotient elements is the similiar as the logical operations and implementation of such operators  (not 1-to-1) 
-13. add results to the abstract
-14. use \emph{}
+
+14. use \emph{} everywhere?!
 
 IMPORTANT!!!
 15. Syndrome extraction 
     + add circuit for steane type error correection
+    + refer to ti more ofter 
 
 16. decoder adaptions to syndrome extraction circuit
     + make those statements clearer
 
 17. answer questions from the presentation
-+ talk about on what hardware platform this code can be implemented
 + go into detail about possible state preparation approaches
 
 18. differentiation between error syndrome and state syndrome -> maybe rework after discussion
@@ -54,7 +61,7 @@ IMPORTANT!!!
 21. place final statement of seperation of paulis at the start of the chapter
     + here i am talking about the basic intro chapter
 
-22. implementation of encoding ? 
+22. implementation of encoding ?  (could be ignored)
     + and how does this interact with STEC?
 
 23. propagated noise model appendix!
@@ -77,20 +84,19 @@ IMPORTANT!!!
 
 31. utilize minipages for figures
     + subplots!
-
 32. add all the collapsed data plots in the appendix 
     + automate this process partly!
+33. include critical exponent results somewhere!
+    + in plots ?!
 
 33. name what is explicitly what is faultless in the circuit level model!! 
     + faultless ft syndrome extraction and observable measurement? is this clear    
     + explain observable measurement as a proxy for checking if the state is still ok 
 
-34. motivate in fssa why smallest distances should be excluded
+35. motivate in fssa why smallest distances should be excluded
     + more than just by results!
     + name the assumption for large d!
 
-35. include critical exponent results somewhere!
-    + in plots ?!
 
 36. single run example, show circuit lvl case in parallel as this is aruably more important for this thesis!!!
     + at least add it to the appendix and discuss the results!
@@ -101,16 +107,21 @@ IMPORTANT!!!
 
 38. check if i state the asymmetry part correctly  
     + what is corrected first also appears more often in the residual error
-
+    + check this part at all location that it appears !! why do i discuss it as so many different positions ... fucking annoying!
 
 39. cutout the round 10 in multi cycle stuff
     + show more grapppphs!
+    + show rejection rate as a reason to cut it ?!
 
 40. fault-tolerant instead of fault tolerant or just FT, circuit-level, not circuit levle0
 
 41. more in conclusion and outlook?!
 
-42. conclusion take not that we have effects (finite size) leading to a suppressed threshold value
+42. conclusion take note that we have effects (finite size) leading to a suppressed threshold value
+
+43. Grid explanation surface code rework, is not inital dxd grid but dxddd something grid
+
+44. data collapse method more paper -> mwpm threhold lit uses the same approach
 
 # Master Thesis Structure
 
