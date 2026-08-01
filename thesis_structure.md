@@ -123,6 +123,8 @@ IMPORTANT!!!
 
 44. data collapse method more paper -> mwpm threhold lit uses the same approach
 
+45. always call E_\sigma representative error
+
 # Master Thesis Structure
 
 # Title: Circuit Level Characterization of Steane Type Error Correction

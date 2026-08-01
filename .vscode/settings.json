@@ -29,6 +29,7 @@
         "plaquettes",
         "qubits",
         "qudits",
+        "reimplementation",
         "scipy",
         "Shor",
         "Steane",

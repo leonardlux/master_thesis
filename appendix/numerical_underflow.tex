@@ -1,1 +1,226 @@
 \chapter{Numerical underflow}\label{chapter:numerical_underflow}
+
+This appendix chapter discusses the numerical underflow encountered in our implementation of the efficient ML decoder \cite{efficient_decoding_algorithm}.
+
+A collection of logical error rate curves illustrating the problem is shown in figure \ref{fig:exmaple_observed_numerical_underflow}.
+The characteristic and possible causes of this numerical underflow mechanism are examined in section \ref{sec:num_underflow_the_problem}. 
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.5\linewidth]{numerical_underflow/ml_test_example.pdf}
+    \caption{
+            Effect of numerical underflow on the resulting logical error rate curves. 
+            The data was obtained from simulation of a code-capacity noise model, decoded with the efficient ML decoder.
+        }
+    \label{fig:exmaple_observed_numerical_underflow}
+\end{figure}
+
+But before going into detail about the problem, we give a rough outline on the principles behind the efficient ML decoder in section \ref{sec:num_underflow_decoder}.
+This will give an intuition where to look for the possible numerical underflow, as well as motivate the possible mitigation strategies.
+
+In the last section of this chapter, section \ref{sec:num_underflow_solutions}, we introduce the error mitigation process used in this thesis, 
+as well as further approaches to avoid numerical underflow in an implementation of this algorithm.
+
+At this point, I would like to once again express my gratitude to Aron Marton for his continuous support throughout this project.
+He provided valuable insights and shared his expertise during every stage of the work on the decoder. 
+From developing an understanding of the fundamental concept of the decoder, to providing help and tips to in the search for possible causes of the observed logical error rate behavior,
+and finally to exploring potential solutions.
+
+Moreover, he made his own implementation of the decoder available to me. 
+This not only greatly helped in the development of my own implementation 
+but also enabled the localization of the numerical underflow, as I was able to reproduce the same error in his implementation. 
+
+\section{The Decoder}\label{sec:num_underflow_decoder}
+
+In this section, we briefly review the decoder, focusing only on the relevant aspects for understanding how numerical underflow arises.
+We restrict our discussion to the algorithm for decoding independent bit- or phase-flip noise presented in \cite{efficient_decoding_algorithm}\footnote{
+Note that the decoder corrects either bit-flip or phase-flip errors in a single decoding step. 
+Consequently, decoding under independent bit- and phase-flip noise is achieved by applying the decoder twice.
+
+Furthermore, there appears to be an error, or at least an inconsistency in the notation, 
+in the description of the independent noise model in \cite{efficient_decoding_algorithm}. 
+The author assumes independent bit- and phase-flip noise with probabilities $p_X=p_Z$ and subsequently states that $p_Y=p_X^2$. 
+However, combining independent bit- and phase-flip channels with probabilities $p_X$ and $p_Z$ results in the effective error probabilities
+\[
+    \tilde{p}_X = p_X(1-p_Z), \qquad
+    \tilde{p}_Z = p_Z(1-p_X), \qquad
+    \tilde{p}_Y = p_X p_Z,
+\]
+where $\tilde{p}$ denotes the probabilities in the combined channel, while $p$ denotes the probabilities of the independent channels.
+
+
+}, which is the decoder configuration used throughout this thesis 
+
+The algorithm solves the ML decoding problem, see section \ref{ssec:general_ML_decoder}, by explicitly computing the probabilities of the cosets $\text{Pr}(E_\sigma \bar{P}\mathcal{S})$ corresponding to the measured syndrome $\sigma$.
+Since  $X$- and $Z$-errors are decoded independently in this algorithm\footnote{
+    Note once again that this decoder is only designed to be able to decode either $X$- or $Z$-errors.
+} and we only consider a single logical encoded qubit, 
+the logical operators defining the two cosets are either $\bar{P} \in \{\bar{I},\bar{X}\}$ or $\bar{P} \in \{\bar{I},\bar{Z}\}$.
+
+In general, the probability of an individual cosets decreases as the code distance increases, since the number of possible syndrome growth exponentially.
+For the surface code, the average cosets probability can be expressed as 
+\begin{equation}
+    \langle \text{Pr}(E_\sigma \bar{P} \mathcal{S}) \rangle = 2^{-m/2}= 2^{-d\cdot(d-1)},
+    \label{eq:mean_prop_coset_in_distance}
+\end{equation} 
+where we consider either $X$- or $Z$-errors, consistent with the assumption of the decoder.
+Consequently, we expect the probabilities of individual cosets to become quite small.
+Note that we are using a average here an not a median, the median is highly dependent on the physical error rate, as will be discussed later. 
+
+The efficient decoding algorithm consists of two stages. 
+First, representative error $E_\sigma$ corresponding to the measured syndrome is generated.
+This representative error is then passed to the main part of the decoder, 
+which computed the probabilities of the associated cosets.
+
+Broadly speaking, the decoder utilizes a mapping from the surface code to fermionic Gaussian states, 
+which are subsequently mapped to matchgate quantum circuits, thereby enabling an efficient computation of the cosets probabilities on classical computers.
+The complete derivation and algorithm of this mapping are presented in \cite{efficient_decoding_algorithm}.
+For the discussion in this appendix, we point out, that this process included the computation of norm of Gaussian states $\Gamma \geq 0$ and its renormalization.
+
+The algorithm used to generate the conventional representation error $E_\sigma$ is sufficiently short to be quoted in full. 
+For the case of $X$-errors \cite{efficient_decoding_algorithm} states:
+\begin{quotation}
+``Let [$\sigma_u$] be the syndrome[bit] of a site stabilizer $A_u$. 
+We choose the desired error [$E_\sigma$] by connecting each site $u$ with a non-zero syndrome [$\sigma_u$] to the left boundary by a horizontal string of $X$-errors 
+and adding all such strings modulo two. 
+Note that [$E_\sigma$] can be constructed in time $\mathcal{O}(n)$.'' 
+\end{quotation}
+Here, we adapted the notation to match the notation used throughout this thesis. 
+We refer to this method to construct the representative error as the \emph{Bravyi} approach.
+
+
+\section{The Problem}\label{sec:num_underflow_the_problem}
+
+Before the rejection rate was implemented as a mitigation strategy, the logical error rate exhibited the form shown in \ref{fig:exmaple_observed_numerical_underflow}.
+The simulation was performed using code-capacity noise model with only bit-flip errors, measuring the corresponding logical $Z$ observable.
+The logical error rate $p_{log}$ generally follows the expected behavior for high physical error rates $p_{phy}$.
+In particular the logical error rate curves for the code distances $d\in \{3,5,7\}$, show no obvious anomaly and they exhibit the asymptotic scaling predicted by equation \ref{eq:p_log_asymptotic_behavior}, as discussed in section \ref{ssec:threshold_theorem}.
+
+Starting with the logical error rate curve of a distance $d=9$ surface code, an anomalous upward trend becomes apparent.
+We can observe that the logical error rate exhibits an upward trend, 
+breaking from the expected asymptotic scaling, at a physical error rates of $p_{phy} \approx 5\%$.
+We will refer to this point as the \emph{critical point}.
+Below the critical point, the logical error rate exhibits large fluctuations between different physical error rates, together with an overall slight upward trend as the physical noise rate decreases.
+Considering the higher distances, we observe that the critical point is shifting to higher noise rates as the code distance is increased. 
+
+Interestingly, the irregularity of the logical error rate curves below the critical point appears to not be random. 
+Repeating the simulation yield the same curve, up to the expected statistical uncertainty. 
+We therefore conclude that the observed anomaly is deterministic, rather than a statistical artifact.
+
+As shown in equation \ref{eq:mean_prop_coset_in_distance}, the average probability of an individual coset decreases with increasing code distance.
+Likewise, reducing the physical error rate decreases the probability of most cosets, since the trivial (no-error) coset becomes increasingly dominant. 
+This reduction in coset probability shows the same quantitative behavior as the observed anomaly and the shift of its critical point.  
+Consequently, the probabilities involved in the decoding algorithm become progressively smaller, suggesting numerical underflow as a plausible explanation for the observed anomaly.
+Since numerical underflow is itself a deterministic effect, this is consistent with the reproducibility of the anomalous logical error-rate curves.
+
+It is worth noting that the anomaly appears to occur well below the threshold for this noise model.
+However, without understanding the underlying mechanism, it it not possible to determine whether the anomaly already affects the results at higher physical noise levels.
+As it could happen at small enough scale not being visible, but still influencing the results. 
+The next section therefore introduces error mitigation and detection approaches.
+
+\section{Mitigation Strategies}\label{sec:num_underflow_solutions}
+In the following we will present three different approaches to reduce the occurrence of the numerical underflow, 
+or to at least to reduce the impact it has on the logical error rate curves.
+
+Of the three following approaches we were only able to implement the logarithm and rejection rate, 
+either due to time constraints or due to limitation of the used implementation, which could themselves be avoided with more time. 
+
+\subsection{Precision}
+% increase precision  -> use better suited programming language
+Given that we assume that we are dealing with a numerical underflow problem an obvious problem mitigation strategy is to increase the precision. 
+Unfortunately, some parts of our simulations\footnote{
+    The problems lies in the choice of programming language. 
+    We are using \texttt{Python}, utilizing \texttt{Numpy} \cite{numpy} and \texttt{Numba} \cite{numba} to just in time compile, for increased performance. 
+    Sadly the ability to use \texttt{numpy.float128} offered by \texttt{numpy}, seems to be stopped by parts of \texttt{Numba} and \texttt{Numpy} itself, 
+    which does not seem to have implemented the higher precision version. 
+    This in combination with general slower performance of Python, due to the missing compilation, motivates an implementation in a different programming language, for example \texttt{C++}.
+    Sadly the time for required reimplementation was not there, yet.
+} do not support such an increased precision, we therefore are required to take a different approach.
+
+\subsection{Logarithm and Rejection Rate}
+% calculated the logarithm of the probability instead of the probability  (arons idea)
+We can reduce the susceptibility of our implementation by calculating the logarithm of the coset probability\footnote{
+    Aron Marton provided the idea for this solution as he encountered similar problems in his own implementation.
+}, instead of the coset probability itself.
+We implement this for the probability itself as well as for the normalization of the Gaussian state.
+In its calculation we are required to calculate a determinant of a matrix. 
+Without going into to much detail, we here take the determinant of sparse matrix, which values become increasingly small with smaller physical probabilities.
+Even when implementing the computation of this determinant with a function especially constructed to compute the logarithm of determinant, here we used \texttt{numpy.linalg.slogdet}, 
+we can observe a numerical underflow, as the normalization $\Gamma$, which should be greater than $0$, turns negative.
+
+We use a normalization with negative sign as an indication than an numerical underflow occurred.
+In those cases we flag the whole decoding process as faulty. 
+The shots which contain a decoding event which is flagged as faulty, will be rejected, 
+leading to the rejection rate $r_{\textrm{rejection}}$ plotted on all logical error rate curves
+\begin{equation}
+    r_{\textrm{rejection}} = n_{\textrm{rejection}}/n_{shots}.
+\end{equation}
+Using this rejection logarithm and rejection rate approach achieves logical error rate curves which scales as predicted, as shown in figure \ref{fig:results_code_capcity_Z_ml_p_log_p_phy_slopes}. 
+
+\subsection{Representative Error}
+% change the representative error algorithm -> pre decoding with mwpm 
+%   note that arons implementation intrinsicly used this -> thus leading to the less 
+One can further reduce the occurrence of the numerical underflow error by using a representative error with higher probability\footnote{
+    This possibility became apparent while comparing the implementation of the whole simulation of Aron Marton and the one used in this thesis.
+}.
+Using the representative error construction algorithm, as cited in \ref{sec:num_underflow_decoder} and introduced in \cite{efficient_decoding_algorithm} , 
+leads to high weight representative errors.
+As an example an single error event happening on the right edge of the surface code, will be represented by an error of weight $2(d-1)$, as both triggered stabilizers are connected to the left boundary.
+Especially for the low physical error rate case one a high distance surface code, such configuration can lead to high weight errors.
+
+If we instead would use a MWPM matching algorithm\footnote{
+    Aron Marton recycled the result from the MWPM decoder, as an input for the ML decoder, while our approach was based on the algorithm introduced by Bravyi.
+    As such, testing the his implementation of the main algorithm of the decoder in my implementation lead to the same occurrence, 
+    while testing it in his implementation lead to an neglectable amount of numerical underflow occurrences.
+} to find a representative error the associated representative error might be significantly lower.
+This inturn leads to a reduced occurrence the numerical underflow, due to the iterative approach of the algorithm \cite{efficient_decoding_algorithm}. 
+
+The difference in the representative error weight and probability is shown in figure \cref{fig:numerical_underflow_avg_weight,fig:numerical_underflow_avg_prob,fig:numerical_underflow_weight_distr}. 
+All figures are based on a distance $d=15$ surface code, with $100k$ syndromes sampled.
+The figure \ref{fig:numerical_underflow_avg_weight} shows the average weight of the representative error, for a relevant interval of physical error rates.
+We can clearly see the difference in the weights, with the MWPM decoder having in approximately only $50\%$ of the weight of the Bravyi approach. 
+The resulting average probability of each approach can be seen in figure \ref{fig:numerical_underflow_avg_prob}, where we observe the associated difference in the probability.
+Here the MWPM approach is half of the magnitude of the Bravyi approach. 
+
+This not only hold for the average, as shown in figure \ref{fig:numerical_underflow_weight_distr}, but also for the weight distribution of the representative error over all sampled syndromes. 
+One can observe that the distribution are completely disjoint, showing that even the syndrome with the highest weight of the MWPM approach has a lower weight than the lowest weight of the Bravyi approach.
+
+In principle the different choices of representative error should not return a different coset probability.
+As such we can use the MWPM approach to find a low weight representative error, thus minimizing the risk of a numerical underflow appearing.
+This is a tradeoff between the computational cost of MWPM and the problems associated with numerical underflow. 
+
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=\linewidth]{numerical_underflow/numerical_underflow_error_avg_weight.pdf}
+    \caption{
+        Shown is the average weight of the representative error, for a distance $d=15$ surface code, for a relevant interval of the physical error rates, based on a sample size of $100k$ syndromes.
+        }
+    \label{fig:numerical_underflow_avg_weight}
+\end{figure}
+
+
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=\linewidth]{numerical_underflow/numerical_underflow_error_avg_prob.pdf}
+    \caption{
+        Shown is the average probability of the representative error, for a distance $d=15$ surface code, for a physical error rate of $p_{phy} = 10\%$, based on a sample size of $100k$ syndromes.
+        }
+    \label{fig:numerical_underflow_avg_prob}
+\end{figure}
+
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=\linewidth]{numerical_underflow/numerical_underflow_error_weights_distr.pdf}
+    \caption{
+            Shown is the representative error weight distribution for the two different approaches, for a distance $d=15$ surface code, based on a sample size of $100k$ syndromes.
+        }
+    \label{fig:numerical_underflow_weight_distr}
+\end{figure}
+
+
+
+
+
