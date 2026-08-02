@@ -2,16 +2,16 @@
 
 We previously assumed that errors only happen at a specific point in our quantum circuit, namely before we extract the syndrome.
 A more realistic model would assume that errors can occur in every part of the circuit, with every gate applied, measurement taken and on each initialized individual qubit, and therefore also during the syndrome extraction.
-We will refer to this more realistic as the \emph{circuit level noise model}, and we will define it in more detail in section \ref{sssec:circuit_level_noise}. 
-The model where errors only appear after the state preparation on the data qubit is called the \emph{code capacity model}.
+We will refer to this more realistic as the \emph{circuit-level} noise model, and we will define it in more detail in section \ref{sssec:circuit_level_noise}. 
+The model where errors only appear after the state preparation on the data qubit is called the \emph{code-capacity} noise model.
 
 The threshold of the QEC code depends significantly on the choice of the error model.
 In this subsection we will introduce the two different error models uses in this thesis.
 
 
-\section{Code Capacity Noise Model}\label{sssec:code_capacity_error_model}
+\section{Code-Capacity Noise Model}\label{sssec:code_capacity_error_model}
 
-For the \emph{code capacity} noise model we apply independent errors onto the data qubits after we have encoded the logical qubits.
+For the \emph{code-capacity} noise model we apply independent errors onto the data qubits after we have encoded the logical qubits.
 There are no other locations in the circuits where errors occur.
 The placement in the circuit is visualized in figure \ref{circ:code_capacity_noise}.
 As such we implicitly assume that all gates in the encoding, syndrome extraction and associated ancilla qubits and measurements are faultless.
@@ -35,13 +35,13 @@ Both noise channel, $\varepsilon_X(\rho)$ is the bit-flip and $\varepsilon_Z(\rh
         \end{quantikz}
     \end{center}
     \label{circ:code_capacity_noise} 
-    \caption{A quantum circuit visualizing the position of code capacity noise in the memory experiment. The noise will either be a phase- or a bit-flip channel, dependent on the observable measured.}
+    \caption{A quantum circuit visualizing the position of code-capacity noise in the memory experiment. The noise will either be a phase- or a bit-flip channel, dependent on the observable measured.}
 \end{figure}
 
 
-\section{Circuit Level Noise Model}\label{sssec:circuit_level_noise}
+\section{circuit-level Noise Model}\label{sssec:circuit_level_noise}
 
-The second and more complex noise model we will use is the so called \emph{circuit level} noise model.
+The second and more complex noise model we will use is the so called \emph{circuit-level} noise model.
 This is designed to be more realistic, as we model all gates, measurements and qubits to be faulty.
 Here we assume for simplicity that each elementary gate and measurement can fail independently, each with the error probability $p_{phy}$. 
 
@@ -71,7 +71,7 @@ After initialization of each qubit we place a depolarizing one qubit noise chann
     \label{eq:depo_1_noise}
 \end{equation}
 
-An example circuit with and without the circuit level noise model applied can be seen in figure \ref{circ:circuit_level_noise_example}. 
+An example circuit with and without the circuit-level noise model applied can be seen in figure \ref{circ:circuit_level_noise_example}. 
 
 \begin{figure}[ht]
     \begin{center}
@@ -107,15 +107,15 @@ An example circuit with and without the circuit level noise model applied can be
     \label{circ:circuit_level_noise_example} 
     \caption{
         In this figure we show an example circuit on top, with gates and measurements acting on three physical qubits $q_1,q_2$ and $q_3$, including initialization, two qubit gates and measurements of different observables.
-        The lower circuit diagram shows the same circuit after we have applied the circuit level noise model. 
+        The lower circuit diagram shows the same circuit after we have applied the circuit-level noise model. 
     }
 \end{figure}
 
-In this thesis we assume that we have access to fault tolerantly prepared logical encoded states.
-As such we do not model the state preparation of those states completely, but just encoded them noiseless and then place independent depolarizing noise on each qubit of the resulting state to mimic a fault tolerant encoding procedure.
-We choose to assume that because the fault tolerant preparation for arbitrary distance codes is for itself a hard task to realize.
+In this thesis we assume that we have access to fault-tolerantly prepared logical encoded states.
+As such we do not model the state preparation of those states completely, but just encoded them noiseless and then place independent depolarizing noise on each qubit of the resulting state to mimic a fault-tolerant encoding procedure.
+We choose to assume that because the fault-tolerant preparation for arbitrary distance codes is for itself a hard task to realize.
 
-We can already state that only fault tolerant QEC codes show distance preserving properties under this error model, and we will introduce the concept of fault tolerance in section \ref{sec:fault_tolerance}.
+We can already state that only fault-tolerant QEC codes show distance preserving properties under this error model, and we will introduce the concept of fault tolerance in section \ref{sec:fault_tolerance}.
 Note here that these errors propagate through the circuit, as we will discuss in the following section \ref{ssec:cnot_gate}, during the QEC cycle, which leads to correlated errors being spread over multiple qubits. 
 
 % show noise model as circuit or equations?
@@ -150,25 +150,25 @@ We will later show that we can use this error propagation property of CNOT gates
 \subsection{Fault Tolerance}\label{sec:fault_tolerance}
 
 At this point we introduce the notion of \emph{Fault Tolerance} (FT) QEC circuits, to formalize the property of controlled propagation of errors in those circuits.
-A fault tolerant circuit design is a necessary condition for a threshold to exist for the given QEC code under circuit level noise (see section \ref{ssec:threshold_theorem}).
+A fault-tolerant circuit design is a necessary condition for a threshold to exist for the given QEC code under circuit-level noise (see section \ref{ssec:threshold_theorem}).
 Notice that fault tolerance is a property of the circuit. 
 We can implement the same QEC code, the surface code for example, both in a FT and non FT circuit, depending of the design of the circuits implementing the different parts\footnote{
     Those parts are for example state preparation, syndrome extraction, logical operations.
     In this thesis we focus on the FT syndrome extraction, while assuming that we have access to FT logical state preparation for encoded ancilla qubits.
     } of the QEC circuit.
 
-We derived for the code capacity case that a QEC code with code distance $d$, is able to correct $t$ errors (see section \ref{sssec:distance_stabilizer_formalism}).
-Given that for the circuit level noise model error can occur in every part of the circuit, 
+We derived for the code-capacity case that a QEC code with code distance $d$, is able to correct $t$ errors (see section \ref{sssec:distance_stabilizer_formalism}).
+Given that for the circuit-level noise model error can occur in every part of the circuit, 
 and that errors happening on one qubit can be propagated onto multiple qubits through CNOT gates for example (see section \ref{ssec:cnot_gate}), 
-we need to introduce the fault tolerant condition to retain the same relation between the distance $d$ and the number of correctable errors $t$. 
+we need to introduce the fault-tolerant condition to retain the same relation between the distance $d$ and the number of correctable errors $t$. 
 
-We therefore define a circuit as fault tolerant, under a given error model, if $t$ independent errors during the cycle end up as a residual error which is still correctable.
+We therefore define a circuit as fault-tolerant, under a given error model, if $t$ independent errors during the cycle end up as a residual error which is still correctable.
 Which is equivalent to saying that a FT circuit is designed, such that at least $t+1$ independent errors need to occur, to produce a logical operator on the encode code block.
 If there is a single error event which leads to a reduction in the effective weight of the logical operator\footnote{
     Here we use the term effective weight of the logical operator, to refer to refer to the number of independent error events needed to realize this logical operator.
-} of the QEC code is not fault tolerant \cite{friederike_steane,gottesmann_book}.
+} of the QEC code is not fault-tolerant \cite{friederike_steane,gottesmann_book}.
 
-As an example circuit is trivially fault tolerant, if each error event leads to at most one error per logical encoded code block\footnote{A code block is the unit encoded by a single QEC code, so in our case a single qubit}.
+As an example circuit is trivially fault-tolerant, if each error event leads to at most one error per logical encoded code block\footnote{A code block is the unit encoded by a single QEC code, so in our case a single qubit}.
 This will be the case for the steane type syndrome extraction circuit (see section \ref{sssec:steane_type_error_correction_intro}). 
 
 But, as shown in section \ref{sssec:standard_syndrome_extraction_circuit} where we discuss hook errors for the conventional syndrome extraction circuit, 
@@ -178,7 +178,7 @@ if the propagated error do not lead to a effectively reduced weight of the logic
 Applying the concept of fault tolerance to a complete QEC cycle, including the recovery, we can identify that our condition for a successful recovery changes.
 Instead of requiring that the QEC cycles recovers the original logical state perfectly for a successful recovery, 
 we only require that the QEC cycles recovers the original logical state up to a correctable residual error\footnote{
-    The need to redefine the condition for a successful recovery becomes obvious, if we take into account, that for the circuit level noise model each operation is noisy. 
+    The need to redefine the condition for a successful recovery becomes obvious, if we take into account, that for the circuit-level noise model each operation is noisy. 
     Therefore the last operation can introduce an error, and given that we have no way to detect this last error, because it happened by definition after all operation on the circuits are concluded,
     we can not detect or remove it. 
 }. 

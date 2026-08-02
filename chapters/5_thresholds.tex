@@ -5,7 +5,7 @@
 The cornerstone of QEC codes and their usefulness is based on the threshold theorem. 
 It states that, even under the assumption that all components are noisy,
 we can still arbitrary reduce the logical error rate $p_{log}$ of the encoded qubit, 
-given that the error rates of the noisy components $p_{phy}$ is below a certain threshold $p_{th}$ if we use a fault tolerant QEC code \cite{gottesmann_book,topological_quantum_memory}.
+given that the error rates of the noisy components $p_{phy}$ is below a certain threshold $p_{th}$ if we use a fault-tolerant QEC code \cite{gottesmann_book,topological_quantum_memory}.
 In short, if the error rate is below this threshold the QEC code can suppress errors faster than they occur.
 
 We can reduce the logical error rate for a fixed physical noise rate by increasing the distance $d$ of the code if the fixed physical noise rate is below the threshold.
@@ -23,7 +23,7 @@ Codes with higher threshold can be used with less optimal qubits and might there
 % \textcolor{red}{Put ref to result here}.
 
 There are different possible approaches to determine the threshold of a QEC setup.
-It can be determined through a mapping to statistical physics models for some QEC setup, including the surface code under code capacity noise\footnote{Note that under code capacity noise the syndrome extraction circuit is neglectable.}.
+It can be determined through a mapping to statistical physics models for some QEC setup, including the surface code under code-capacity noise\footnote{Note that under code-capacity noise the syndrome extraction circuit is neglectable.}.
 For those models, we can identify a phase transition between an ordered and unordered phase at the threshold \cite{fundamental_thresholds,topological_quantum_memory}.
 
 In this thesis we will use a numerical approach to determine the threshold for different configurations as described in the following section.
@@ -61,7 +61,7 @@ One could realize a simulation detecting both type of errors at the same time us
 An example of how the logical error curves $p_{log,d}(p_{phy})$ look like can be seen in figure \ref{fig:results_code_capcity_Z_ml_p_log_p_phy}.
 
 For the asymptotic behavior of the logical error rate, for small physical noise rates, we can state the following:
-The fault tolerant distance $d$ code is guaranteed to correct $t=(d-1)/2$ independent faults, each with a noise rate proportional to the physical noise rate $p_{phy}$.
+The fault-tolerant distance $d$ code is guaranteed to correct $t=(d-1)/2$ independent faults, each with a noise rate proportional to the physical noise rate $p_{phy}$.
 Therefore we require $t+1$ fault to cause a logical error, resulting in a logical error rate which scales in leading order as 
 \begin{equation}
     \lim_{p_{phy} \rightarrow 0} p_{log} \propto  p_{phy}^{(t+1)}= p_{phy}^{((d+1)/2)}.
@@ -78,7 +78,9 @@ Therefore we can use methods from finite-size scaling analysis to identify the v
 
 \subsection{Data Collapse Method}\label{ssec:data_collapse_method}
 
-We use the \emph{Data Collapse Method} (DCM) to determine the threshold, utilizing the logical error rate curves $p_{log,d}(p_{phy})$ for different code distances $d$ that we simulated \cite{pyfssa}.
+The \emph{Data Collapse Method} (DCM) is used to determine the threshold. 
+It relies on the logical error rate curves $p_{log,d}(p_{phy})$ simulated for different code distances $d$.
+The important properties of this approach are summarized in the following, for a more in-depth derivation, see \cite{pyfssa,mwpm_threshold_paper}.
 
 We can identify the system size of our problem as the code distance $d$.
 The system, which is parameterized by the physical error rate $p_{phy}$, undergoes a phase transition at the critical noise rate corresponding to the threshold $p_{th}$.
@@ -89,6 +91,7 @@ Utilizing the fact that the phase transition is a phase transition of first orde
     \label{eq:data_collapse_method}
 \end{equation}
 where $f(x)$ is the dimensionless scaling function for finite sizes and $\nu$ is the critical exponent, associated with the phase transition \cite{pyfssa}. 
+These assumptions hold for $d\rightarrow \infty$ , for finite size small variation might appear \cite{pyfssa,mwpm_threshold_paper}.
 
 Following equation \ref{eq:data_collapse_method}, plotting $y=p_{log,d}(p_{phy})$ against $x=d^{1/\nu} \cdot(p_{phy}-p_{th})$ should collapse the simulated data onto one curve, corresponding to the scaling function $f(x)$, 
 under the assumption that we use the correct threshold $p_{th}$ and critical exponent $\nu$.

@@ -32,109 +32,92 @@
 
 9. cosets of centralizer image, do it with the structure before ? at least discuss
 
-10. What to say about nkd codes?
-    + should i say something or just cut it?!
+10. cosets of stabilizer group and logical cosets -> make those point clearer earlier -> discuss at some point with maarten
 
-11. cosets of stabilizer group and logical cosets -> make those point clearer earlier -> discuss at some point with maarten
+11. states and quotient elements is the similiar as the logical operations and implementation of such operators  (not 1-to-1) 
 
-12. states and quotient elements is the similiar as the logical operations and implementation of such operators  (not 1-to-1) 
-
-14. use \emph{} everywhere?!
-
-IMPORTANT!!!
-15. Syndrome extraction 
-    + add circuit for steane type error correection
-    + refer to ti more ofter 
-
-16. decoder adaptions to syndrome extraction circuit
+12. decoder adaptions to syndrome extraction circuit
     + make those statements clearer
+13. name the adaption of the decoder to the different configurations more clearly?
 
-17. answer questions from the presentation
-+ go into detail about possible state preparation approaches
-
-18. differentiation between error syndrome and state syndrome -> maybe rework after discussion
+14. differentiation between error syndrome and state syndrome -> maybe rework after discussion
     + work in additivity of syndromes
-19. computation relation between different error syndromes if both errors are applied consecutive
+    19. computation relation between different error syndromes if both errors are applied consecutive
     + shortly derive the xor relation used in pauli frame tracking
-20. computation relation between different error syndromes, two errors happening in the same detection circuit
+    20. computation relation between different error syndromes, two errors happening in the same detection circuit
 
-21. place final statement of seperation of paulis at the start of the chapter
+15. place final statement of seperation of paulis at the start of the chapter
     + here i am talking about the basic intro chapter
 
-22. implementation of encoding ?  (could be ignored)
+16. implementation of encoding ?  (could be ignored)
     + and how does this interact with STEC?
 
-23. propagated noise model appendix!
+17. propagated noise model appendix!
 
-24. mapping multiple errors to the same edges? is that happening? does this influence the argument of p beeing cyclic in the probability?
-    + yes, it does, but ratio stays the same, is this clear??
-
-25. numerical underflow in the appendix
-
-26. Danksagung 
-
-27. reedit error estimate on data collapse method
+18. reedit error estimate on data collapse method
     + bootstrapping 
+    + find a paper to cite?!
 
-28. name the adaption of the decoder to the different configurations more clearly?
+19. maybe resize images?
 
-29. link to my github repo in the appendix or as a citation?
-
-30. maybe resize images?
-
-31. utilize minipages for figures
-    + subplots!
-32. add all the collapsed data plots in the appendix 
+20. add all the collapsed data plots in the appendix 
     + automate this process partly!
-33. include critical exponent results somewhere!
-    + in plots ?!
+    + include critical exponent results in those plots 
 
-33. name what is explicitly what is faultless in the circuit level model!! 
+21. name what is explicitly what is faultless in the circuit-level model!! 
     + faultless ft syndrome extraction and observable measurement? is this clear    
     + explain observable measurement as a proxy for checking if the state is still ok 
+    + show a graph similar to code capcity model for circuit-level noise model
 
-35. motivate in fssa why smallest distances should be excluded
+22. motivate in fssa why smallest distances should be excluded
     + more than just by results!
     + name the assumption for large d!
 
-
-36. single run example, show circuit lvl case in parallel as this is aruably more important for this thesis!!!
+23. single run example, show circuit lvl case in parallel as this is aruably more important for this thesis!!!
     + at least add it to the appendix and discuss the results!
     + add point our more if we switch?!o
     + why add all use code capcity! argue a bit
 
-37. symmetry of surface code in regards to its observables! 
-
-38. check if i state the asymmetry part correctly  
+24. check if i state the asymmetry part correctly  
     + what is corrected first also appears more often in the residual error
     + check this part at all location that it appears !! why do i discuss it as so many different positions ... fucking annoying!
 
-39. cutout the round 10 in multi cycle stuff
+25. cutout the round 10 in multi cycle stuff
     + show more grapppphs!
     + show rejection rate as a reason to cut it ?!
 
-40. fault-tolerant instead of fault tolerant or just FT, circuit-level, not circuit levle0
+26. more in conclusion and outlook?!
+    + conclusion take note that we have effects (finite size) leading to a suppressed threshold value
 
-41. more in conclusion and outlook?!
+27. get rid of as many we as possible!!!
 
-42. conclusion take note that we have effects (finite size) leading to a suppressed threshold value
+
+Today:
 
 43. Grid explanation surface code rework, is not inital dxd grid but dxddd something grid
+37. symmetry of surface code in regards to its observables! 
+50. inkscape images, adapt captions!
+14. use \emph{} everywhere?!
 
-44. data collapse method more paper -> mwpm threhold lit uses the same approach
+18. mapping multiple errors to the same edges? is that happening? does this influence the argument of p beeing cyclic in the probability?
+    + yes, it does, but ratio stays the same, is this clear??
 
-45. always call E_\sigma representative error
+IMPORTANT!!!
+15. Syndrome extraction 
+    + add circuit for steane type error correection
+    + refer to it during the introduction 
+
 
 # Master Thesis Structure
 
-# Title: Circuit Level Characterization of Steane Type Error Correction
+# Title: Circuit-Level Characterization of Steane Type Error Correction
 
 # Abstract
 
 Fault-tolerant quantum computing relies on quantum error correction (QEC) schemes whose performance can be characterized by a threshold: a critical physical error rate below which logical errors can be suppressed by increasing the code distance. In this thesis, we investigate the threshold for Steane type error correction circuits which perform syndrome extraction by logical encoded ancillas in a fault-tolerant and single-shot setting.
-We determine the logical error rate under circuit-level noise model with faults in both gate operations and measurements, assuming access to fault tolerant logical ancilla preparations. Decoding is performed using an efficient maximum likelihood decoder designed for the surface code and compared to minimum weight perfect matching. 
+We determine the logical error rate under circuit-level noise model with faults in both gate operations and measurements, assuming access to fault-tolerant logical ancilla preparations. Decoding is performed using an efficient maximum likelihood decoder designed for the surface code and compared to minimum weight perfect matching. 
 We find that the threshold are beautiful and amazing ... as compared to ...
-We investigate single shot properties of steane type syndrome extraction by computing the threshold as function of the number of rounds and compare with standard repeated surface code syndrome extraction under circuit level noise, using the same decoders (ML, MWPM).
+We investigate single shot properties of steane type syndrome extraction by computing the threshold as function of the number of rounds and compare with standard repeated surface code syndrome extraction under circuit-level noise, using the same decoders (ML, MWPM).
 We find ....
 
 Topic XY require further investgation
@@ -152,7 +135,7 @@ Constant (in time) overhead ft qec (Gottesmann paper)
 luis likes historic overviews: development of fitting plattforms
 
 The performs of a code is charactized by the threshold, ...,
-and to calculate this under realistic conditions we have to take into account that errors occur in every part in the circuit even in the QEC, so called circuit level noise.
+and to calculate this under realistic conditions we have to take into account that errors occur in every part in the circuit even in the QEC, so called circuit-level noise.
 
 Overview of requirements for the platform
 
@@ -250,14 +233,14 @@ Meaning of threshold vs distance for the capacity of a code (maybe a bit to earl
     + bit-/phase- flip noise
     + introduce depolirizing noise
 
-### Code Capacity Model
+### Code-capacity Model
 
 0. Just errors on data qubits
 1. Simplest model
     + Surface code is designed for this model 
 2. describe the resulting error model
 
-### Circuit Level Noise
+### Circuit-Level Noise
 
 0. Ancilla qubits and gates are faulty 
     + more realworld like
@@ -276,7 +259,7 @@ Meaning of threshold vs distance for the capacity of a code (maybe a bit to earl
 
 # Syndrome Extraction
 
-0. talk about influence of circuit level noise 
+0. talk about influence of circuit-level noise 
     + -> need to think about a smart way of syndrome extraction
 1. ToDo: How does the group picture change?
     + can we find a nice way to express this?
@@ -287,7 +270,7 @@ Meaning of threshold vs distance for the capacity of a code (maybe a bit to earl
     + for code capcity case
     + explain concept of hook error 
 2. error on ancilla qubit and how they propagate through correction
-    + -> not fault tolerant
+    + -> not fault-tolerant
     + -> d repeated measurements needed (ToDo find good paper)
 
 ## Steane Type Syndrome Extraction = Steane Type Error Correction
@@ -323,7 +306,7 @@ Properties:
 
 + Use algorithm blocks to use the preexisting structure to make a clear structured argument how ML works
 
-+ First for code capacity noise
++ First for code-capacity noise
 
 0. Definiton using group structure
     + show to be optimal decoding strategy
@@ -401,7 +384,7 @@ Modifiable parameters of Circuit
     + ToDo: X & Z
 3. Noise Model
     + Code capcity
-    + Circuit Level Noise
+    + Circuit-Level Noise
 4. State Preparation (ToDo)
 5. Order 
     + not implemented for reasons -> symmtry (ToDo, just to show)
@@ -475,7 +458,7 @@ Modifiable parameters of Circuit
 
 Short note on implementation
 
-## Code capacity Setting  (may move to implementation)
+## Code-capacity Setting  (may move to implementation)
 
 + benchmarking
 0. show basic curves, show threshold and determined threshold and fssa results

@@ -1,3 +1,4 @@
+% THIS CHAPTER IS COMPLETELY DONE!
 \chapter{Numerical underflow}\label{chapter:numerical_underflow}
 
 This appendix chapter discusses the numerical underflow encountered in our implementation of the efficient ML decoder \cite{efficient_decoding_algorithm}.
@@ -77,7 +78,7 @@ which are subsequently mapped to matchgate quantum circuits, thereby enabling an
 The complete derivation and algorithm of this mapping are presented in \cite{efficient_decoding_algorithm}.
 For the discussion in this appendix, we point out, that this process included the computation of norm of Gaussian states $\Gamma \geq 0$ and its renormalization.
 
-The algorithm used to generate the conventional representation error $E_\sigma$ is sufficiently short to be quoted in full. 
+The algorithm used to generate the representative error $E_\sigma$ is sufficiently short to be quoted in full. 
 For the case of $X$-errors \cite{efficient_decoding_algorithm} states:
 \begin{quotation}
 ``Let [$\sigma_u$] be the syndrome[bit] of a site stabilizer $A_u$. 
@@ -140,7 +141,6 @@ Unfortunately, parts of our simulations framework\footnote{
 We therefore consider alternative mitigation strategies. 
 
 \subsection{Logarithm and Rejection Rate}
-% calculated the logarithm of the probability instead of the probability  (arons idea)
 
 The susceptibility of the implementation can be reduced by calculating the logarithm of the coset probability\footnote{
     Aron Marton provided the idea for this solution, as he encountered similar problems in his own implementation.
@@ -181,7 +181,16 @@ To be sure we try to limit the rejection rate of shots, by using low code distan
 
 \subsection{Representative Error}\label{ssec:numerical_underflow_representative_error}
 % change the representative error algorithm -> pre decoding with mwpm 
-%   note that arons implementation intrinsicly used this -> thus leading to the less 
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=\linewidth]{numerical_underflow/numerical_underflow_error_avg_weight.pdf}
+    \caption{
+        Shown is the average weight of the representative error, for a distance $d=15$ surface code, for a relevant interval of the physical error rates under a code-capacity noise model, based on a sample size of $100k$ syndromes.
+        }
+    \label{fig:numerical_underflow_avg_weight}
+\end{figure}
+
+
 A further reduction in the occurrence of the numerical underflow can be achieved by using a representative error with higher probability of occurrence.
 This observation arose while comparing Aron Marton's implementation with the implementation used in this thesis.
 Since exchanging the main decoder part did not change the numerical underflow occurrences significantly, 
@@ -221,15 +230,15 @@ We refer to this data set by \emph{MWPM+d}.
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=\linewidth]{numerical_underflow/numerical_underflow_error_avg_weight.pdf}
+    \includegraphics[width=\linewidth]{numerical_underflow/numerical_underflow_error_avg_prob.pdf}
     \caption{
-        Shown is the average weight of the representative error, for a distance $d=15$ surface code, for a relevant interval of the physical error rates under a code-capacity noise model, based on a sample size of $100k$ syndromes.
+        Shown is the average probability of the representative error, for a distance $d=15$ surface code, for a physical error rate of $p_{phy} = 10\%$ under code-capacity noise model, based on a sample size of $100k$ syndromes.
         }
-    \label{fig:numerical_underflow_avg_weight}
+    \label{fig:numerical_underflow_avg_prob}
 \end{figure}
 
 The difference in the representative error weight and corresponding probability is shown in figure \cref{fig:numerical_underflow_avg_weight,fig:numerical_underflow_avg_prob,fig:numerical_underflow_weight_distr}. 
-All results are based on a distance $d=15$ surface code, with $100k$ sampled syndromes under circuit level noise, with only bit-flip noise.
+All results are based on a distance $d=15$ surface code, with $100k$ sampled syndromes under a code-capacity noise model, with only bit-flip noise channels.
 
 Figure \ref{fig:numerical_underflow_avg_weight} shows the average representative error weight over a relevant interval of physical error rates.
 A clear difference between the two construction methods can be observed: 
@@ -252,14 +261,6 @@ The exact choice which approach is the optimal depends on the requirements of th
 
 
 
-\begin{figure}[ht]
-    \centering
-    \includegraphics[width=\linewidth]{numerical_underflow/numerical_underflow_error_avg_prob.pdf}
-    \caption{
-        Shown is the average probability of the representative error, for a distance $d=15$ surface code, for a physical error rate of $p_{phy} = 10\%$ under code-capacity noise model, based on a sample size of $100k$ syndromes.
-        }
-    \label{fig:numerical_underflow_avg_prob}
-\end{figure}
 
 
 \begin{figure}[ht]
@@ -267,7 +268,7 @@ The exact choice which approach is the optimal depends on the requirements of th
     \includegraphics[width=\linewidth]{numerical_underflow/numerical_underflow_error_weights_distr.pdf}
     \caption{
             Shown is the representative error weight distribution for the two different approaches, for a distance $d=15$ surface code, based on a sample size of $100k$ syndromes.
-            The syndromes are generated for a code capacity noise model, with a physical error rate of $p_{phy}=10\%$.
+            The syndromes are generated for a code-capacity noise model, with a physical error rate of $p_{phy}=10\%$.
             `MWPM+d' shows the representative error weights of the MWPM approach, shifted by the  distance $d$, in this case by $15$, to show the worst possible distribution, as an upper bound of the weight. 
         }
     \label{fig:numerical_underflow_weight_distr}

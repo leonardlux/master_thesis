@@ -11,10 +11,10 @@ with the goal of characterizing the Steane-type error correction circuit (see se
 The process used to determine the threshold and the intermediate results are exemplary shown in the first section \ref{ssec:results_example_process}.
 Here we highlight the limits of our approach and possible pitfalls, like the numerical underflow issue of our implementation of the ML decoder, as discussed in appendix \ref{chapter:numerical_underflow}. 
 
-In the first result section (section \ref{sec:results_code_capacity}) we test our implementation of STEC by comparing the observed threshold of the simulation under the code capacity noise model, 
+In the first result section (section \ref{sec:results_code_capacity}) we test our implementation of STEC by comparing the observed threshold of the simulation under the code-capacity noise model, 
 with analytically predicted thresholds, to be able to judge the performance and accuracy.
 
-This is followed by the characterization of the syndrome extracting circuits under circuit level noise, in section \ref{sec:results_circuit_lvl}.
+This is followed by the characterization of the syndrome extracting circuits under circuit-level noise, in section \ref{sec:results_circuit_lvl}.
 We use the conventional syndrome extraction circuit as a reference to which we compare STEC.
 Looking at the threshold of a single QEC cycle utilizing STEC syndrome extraction, in section \ref{ssec:results_circ_single_cycle}, 
 we can highlight the observed difference in ordering and show the influence that the choice of decoding algorithm, MWPM (see section \ref{ssec:general_MWMP_decoder}) or ML (see section \ref{ssec:general_ML_decoder}), has on the results. 
@@ -31,13 +31,13 @@ The final conclusion of those results will then be drawn in chapter \ref{chapter
 \subsection{Example Process and Intermediate Results}\label{ssec:results_example_process}
 
 In the following we will show and discuss the analysis and intermediate results in the process to determine the threshold of a fixed configuration.
-This configuration can be characterized by the error model, here code capacity noise, in combination with the the logical observable, here $\bar{Z}$, and the decoding algorithm, here ML.
+This configuration can be characterized by the error model, here code-capacity noise, in combination with the the logical observable, here $\bar{Z}$, and the decoding algorithm, here ML.
 
 % data generation
 \subsubsection{Data Generation}
 Note that the logical observable directly implies the initial data state for the memory experiment, $\bar{Z} \rightarrow \ket{0}_L$ and $\bar{X} \rightarrow \ket{+}_L$.
-For the code capacity case\footnote{
-    The error mechanisms of the circuit level noise model do not change with the logical observable.
+For the code-capacity case\footnote{
+    The error mechanisms of the circuit-level noise model do not change with the logical observable.
 } the logical observable also fixes the specific error mechanism applied to the data qubits, $\bar{Z} \rightarrow $ bit-flip errors and $\bar{X} \rightarrow $ phase-flip errors. 
 Using those relations it is enough to name the logical observable and the other relations are implied.
 
@@ -65,7 +65,7 @@ To use reasonable physical error rates $p_{phy,i}$ for the noise model we use ph
     \centering
     \includegraphics[width=\linewidth]{graphics/code_capacity_ml_z_log_error_rate_complete_rejection_rate.pdf}
     \caption{
-            This figure shows the determined logical error rates $p_{log}$, of varying code distances $d$, plotted against the physical error rate $p_{phy}$, for the code capacity noise model and measuring the logical $\bar{Z}$ observable.
+            This figure shows the determined logical error rates $p_{log}$, of varying code distances $d$, plotted against the physical error rate $p_{phy}$, for the code-capacity noise model and measuring the logical $\bar{Z}$ observable.
             The graphs includes the determined threshold $p_{th}$ and its uncertainty, highlighted in green and light green respectively.
             It also includes the maximal rejection rate curve over all distances, for each physical noise rate, in light blue, which is scaled based on the second y-axis.   
         }
@@ -73,7 +73,7 @@ To use reasonable physical error rates $p_{phy,i}$ for the noise model we use ph
 \end{figure}
 
 We can plot the physical error rate $p_{phy}$ against for the logical error rate $p_{log}$ the multiple code distance $d$ we simulated. 
-The results can be seen in figure \ref{fig:results_code_capcity_Z_ml_p_log_p_phy} for the logical $\bar{Z}$ observable, under circuit level noise and using the efficient ML decoder.
+The results can be seen in figure \ref{fig:results_code_capcity_Z_ml_p_log_p_phy} for the logical $\bar{Z}$ observable, under circuit-level noise and using the efficient ML decoder.
 We spot the approximate location of the threshold as the point where the logical error rates of different code distances cross, as described in section \ref{ssec:threshold_theorem}, 
 which for the shown configuration is at roughly $p_{phy}=10^{-1}$. 
 
@@ -105,7 +105,7 @@ The exponents derived from this fit are noted in the table \ref{tab:fit_exponent
     \caption{
         Fitted exponents of the logical error rate $p_{log} \propto p_{phy}^{\,\text{exp}}$ for varying code distances $d$.
         The expected exponent is written in the second column as $(t+1)$, as given by \ref{eq:p_log_asymptotic_behavior}.
-        Those fits are performed on the data generated by a code capacity noise model, measuring the logical $\bar{Z}$ observable and performing ML decoding.
+        Those fits are performed on the data generated by a code-capacity noise model, measuring the logical $\bar{Z}$ observable and performing ML decoding.
         The whole curves and their fits are shown in figure \ref{fig:results_code_capcity_Z_ml_p_log_p_phy_slopes}.
         The fits where performed on the $20\%$ of data points with the lowest $p_{phy}$, which results in the range $6.3\% < p_{phy,fit} < 7.6\%$.
     }
@@ -162,7 +162,7 @@ This aspect will be further discussed in section \ref{sssec:finite_size_min_d}.
     \includegraphics[width=\linewidth]{graphics/code_capacity_ml_z_log_error_rate_fssa_rejection_rate.pdf}
     \caption{
         This figure is a cutout of the previously shown figure \ref{fig:results_code_capcity_Z_ml_p_log_p_phy}.
-        The data shown is from the configuration using the code capacity noise model and ML decoding, while observing the logical $\bar{Z}$ observable.
+        The data shown is from the configuration using the code-capacity noise model and ML decoding, while observing the logical $\bar{Z}$ observable.
         The interval shown here is the interval chosen for the data collapse method. 
         }
     \label{fig:results_code_capcity_Z_ml_p_log_p_phy_fssa_window}
@@ -177,7 +177,7 @@ Based on this graph we can judge if the optimization process was successful, by 
 We therefore show the curves of all of those fitting used in this thesis in the appendix in section \ref{appendix:data_collapse_figures}. 
 For this case the data collapse method worked and we were able to correctly determine the threshold.
 
-We will discuss the determined threshold and the conclusion we can draw from it for the code capacity case in section \ref{sec:results_code_capacity}.
+We will discuss the determined threshold and the conclusion we can draw from it for the code-capacity case in section \ref{sec:results_code_capacity}.
 
 \begin{figure}[th]
     \centering
@@ -201,14 +201,14 @@ In the determination of the threshold we can find finite size effects.
 Those effect become visible at physical error rates close to the thresholds.
 Given that we are considering a first-order transition, we would expect all logical error curves to cross at one point, the threshold.
 But due to finite size effect the smaller distances cross the other curves before the threshold, as seen in the zoomed in data of figure \ref{fig:results_code_capcity_Z_ml_p_log_p_phy_min_d3_zoom}.
-For this graph we included the distances $d\in\{3,5\}$ in our analysis, here for the circuit level noise model, observing $\bar{Z}$ and once again decoding using the ML decoder.
+For this graph we included the distances $d\in\{3,5\}$ in our analysis, here for the circuit-level noise model, observing $\bar{Z}$ and once again decoding using the ML decoder.
 
 \begin{figure}[ht]
     \centering
     \includegraphics[width=\linewidth]{graphics/finite_size_discussion/circ_ml_z_min_d3_log_error_rate_zoom.pdf}
     \caption{
         This plots shows a close up version of the logical error rate curves close to the threshold. 
-        The data is generated from a circuit level noise model, with ML decoding and observing $\bar{Z}$.
+        The data is generated from a circuit-level noise model, with ML decoding and observing $\bar{Z}$.
         Note that we show no rejection rate in this plot, because no numerical underflow occurred in the given interval. 
         }
     \label{fig:results_code_capcity_Z_ml_p_log_p_phy_min_d3_zoom}
@@ -217,7 +217,7 @@ For this graph we included the distances $d\in\{3,5\}$ in our analysis, here for
 
 If we include those smaller sizes the data collapse method gets difficulties to determine the threshold. 
 This can be seen by comparing the collapsed data plot of the two cases.
-As an example we show the case for a circuit level noise configuration with STEC, ML decoding and $Z$ observable in the appendix.
+As an example we show the case for a circuit-level noise configuration with STEC, ML decoding and $Z$ observable in the appendix.
 The data collapse plot including the smaller distances is shown in figure \ref{fig:circ_ml_z_fssa_min_d3} and the analysis with minimal distance $d=7$ is shown in figure \ref{fig:circ_ml_z_fssa}.
 One can clearly spot the difference between the two collapsed curves, and that the line with the higher minimal distance is compacter spaced.
 
@@ -229,14 +229,14 @@ This window of distances $D_{W,d_{min}}$ is defined by its lowest distance windo
     \label{eq:window_of_distances}
 \end{equation}
 If we the use only this logical error rates of the distances $d\in D_{W,d_{min}}$, we can observe the finite size effect in the determined threshold,
-as shown in figure \ref{fig:finite_size_shifting_window_code_capacity} for the code capacity case.
+as shown in figure \ref{fig:finite_size_shifting_window_code_capacity} for the code-capacity case.
 We can clearly see that the thresholds approach the threshold values predicted in the literature for ML \cite{topological_quantum_memory} and MWPM \cite{efficient_decoding_algorithm} respectively.
 But for smaller distances, and especially for $d_{min}=3$, we observe that the determined thresholds seem to be far of the expected value, 
 due to problems in the data collapse method and the finite size effects.
-We will further discuss this in the results section of the code capacity noise model, in section \ref{sec:results_code_capacity}. 
+We will further discuss this in the results section of the code-capacity noise model, in section \ref{sec:results_code_capacity}. 
 
-We performed the same analysis for the circuit level noise model in figure \ref{fig:circuit_finite_size_analysis_shifting_window}.
-Given that we have no available reference value for the threshold, we focused on the code capacity case.
+We performed the same analysis for the circuit-level noise model in figure \ref{fig:circuit_finite_size_analysis_shifting_window}.
+Given that we have no available reference value for the threshold, we focused on the code-capacity case.
 
 As we are also interest in such high distance thresholds and not in the finite size effects due to small sizes we try to avoid the smaller distances in our analysis.
 Note that increasing the distance would lead to a more accurate result, as we would further suppress the finite size effects, 
@@ -249,7 +249,7 @@ The latter will be the case for the repeated independent QEC cycles.
     \centering
     \includegraphics[width=\linewidth]{graphics/finite_size_discussion/code_capacity_finite_distance.pdf}
     \caption{
-            This figure shows the result of the shifting window analysis for the code capacity noise model. 
+            This figure shows the result of the shifting window analysis for the code-capacity noise model. 
             We have literature values for the performance of the ML \cite{topological_quantum_memory,ml_threshold_paper} and MWPM \cite{efficient_decoding_algorithm,mwpm_threshold_paper} decoder to which we can compare those observed thresholds. 
             The underlying analysis behind the shown determined thresholds had access to three logical error rate curves of distances chosen according to equation \ref{eq:window_of_distances}. 
         }
@@ -260,14 +260,14 @@ The latter will be the case for the repeated independent QEC cycles.
 
 
 
-\section{Code Capacity}\label{sec:results_code_capacity}
+\section{Code-Capacity Noise Model}\label{sec:results_code_capacity}
 
-We start our result chapter by simulating the STEC extraction circuit with a code capacity noise model, 
+We start our result chapter by simulating the STEC extraction circuit with a code-capacity noise model, 
 to get thresholds which we can compare to predicted analytical threshold for the ML \cite{topological_quantum_memory,ml_threshold_paper} and MWPM \cite{efficient_decoding_algorithm,mwpm_threshold_paper} case.
 
 We use four different configuration, consisting of two possible choices of observable and two choice of decoding algorithms.
 We always use the STEC extraction circuit, as the syndrome extraction circuit and we perform a hundred thousand shots $n_{shots}=100k$ for each run.
-For the observable we either measure the logical $\bar{Z}$ observable, in combination with a code capacity model implementing bit-flip errors (equation \ref{eq:bit_flip_channel}) after the initialization on the data qubits,
+For the observable we either measure the logical $\bar{Z}$ observable, in combination with a code-capacity model implementing bit-flip errors (equation \ref{eq:bit_flip_channel}) after the initialization on the data qubits,
 or we measure the $\bar{X}$ observable, where we use phase-flip errors (equation \ref{eq:phase_flip_channel}) instead. 
 Regarding the decoder algorithm we use the two decoding algorithm introduced in section \ref{sec:decoding_problem_general}, either MWPM or ML decoding.
 Note that the ML decoder is exact, as it assumes either bit-flip or phase-flip noise, which is the noise model used in this example.
@@ -282,7 +282,7 @@ are also shown in the same table.
 We observe that there is no difference between the choice of observable in the threshold when we take the uncertainty into account.
 This is an expected results due to the symmetry of the surface code and the used error model.
 The asymmetry of the STEC syndrome extraction circuit only becomes relevant, when it introduces an asymmetry in the error model, 
-which will be the case for the circuit level noise model discussed in the following section \ref{sec:results_circuit_lvl}.
+which will be the case for the circuit-level noise model discussed in the following section \ref{sec:results_circuit_lvl}.
 \textcolor{red}{got into more detail about this symmetry here? or earlier about the symmetry of the surface code!}
 
 When we compare the thresholds of our analysis with the literature we can observe that our values lie slightly below those of the literature. 
@@ -290,7 +290,7 @@ Based on the discussion in section \ref{sssec:finite_size_min_d}, we can argue t
 as we are only using distances $d\in \{ 7,9,11,13,15\}$, whereas the literature uses the limit of $d\rightarrow \infty$ \cite{topological_quantum_memory,ml_threshold_paper} or at least up to $d=37$ \cite{mwpm_threshold_paper}.
 As such the finite size effects shown to exist in figure \ref{fig:finite_size_shifting_window_code_capacity}, can lead to the observed discrepancy.
 
-We can conclude the short code capacity part, by stating that the observed thresholds are in good agreement with the literature.
+We can conclude the short code-capacity part, by stating that the observed thresholds are in good agreement with the literature.
 The slight discrepancy can be traced back to finite size effects, which lead to a slightly reduced threshold.
 We will take this into account in our further analysis. 
 
@@ -307,24 +307,24 @@ We will take this into account in our further analysis.
         \hline
     \end{tabular} 
     \caption{
-        Table with the determined thresholds for the code capacity case, ordered by decoding algorithm and observed algorithm.
+        Table with the determined thresholds for the code-capacity case, ordered by decoding algorithm and observed algorithm.
         For comparison we included the known literature values for those thresholds, ML \cite{topological_quantum_memory,ml_threshold_paper} and MWPM \cite{efficient_decoding_algorithm,mwpm_threshold_paper}.
         }
     \label{tab:results_code_capacity}
 \end{table}
 
 
-\section{Circuit Level}\label{sec:results_circuit_lvl}
+\section{Circuit-Level Noise Model}\label{sec:results_circuit_lvl}
 
-So far the choice of the syndrome extraction circuit did not influence the results, given that we worked with a code capacity model.
-To characterize the Steane-type error correction syndrome extraction circuit we therefore use a circuit level noise model, as described in section \ref{sssec:circuit_level_noise}.
+So far the choice of the syndrome extraction circuit did not influence the results, given that we worked with a code-capacity model.
+To characterize the Steane-type error correction syndrome extraction circuit we therefore use a circuit-level noise model, as described in section \ref{sssec:circuit_level_noise}.
 As this noise model adds noise after each operation the design of the syndrome extraction circuit has a major influence of the performance of the QEC an we are able to characterize STEC.
 
-We split the analysis of the threshold determined under circuit level noise conditions into two parts.
+We split the analysis of the threshold determined under circuit-level noise conditions into two parts.
 In the first part, in section \ref{ssec:results_circ_single_cycle}, we determine the threshold of both syndrome extraction circuits introduced in section \ref{ssec:syndrome_extraction} after a single QEC cycle.
 The main focus is on determining the single cycle behavior of STEC, we use the results from the conventional syndrome extraction circuit as a baseline to compare to. 
 
-Given that we use a circuit level noise level in this section, there will be a residual error, which needs to be decoded as well, see section \ref{sec:fault_tolerance}.
+Given that we use a circuit-level noise level in this section, there will be a residual error, which needs to be decoded as well, see section \ref{sec:fault_tolerance}.
 We will usually use a MWPM decoder for the task of decoding this residual error due to its independence of the incoming physical error rate. 
 Given that the MWPM has a less than optimal threshold, especially in comparison with ML decoding, we will analyze this choice in comparison with a ML decoding algorithm, 
 with a rough estimate of the incoming error rate, in subsection \ref{sssec:ml_ft_decoding}.
@@ -339,7 +339,7 @@ The final conclusions are then gathered in the next chapter \ref{chapter:conclus
 \subsection{Single QEC Cycle}\label{ssec:results_circ_single_cycle}
 % repeat the setup as described in the previous chapter 
 
-For the single QEC cycle under circuit level noise, we used the following parameters.
+For the single QEC cycle under circuit-level noise, we used the following parameters.
 We limited our analysis to the distances $d \in \{7,9,11,13,15 \}$ to avoid the finite size problems for lower distances, as shown in section \ref{sssec:finite_size_min_d}, 
 while at the same time we have an upper limit at $d=15$ to keep the numerical underflow problem in check and keep the computational cost\footnote{
     The computations where performed on a cluster, with an average time to compute one of those thresholds at roughly 6 core hours.
@@ -350,9 +350,9 @@ We choose to perform $n_{shots}=100k$ shots for each combination of distance $d$
 
 The analysis is performed following the procedure introduced in section \ref{ssec:threshold_theorem} and as discussed in detail in section \ref{ssec:results_example_process}.
 
-We determined the thresholds for the following different configurations, all using the circuit level noise model:
+We determined the thresholds for the following different configurations, all using the circuit-level noise model:
 Starting with the STEC syndrome extraction circuit, here we iterated between the logical $\bar{Z}$ and $\bar{X}$ observable\footnote{
-    Note that for the circuit level noise model the choice of the observable has no implicit or explicit influence on the design of the noise model, in contrast to the code capacity noise model. 
+    Note that for the circuit-level noise model the choice of the observable has no implicit or explicit influence on the design of the noise model, in contrast to the code-capacity noise model. 
 } for which the resulting syndromes where decoded with both\footnote{
     In our implementation each decoder was given an independent generated sets of syndromes.
 } the ML and MWPM decoder. 
@@ -386,7 +386,7 @@ The results for both of those configuration can be found in table \ref{tab:resul
     \hline
     \end{tabular}
     \caption{
-        This table shows the thresholds for circuit level noise.
+        This table shows the thresholds for circuit-level noise.
         The top four entries are the thresholds for the different configurations of STEC syndrome extraction. 
         Below the horizontal line marked with `CON', we show the threshold of the conventional syndrome extraction circuit after one QEC cycle. 
         }
@@ -409,7 +409,7 @@ and the repeated QEC cycles.
 
 % discuss the asymmetry in the conventional syndrome extraction circuit?
 
-We can also observe that similar to the code capacity case, the ML algorithm performance better than the MWPM algorithm, independent of the observable under inspection for the STEC circuit.
+We can also observe that similar to the code-capacity case, the ML algorithm performance better than the MWPM algorithm, independent of the observable under inspection for the STEC circuit.
 Note at this point that the ML decoder used for the STEC circuit is not a proper ML decoder, as we are not taking advantage of the whole information of the error model.
 Given that the efficient ML decoder used is only able\footnote{
     This is because we limited ourself to the first algorithm introduced in \cite{efficient_decoding_algorithm}, the second decoding algorithm would be able to handle correlated errors, 
@@ -419,16 +419,16 @@ discarding information in the process which could possibly be used to determine 
 Further points of argumentation could be that we are actually decoding the ancilla qubit, discarding the complex error model between the ancilla and data qubit, as discussed in section \ref{ssec:stec_decoder_adaption}.
 
 In comparison to the conventional syndrome extraction circuit, we can observe that the threshold for a single QEC cycle is approximately a factor three higher for the STEC syndrome extraction circuit.
-This difference in performance can be attributed to the different amount of resources required, which directly correlates to the possible locations for errors under circuit level noise. 
+This difference in performance can be attributed to the different amount of resources required, which directly correlates to the possible locations for errors under circuit-level noise. 
 As already stated, in section \ref{sssec:assumptions_conv_sec} and section \ref{sssec:steane_type_error_correction_intro} respectively, 
-the difference in resources is approximately of factor $d$, due to the requirement to repeat the conventional syndrome extraction circuit $d$-times to be able to detect measurement errors fault tolerantly.
+the difference in resources is approximately of factor $d$, due to the requirement to repeat the conventional syndrome extraction circuit $d$-times to be able to detect measurement errors fault-tolerantly.
 Where the number of measurements requires scales with $\mathcal{O}(d^2)$ for STEC (equation \ref{eq:measurements_stec}), it scales with $\mathcal{O}(d^3)$ for the conventional circuit (equation \ref{eq:measurements_conv_repeated}), 
 The STEC circuit design requires CNOT gates of order  $\mathcal{O}(d^2)$ (equation \ref{eq:cnot_stec}) versus the CNOT gates with $\mathcal{O}(d^3)$ (equation \ref{eq:cnots_conv_repeated}).
 As such the conventional circuit offers more locations for possible errors to occur in comparison with the STEC circuit, for a certain code distance.
 
 One could make the same point about the ancilla qubits required, 
 but here we made a major assumption in the implementation of STEC.
-Due to the assumption that we have access to fault tolerantly prepared logical encoded ancilla qubits, 
+Due to the assumption that we have access to fault-tolerantly prepared logical encoded ancilla qubits, 
 we are neglecting the whole process of preparing such a state. 
 This preparation could lead to significantly higher physical noise rates on the individual qubits of the encoded block used for STEC, 
 in comparison to the conventional circuit.
@@ -436,7 +436,7 @@ At the moment we assume the same physical error rate at the individual ancilla q
 Implementing a proper encoding as part of the simulation or at least the adaption of error rates based on some known preparation algorithm would improve the validity of the above results.
 
 
-% Show single round circuit level noise behavior 
+% Show single round circuit-level noise behavior 
 
 \subsubsection{ML Decoding Residual Error}\label{sssec:ml_ft_decoding}
 
@@ -449,7 +449,7 @@ This comes with the downside, that MWPM is a less than optimal decoder, especial
 As such we rerun the whole simulation, while using the efficient ML decoder as residual decoder instead of the MWPM decoder.
 Given that determining the noise model after the QEC cycle would include solving the decoding problem analytically, we used a rough estimate of the noise model.
 Based on the fact that our noise model is known to be transversal and that is scaling in leading order with $p_{phy}$, 
-we used a code capacity model with either bit-flip or phase-flip noise depending on the following observable.
+we used a code-capacity model with either bit-flip or phase-flip noise depending on the following observable.
 Note that this is a rough estimate for the noise model as such the performance of the ML decoder is not optimal.
 
 We rerun all the STEC configuration from the previous section with this new residual error decoding approach.
@@ -529,7 +529,7 @@ This is the major assumption on the site of conventional circuit.
 % limited set of distance
 We limit the code distances used for those simulation to $d \in \{5,7,9\}$.
 The lower threshold is set at $d=5$ to limit the finite size effects shown in section \ref{sssec:finite_size_min_d}.
-The finite size effects for the circuit level noise model and a single QEC cycle are also shown in figure \ref{fig:circuit_finite_size_analysis_shifting_window}.
+The finite size effects for the circuit-level noise model and a single QEC cycle are also shown in figure \ref{fig:circuit_finite_size_analysis_shifting_window}.
 Based on this figure we choose distance $d=5$ as a minium distance as a compromise.
 
 In contrast to the previous simulation we reduce the upper bounds on the limits to achieve multiple goals.
@@ -593,7 +593,7 @@ After a single round of QEC the resulting residual error is more complex, than t
 as there are more possible locations for noise to occur, some of which are not corrected at all.
 To illustrate this point we can once again use the argumentation of the asymmetry of the STEC circuit.
 Each half-cycle propagates the initialization error on the corresponding ancilla onto the data qubit\footnote{
-    Note that we most likely under estimate the error of this ancilla qubit, due to our assumption of access to fault tolerantly logical encoded ancilla qubits, 
+    Note that we most likely under estimate the error of this ancilla qubit, due to our assumption of access to fault-tolerantly logical encoded ancilla qubits, 
     with a depolarizing channel of the same shape as the initialization error on a unencoded qubit.
 }. 
 This error contribution alone is has the same probability to introduce an error relevant for the following circuit as the original data qubit error.
@@ -624,6 +624,6 @@ Comparing the different thresholds we can state that STEC syndrome extraction ha
 \textcolor{red}{find some literature values for conventional circ, to argue the performance as usual or representative.}
 
 
-This is the result under the assumption that we have access to fault tolerantly prepared ancilla with the same error rate as individual initialized qubits. 
-Determining the thresholds using a proper fault tolerant encoding circuit is the logical next step.
+This is the result under the assumption that we have access to fault-tolerantly prepared ancilla with the same error rate as individual initialized qubits. 
+Determining the thresholds using a proper fault-tolerant encoding circuit is the logical next step.
 

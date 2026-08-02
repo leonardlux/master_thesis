@@ -5,11 +5,11 @@ This is done by the \emph{syndrome extraction circuit}, which by definition extr
 To realize such a circuit we will use additional qubits, called ancilla qubits. 
 By coupling those ancilla qubits to the data qubits, we are able to extract the syndrome information from the encoded state, map it to the ancilla qubits, which we then can measure to obtain the syndrome.
 
-For the circuit level noise model we require that the syndrome extraction circuit is constructed in a fault tolerant manner.
+For the circuit-level noise model we require that the syndrome extraction circuit is constructed in a fault-tolerant manner.
 % rewrite the following line cleaner
-As such it need to be fault tolerant in regards to the errors directly introduced on the data qubits by gates of the syndrome extraction circuit 
+As such it need to be fault-tolerant in regards to the errors directly introduced on the data qubits by gates of the syndrome extraction circuit 
 and errors which are the result of a wrong choice of recovery operation based on a faulty syndrome that was feed to the decoder.
-We will discuss how to adapt syndrome extraction circuits and their associated decoding processes to circuit level noise, to enable a fault tolerant syndrome extraction, 
+We will discuss how to adapt syndrome extraction circuits and their associated decoding processes to circuit-level noise, to enable a fault-tolerant syndrome extraction, 
 in detail in the section \ref{ssec:conv_se_circ_lvl_noise_adaption} and section \ref{ssec:stec_decoder_adaption}. 
 
 This thesis in centered around the characterization of \emph{Steane Type Error Correction} (STEC), which is a type of syndrome extraction circuit design and will be introduced in section \ref{sssec:steane_type_error_correction_intro}.
@@ -78,23 +78,23 @@ The advantage of placing the ancilla qubits in those positions is that we only n
     \label{circ:standard_syndrome_X_stabilizer}
 \end{figure}
 
-For the code capacity case the syndrome extraction circuit requires $m=2d\cdot(d-1)$ of those individual circuits to measure the eigenvalues of the $m$ generators and therefore determine the complete syndrome.
+For the code-capacity case the syndrome extraction circuit requires $m=2d\cdot(d-1)$ of those individual circuits to measure the eigenvalues of the $m$ generators and therefore determine the complete syndrome.
 The ordering of those individual circuits is not relevant as they commute with one another.
 We can reduce the time needed for the implementation of this syndrome extraction circuit to four time steps, by performing the required CNOT gates acting on disjoint set of qubits in parallel\footnote{
     Each data qubit is connected to at most $4$ different ancilla qubits of the $4$ adjacent generators of the stabilizer group, $2$ site and $2$ plaquette stabilizers, 
     which we can label by their direction in regard to the data qubit as north, south, west and east ancilla.
     We can then perform such a $4$ step cycle if we connect each data qubit with the surrounding ancilla qubit in the order: south, east, north, west. 
     For data qubits sitting on the boundary we have an idling step, whenever there is no ancilla qubit at the given direction.
-    This setup realizes the extraction of the syndrome for the conventional case under code capacity noise in $4$ time steps.
+    This setup realizes the extraction of the syndrome for the conventional case under code-capacity noise in $4$ time steps.
 } \cite{topological_quantum_memory}.
 
-We can quantify the resources needed to realize such a conventional syndrome extraction circuit for the code capacity case.
+We can quantify the resources needed to realize such a conventional syndrome extraction circuit for the code-capacity case.
 Each generator requires an ancilla qubit to be measured ($n_{\text{ancilla}}= n_{\text{meas.}} = m $ ).
 As explained above we can implement an ordering of the CNOT gates that only requires four time steps ($n_{\text{time}} = 4 $).
 Note that we only count the time steps, where the syndrome extraction circuit is interacting and therefore occupying the data qubits. 
 For the number of required CNOT gates we need to take into account that the ancilla qubits on the boundary only connect three data qubits for the surface code, 
 which results in a total set of CNOTs of $n_{\text{CNOT}} = (4m - 4(d-1))$.
-For the surface code with code distance $d$ the resources needed for the conventional syndrome extraction circuit under code capacity noise can be therefore quantified as
+For the surface code with code distance $d$ the resources needed for the conventional syndrome extraction circuit under code-capacity noise can be therefore quantified as
 \begin{align}
     n_{\text{ancilla}} &= m = 2d^2 -2d \label{eq:resources_conv_se_code_capacity_n_ancillas}\\
     n_{\text{meas.}} &=  m = 2d^2 -2d \\
@@ -102,27 +102,27 @@ For the surface code with code distance $d$ the resources needed for the convent
     n_{\text{CNOT}} &= (4m - 4(d-1)) = 8d^2 - 4 d -4.
 \end{align}
 
-\subsection{Circuit Level Noise Adaption for the Conventional Syndrome Extraction}\label{ssec:conv_se_circ_lvl_noise_adaption}
+\subsection{Circuit-Level Noise Adaption for the Conventional Syndrome Extraction}\label{ssec:conv_se_circ_lvl_noise_adaption}
 
-Under circuit level noise the syndrome extraction circuit does not only need to be able to extract the syndrome, it needs to do this fault tolerantly. 
-This fault tolerant requirement is the reason we need to repeat the conventional syndrome extraction circuit of the code capacity case $d$ times, to have an syndrome extraction process which is fault tolerant. 
-Therefore the time required to realize a fault tolerant conventional syndrome extraction circuit scales linear with the code distance $d$, which is a major disadvantage compared to the Steane Type error correction approach.
+Under circuit-level noise the syndrome extraction circuit does not only need to be able to extract the syndrome, it needs to do this fault-tolerantly. 
+This fault-tolerant requirement is the reason we need to repeat the conventional syndrome extraction circuit of the code-capacity case $d$ times, to have an syndrome extraction process which is fault-tolerant. 
+Therefore the time required to realize a fault-tolerant conventional syndrome extraction circuit scales linear with the code distance $d$, which is a major disadvantage compared to the Steane Type error correction approach.
 To gain an understanding why we require those $d$ repeated syndrome extractions we will discuss in this section in detail the error propagation properties and how they relate to the fault tolerance of the circuit. 
 
-In this section we discuss how error mechanism from the circuit level noise model can be propagated through the circuit to show how they influence the resulting syndrome and residual error. 
-Based on those results we can determine if the circuit is fault tolerant and what adaptations need to be taken.
+In this section we discuss how error mechanism from the circuit-level noise model can be propagated through the circuit to show how they influence the resulting syndrome and residual error. 
+Based on those results we can determine if the circuit is fault-tolerant and what adaptations need to be taken.
 Comparing both circuits we can identify a symmetry between the $X$-type and $Z$-type syndrome extraction, they only differ by a change of basis.
 Therefore we can discuss the elemental error process in one of those circuit and apply the results to both kinds of circuits.
 We focus on the $Z$-type plaquette stabilizers extraction circuit, shown in figure \ref{circ:standard_syndrome_Z_stabilizer}.
 We can then apply the results to the $X$-type site stabilizer extraction circuit by relabeling $X$-type errors to $Z$-type errors and vice versa.
 We can do this kind of separated analysis because the surface code is a CSS code and as such it decodes $X$-type errors to $Z$-type errors independently.
 
-As described in section \ref{sssec:circuit_level_noise}, the circuit level noise model applies errors after the initialization of each qubits, including the ancilla qubits, after each gates and before each measurement.
+As described in section \ref{sssec:circuit_level_noise}, the circuit-level noise model applies errors after the initialization of each qubits, including the ancilla qubits, after each gates and before each measurement.
 We will discuss all of those error processes shortly to show that error processes, which result in an measurement error\footnote{
     We describe the case where the syndrome bit flips without an error on the data qubit as a syndrome measurement error or in short a measurement error.
 } on the ancilla, are the most relevant in regard to the fault tolerance of the circuit.
 
-The errors on the data qubits applied after initialization are identical to the code capacity case and the circuit is constructed to detect those.
+The errors on the data qubits applied after initialization are identical to the code-capacity case and the circuit is constructed to detect those.
 Propagating a $X$-type error\footnote{
     $Z$-type errors commute with the plaquette stabilizer extraction circuit.
     They are detected by the site stabilizer extraction circuit.
@@ -143,7 +143,7 @@ This error ends up in front of the measurement, and therefore leads to a flipped
 We refer to such cases as \emph{measurement errors}, as they act identical to modeled faulty measurement. 
 We will discuss the influence of measurement errors at the end.
 
-The next possible fault location in a circuit level noise model are after each CNOT gate.
+The next possible fault location in a circuit-level noise model are after each CNOT gate.
 By the same reasoning as for ancilla initialization errors, any $X$-type error on the ancilla caused by a CNOT gate is a measurement error.
 Errors occurring on the data qubits will end up as part of the residual error\footnote{
     They can therefore be treated in the same way as an initialization error for the next syndrome extraction sub circuit. 
@@ -161,7 +161,7 @@ Given that a single error event causes a single error to appear on the data qubi
 In contrast, a $Z$-type error after the second CNOT gate will propagate through the following two CNOT gates and will produce a correlated weight-2 error on the data qubits.
 Such an error is called a hook error, and could be dangerous \cite{topological_quantum_memory}.
 By choosing the CNOT ordering such that the resulting hook errors do not align with the logical operator, we can assure that these correlated errors to not result in a lower weight logical operator.
-It still takes $t + 1$ independent errors events to realize a logical operator, and the distance of our code ist preserved, and our code is still fault tolerant.
+It still takes $t + 1$ independent errors events to realize a logical operator, and the distance of our code ist preserved, and our code is still fault-tolerant.
 So far we have shown that all errors which are propagated onto the data qubits do not break fault tolerance.
 % good enough? maybe discuss why i do not need to take the correlation of two qubit depolarizing noise into account.
 
@@ -195,8 +195,8 @@ A possible solution for this is the overlapping recovery method \cite{topologica
 Given that we want to use the conventional syndrome extraction circuit as an reference value we can make a few assumptions to simplify the decoding problem, 
 while at the same time obtaining an upper bound for this syndrome extraction circuits performance.
 
-In the first step of this assumption we assume that each QEC cycles requires only $d$ rounds of syndrome extraction to fault tolerantly determine a syndrome taking time like measurement errors into account \cite{topological_quantum_memory,terhal_qec_formalism,gottesmann_book}.
-Note here that to be fault tolerant the conventional syndrome extraction circuit is not constant in time, but the time needed scales with the code distance.
+In the first step of this assumption we assume that each QEC cycles requires only $d$ rounds of syndrome extraction to fault-tolerantly determine a syndrome taking time like measurement errors into account \cite{topological_quantum_memory,terhal_qec_formalism,gottesmann_book}.
+Note here that to be fault-tolerant the conventional syndrome extraction circuit is not constant in time, but the time needed scales with the code distance.
 
 We can further reduce the complexity of this approach by giving our decoder more information than usually accessible. 
 By giving the decoder access to the faultless syndrome measured to get rid of the residual error (see section \ref{sec:fault_tolerance}), we can avoid the finite time interval problem of detecting measurement errors by excluding the possibility of measurement errors in the last syndrome. 
@@ -239,7 +239,7 @@ We will use the conventional syndrome extraction method, with the assumption des
 
 
 The main topic of this thesis is determining the threshold of \emph{Steane-type error correction}(STEC) \cite{steane_type_EC_og_paper} and to compare it with the conventional syndrome extraction circuit.
-In comparison to the previously syndrome extraction circuit, STEC is inherently fault tolerant as such we can directly discuss it properties for the circuit level noise model.
+In comparison to the previously syndrome extraction circuit, STEC is inherently fault-tolerant as such we can directly discuss it properties for the circuit-level noise model.
 
 STEC can be used as a syndrome extraction circuit for any CSS codes \cite{gottesmann_book}.
 It relies on two properties that all CSS codes possess \cite{CSS1,CSS2}:
@@ -282,7 +282,7 @@ We only change the ancilla to $\ket{0}_L$ and switch the orientation of the logi
 Therefore $Z$-type errors will be propagated onto the ancilla where they will be measured by the parity checks and $X$-type errors will contribute to the residual error.
 
 Note that we can influence the composition of the residual error by the choice of order of those half-cycles.
-The type of error which we will correct first will occur more often in the residual error for circuit level noise, 
+The type of error which we will correct first will occur more often in the residual error for circuit-level noise, 
 due to the errors being propagated from the ancilla qubits on the data qubits being of different type depending on the type of half-cycle.
 Note that the errors propagated onto the data qubits by the first half-cycle are detected by the second half-cycle.
 As such the errors propagated through the CNOT of the second half-cycle are part of the undetectable residual error\footnote{
@@ -290,14 +290,14 @@ As such the errors propagated through the CNOT of the second half-cycle are part
 } and those errors are only of one type. 
 
 We can use the asymmetry in the order to our advantage. 
-The first corrected has the advantage of a lower number of possible circuit level error locations in the syndrome extraction circuit before the syndrome extraction.
+The first corrected has the advantage of a lower number of possible circuit-level error locations in the syndrome extraction circuit before the syndrome extraction.
 It might therefore be able to recover from some errors that would obtain an uncorrectable weight if they were extracted later in the circuit. 
 Therefore the ordering of the circuit can be used to optimize if whatever is placed between QEC cycles is more susceptible to one kind of error or produces one kind of error more often. 
 
 Note that for a memory experiment with multiple rounds the ordering we effectively get a symmetric bulk between the first and last correction.
 As such the ordering effect should become less relevant.
 
-The whole process is fault tolerant by construction, since the logical CNOT is transversal\footnote{
+The whole process is fault-tolerant by construction, since the logical CNOT is transversal\footnote{
     As the whole STEC is transversal the different qubit of a codeblock do not share any interaction. 
     Therefore there is no path for an error to be propagated along onto two qubits of the same codeblock, assuming that error happen localized on qubits, which we do.
 } and therefore can only propagate at most one error onto each qubit of the encoded code block per occurred error.
@@ -326,45 +326,45 @@ We can quantify the resources needed for STEC for the surface code of distance $
 \end{align}
 Note that only count the time steps where the data qubits are acted on by the syndrome extraction circuit, therefore we ignore the time steps needed for the measurement of the ancilla qubits 
 and the time needed to encode the ancilla qubits.
-The fact that STEC is constant in time even for the circuit level noise case is a major advantage of STEC in comparison with the conventional syndrome extraction circuit. 
+The fact that STEC is constant in time even for the circuit-level noise case is a major advantage of STEC in comparison with the conventional syndrome extraction circuit. 
 Note as well that for those calculations of resources we neglected the resources needed for the encoding of the logical ancilla states,
-as we assume that we have access to fault tolerant logical encoded ancilla qubits.
+as we assume that we have access to fault-tolerant logical encoded ancilla qubits.
 This is a major assumption.
 \textcolor{red}{Name some possible approaches here on how to prepare logical encoded ancilla state.}
 
 The whole approach of STEC can be seen as a way to reduce the problem of syndrome extraction to a syndrome of state synthesis \cite{steane_type_EC_og_paper}. 
 As such the exact choice of a preparation circuit will influence the performance of the STEC approach. 
-But for a functioning QEC code we have to find a way to fault tolerantly and verifiable create an basis state independent of the problem of syndrome extraction.
+But for a functioning QEC code we have to find a way to fault-tolerantly and verifiable create an basis state independent of the problem of syndrome extraction.
 Therefore this problem is not only posed by STEC \cite{steane_type_EC_og_paper}. 
 
 Note that we require that we know the syndrome of the used ancilla state with certainty.
 Otherwise we face the same problem described in the previous chapter regarding the measurement errors: 
 an uncertain syndrome errors lead to the possible implementation of high weight errors, as we once again have syndrome level errors.
 For this thesis we assume that we have access to ancilla states with a fixed and known syndrome in addition to independent depolarizing errors on each data qubit of the ancilla. 
-We place those independent depolarizing errors on top of the ancilla to model the requirement that those are only needed to be prepared fault tolerantly in a circuit level noise model.
+We place those independent depolarizing errors on top of the ancilla to model the requirement that those are only needed to be prepared fault-tolerantly in a circuit-level noise model.
 
 To summarize we can highlight that STEC is an approach to syndrome extraction which enables constant in time syndrome readout, no matter the distance of the code, 
 at the cost of preparing a more complex ancilla state. 
 In the process STEC minimizes the coupling between the data registry and the ancilla qubits and therefore reduces the noise obtained from the ancilla qubits. 
-The costs is that we have to find a way to prepare fault tolerant logical encoded qubits with a trusted syndrome, 
+The costs is that we have to find a way to prepare fault-tolerant logical encoded qubits with a trusted syndrome, 
 a task which need to solve to obtain a completely functioning QEC code regardless of the choice of syndrome extraction circuit. 
 
 \subsection{Decoder Adaption for the Steane Type Error Correction}\label{ssec:stec_decoder_adaption}
 
-We will use this section to discuss how we need to adapt the STEC approach, with a focus on the decoding process, for either a code capacity noise model or a circuit level noise model. 
+We will use this section to discuss how we need to adapt the STEC approach, with a focus on the decoding process, for either a code-capacity noise model or a circuit-level noise model. 
 
-Starting with the code capacity case.
-As the syndrome extraction circuit design does not make a difference for the code capacity case we can trivially use the same decoding principles with the same error model independently of the extraction circuit choice. 
+Starting with the code-capacity case.
+As the syndrome extraction circuit design does not make a difference for the code-capacity case we can trivially use the same decoding principles with the same error model independently of the extraction circuit choice. 
 As such we should obtain the same threshold regardless of the choice of extraction circuit, only dependent on the decoder and its performance as discuss in section \ref{sec:decoding_problem_general}.
 
-The problem becomes more interesting for the circuit level noise model.
+The problem becomes more interesting for the circuit-level noise model.
 Where we needed to adapt the conventional syndrome extraction circuit to guarantee fault tolerance, such an adaption was not needed for the STEC approach, as it is FT by design. 
-We already pointed out, that measurement errors in STEC are of qubit level and as such can be fault tolerantly regarded as part of the residual error.
+We already pointed out, that measurement errors in STEC are of qubit level and as such can be fault-tolerantly regarded as part of the residual error.
 As such we do not need to take them into account and resulting from this we can assume the syndrome extracted by STEC to be free of measurement noise, as a true representation of only data qubit errors.
 
 Looking at the circuit construction, we can then reinterpret the task of the decoder as the task of correcting the error accumulated on the ancilla qubit.
-This for the code capacity case is the identical problem, 
-but for the circuit level noise model we accept that we inject the difference of data qubit errors, between the logical ancilla qubit and the logical data qubit, as an error on the data qubit in the recovery.
+This for the code-capacity case is the identical problem, 
+but for the circuit-level noise model we accept that we inject the difference of data qubit errors, between the logical ancilla qubit and the logical data qubit, as an error on the data qubit in the recovery.
 As previously argued such an error is still preserves the fault property of the circuit. 
 
 What changes by this reasoning is the noise model we use as part of the decoding.
@@ -372,17 +372,17 @@ Instead of taking into account the probability of a given error on the qubit of 
 To determine this error model we meed to propagate the noise models onto the ancilla qubits to optimize our decoding process. 
 Due to the transversal property of the syndrome extraction and noise model, it suffices to look at a single data and ancilla qubit pair and its associated errors.
 
-It is a trivial task to find the propagated error model for the code capacity case, as the depolarizing noise channel sits only on the data qubit after the initialization.
+It is a trivial task to find the propagated error model for the code-capacity case, as the depolarizing noise channel sits only on the data qubit after the initialization.
 The $X$($Z$)-component of each error is propagated along the CNOT gate of the $Z$($X$)-type half cycle onto the corresponding ancilla qubit, where it is then measured.
 Note that the $Y$-error, which is also part of the depolarizing noise, is partly propagated onto both half cycles. 
-As such the resulting error model is identical and we do not need to make any adaptions to the error model for the code capacity case.
+As such the resulting error model is identical and we do not need to make any adaptions to the error model for the code-capacity case.
 
-This is different for the circuit level noise model.
+This is different for the circuit-level noise model.
 Here the task becomes more complex to the multitude of different noise sources, one for each gate, initialization and measurement.
 We will explicitly calculate the propagated noise model in the appendix, see section .\textcolor{red}{Add propagated noise model to the appendix!}
 
 The key result of this propagated model, is the model itself which we can use to perform maximum likelihood decoding on the ancilla.
-We also investigated if we could modify the different noise probabilities of the different sources of the circuit level noise model, to obtain a simpler noise model\footnote{
+We also investigated if we could modify the different noise probabilities of the different sources of the circuit-level noise model, to obtain a simpler noise model\footnote{
     Here we refer to symmetric noise models, like bit- and phase-flip or depolarizing noise models. 
     For a detailed description see section\textcolor{red}{Add propagated noise model to the appendix!}.
 } on the ancilla qubit, with the result that such an noise model does not exist for the low error rate regime we are interested in.
@@ -393,23 +393,23 @@ We will shortly summarize the results and implications on the two decoding appro
 \subsubsection{MWPM Decoder}\label{sssec:stec_decoder_adaption_MWPM}
 
 For STEC we have already discussed, that we can neglect the measurement errors in our decoding process, just accepting their existence and counting them towards the residual error.
-We are therefore in principle decoding a noiseless syndrome of the ancilla qubit, akin to the code capacity case for the underlying encoding, 
-where the specific error model of the code capacity case is determined by the error model propagated onto the ancilla qubit.
+We are therefore in principle decoding a noiseless syndrome of the ancilla qubit, akin to the code-capacity case for the underlying encoding, 
+where the specific error model of the code-capacity case is determined by the error model propagated onto the ancilla qubit.
 
-The STEC circuit and the circuit level noise model is fully transversal, meaning that each qubit is acted on identically, regardless of the position in the encoded block.
+The STEC circuit and the circuit-level noise model is fully transversal, meaning that each qubit is acted on identically, regardless of the position in the encoded block.
 Based on this observation we can conclude that the resulting propagated error model is transversal, meaning that the error channel of each qubit has an identical form an identical probabilities.
 This results in all edges of the matching graph being equally weighted.
-And if we would change the probability of the circuit level noise model, we would just rescale this global weight, keeping the ratios between the edges fixed.
+And if we would change the probability of the circuit-level noise model, we would just rescale this global weight, keeping the ratios between the edges fixed.
 Under those conditions the task of finding the mapping with the minium weight, is equivalent of finding the mapping with the minimum amount of edges.
 So the shortest connection between all triggered detectors on the detector graph.
 Therefore the MWPM decoder becomes independent of the actual probability $p_{phy}$ of the error model.
 
-So far we reduced the decoding task from a circuit level error model on the STEC circuit, to a code capacity noise model with arbitrary error rate $p_{phy}$.
+So far we reduced the decoding task from a circuit-level error model on the STEC circuit, to a code-capacity noise model with arbitrary error rate $p_{phy}$.
 This can be furthermore simplified, as the MWPM decoder treats $X$- and $Z$-type errors independently \cite{pymatching_loger_paper}.
 
 We thus can decode both half cycle independently, and we can reduce our error model for the decoder to a bit- or phase-flip model, depended on which half-cycle of the circuit we want to decode ($Z-$ or $X-$ half-cycle).
 
-For our case the MWPM decoder is therefore identical to the MWPM decoder of a surface code under code capacity bit- or phase-flip noise.
+For our case the MWPM decoder is therefore identical to the MWPM decoder of a surface code under code-capacity bit- or phase-flip noise.
 
 We will implement this decoder by constructing the corresponding detector error model using \texttt{stim} \cite{stim}, 
 from which we can then generate the decoder and solve the decoder problem using \texttt{PyMatching} \cite{pymatching_loger_paper}. 
