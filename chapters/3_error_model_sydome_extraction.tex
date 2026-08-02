@@ -124,7 +124,7 @@ Note here that these errors propagate through the circuit, as we will discuss in
 
 \subsection{CNOT Gate}\label{ssec:cnot_gate}
 
-Error do not only appear in the circuit at fixed position they also propagate through the circuit as shown by the example of the CNOT gate. 
+Error do not only appear in the circuit at fixed position they also propagate through the circuit as shown by the example of the \emph{CNOT gate}. 
 
 It is a two qubit gate and implements the controlled NOT operation.
 Especially important for the use case in this paper is how this gates propagates errors $E$ \cite{gottesmann_book}.
@@ -149,7 +149,7 @@ We will later show that we can use this error propagation property of CNOT gates
 
 \subsection{Fault Tolerance}\label{sec:fault_tolerance}
 
-At this point we introduce the notion of \emph{Fault Tolerance} (FT) QEC circuits, to formalize the property of controlled propagation of errors in those circuits.
+At this point we introduce the notion of \emph{fault tolerance} (FT) QEC circuits, to formalize the property of controlled propagation of errors in those circuits.
 A fault-tolerant circuit design is a necessary condition for a threshold to exist for the given QEC code under circuit-level noise (see section \ref{ssec:threshold_theorem}).
 Notice that fault tolerance is a property of the circuit. 
 We can implement the same QEC code, the surface code for example, both in a FT and non FT circuit, depending of the design of the circuits implementing the different parts\footnote{

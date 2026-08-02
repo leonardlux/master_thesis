@@ -33,7 +33,7 @@ We will start introducing the conventional one to have a baseline to which we ca
     \label{circ:arb_pauli_measure_eigenvalues}
 \end{figure}
 
-The \emph{Conventional Syndrome Extraction} (CSE) circuit uses the approach of measuring each stabilizer independently, using one ancilla qubit per generator of the stabilizer.
+The \emph{conventional syndrome extraction} (CSE) circuit uses the approach of measuring each stabilizer independently, using one ancilla qubit per generator of the stabilizer.
 The circuit shown in \ref{circ:arb_pauli_measure_eigenvalues} enable the measurement of the eigenvalue of the arbitrary Pauli operator $P = P_1 \otimes P_2 \otimes P_3 \otimes P_4$, supported on 4 qubits\footnote{
     This circuit works for Pauli operator supported on an arbitrary number of qubits, but the example and our use case has at most operators acting on 4 qubits.
 }, using one ancilla qubit \cite{gottesmann_book}.
@@ -238,7 +238,7 @@ We will use the conventional syndrome extraction method, with the assumption des
 \end{figure}
 
 
-The main topic of this thesis is determining the threshold of \emph{Steane-type error correction}(STEC) \cite{steane_type_EC_og_paper} and to compare it with the conventional syndrome extraction circuit.
+The main topic of this thesis is determining the threshold of \emph{Steane-type error correction} (STEC) \cite{steane_type_EC_og_paper} and to compare it with the conventional syndrome extraction circuit.
 In comparison to the previously syndrome extraction circuit, STEC is inherently fault-tolerant as such we can directly discuss it properties for the circuit-level noise model.
 
 STEC can be used as a syndrome extraction circuit for any CSS codes \cite{gottesmann_book}.

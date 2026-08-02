@@ -104,9 +104,8 @@
     \put(0.76223589,0.11467588){\color[rgb]{0,0,0}\transparent{0.30000001}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}{\tiny$-1$}\end{tabular}}}}%
     \put(0.66357146,0.01191713){\color[rgb]{0,0,0}\transparent{0.30000001}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}{\tiny$+i$}\end{tabular}}}}%
     \put(0.76223589,0.01191713){\color[rgb]{0,0,0}\transparent{0.30000001}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}{\tiny$-i$}\end{tabular}}}}%
-    \put(0,0){\includegraphics[width=\unitlength,page=4]{pauli_group.pdf}}%
     \put(0.56599489,0.19192018){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}$E_{\sigma_1}\bar{X}$\end{tabular}}}}%
-    \put(0,0){\includegraphics[width=\unitlength,page=5]{pauli_group.pdf}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=4]{pauli_group.pdf}}%
     \put(0.43480655,0.19192018){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{0}\smash{\begin{tabular}[t]{c}$E_{\sigma_1}\bar{I}$\end{tabular}}}}%
     \put(0.43480656,0.0607319){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}$E_{\sigma_1}\bar{Z}$\end{tabular}}}}%
     \put(0.5659949,0.0607319){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}$E_{\sigma_1}\bar{Y}$\end{tabular}}}}%
@@ -126,6 +125,5 @@
     \put(0.4741247,0.11467588){\color[rgb]{0,0,0}\transparent{0.30000001}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}{\tiny$-1$}\end{tabular}}}}%
     \put(0.37546017,0.01191713){\color[rgb]{0,0,0}\transparent{0.30000001}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}{\tiny$+i$}\end{tabular}}}}%
     \put(0.4741247,0.01191713){\color[rgb]{0,0,0}\transparent{0.30000001}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}{\tiny$-i$}\end{tabular}}}}%
-    \put(0,0){\includegraphics[width=\unitlength,page=6]{pauli_group.pdf}}%
   \end{picture}%
 \endgroup%

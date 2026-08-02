@@ -25,14 +25,15 @@
      inkscape:document-units="mm"
      showguides="true"
      inkscape:zoom="1.3720161"
-     inkscape:cx="-40.451421"
-     inkscape:cy="314.86512"
+     inkscape:cx="-40.086993"
+     inkscape:cy="314.86511"
      inkscape:window-width="2560"
      inkscape:window-height="1371"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
-     inkscape:current-layer="g88">
+     inkscape:current-layer="g88"
+     showgrid="false">
     <sodipodi:guide
        position="13.271656,260.72398"
        orientation="0,-1"
@@ -819,13 +820,6 @@
          style="stroke-width:1"
          x="102.28615"
          y="38.213116">{\tiny$-i$}</tspan></text>
-    <rect
-       style="opacity:0.469503;fill:#aa4400;fill-opacity:0.674119;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-dasharray:none"
-       id="rect88"
-       width="9.8353643"
-       height="9.8353643"
-       x="86.555336"
-       y="0.32926989" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.82223px;line-height:0;font-family:sans-serif;-inkscape-font-specification:sans-serif;writing-mode:lr-tb;direction:ltr;opacity:1;fill:#000000;fill-opacity:0.674119;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-dasharray:none"
@@ -1135,12 +1129,5 @@
          style="stroke-width:1"
          x="59.085968"
          y="38.213116">{\tiny$-i$}</tspan></text>
-    <rect
-       style="opacity:0.469503;fill:#aa4400;fill-opacity:0.674119;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-dasharray:none"
-       id="rect53-9"
-       width="9.8353643"
-       height="9.8353643"
-       x="43.355137"
-       y="0.32926989" />
   </g>
 </svg>

@@ -3,102 +3,54 @@
 
 # stuff to add
 
-1. General definition of a QEC code
-    + encoding and recovery
-        + and describe all the parts in detail
+1. propagated noise model appendix!
 
-2. example and discussion of discretization of errors (not yet done)
-    + should i discuss this?
-
-3. include example of noise and describe it as stochastic! (show channel!!)
-    + partly done but discuss the stochastic part maybe more?!
-
-4. discuss connection, maybe include this somewhere
-    + logical error rate <- how does each of the following influences this?!
-    + correctable errors 
-    + and distance
-    + threshold 
-
-5. noise model
-    + equations and exmaple circuits?
-    + go into more detail behind the assumption of $t$ weight errors -> and why we can call them t weight errros
-
-6. find paper about bootstrapping
-    + 10.1 include image and extend calculations explaining this process
-
-7. rework the chapter titles 
-
-8. QEC cycle as numbered enviorment 
-
-9. cosets of centralizer image, do it with the structure before ? at least discuss
-
-10. cosets of stabilizer group and logical cosets -> make those point clearer earlier -> discuss at some point with maarten
-
-11. states and quotient elements is the similiar as the logical operations and implementation of such operators  (not 1-to-1) 
-
-12. decoder adaptions to syndrome extraction circuit
-    + make those statements clearer
-13. name the adaption of the decoder to the different configurations more clearly?
-
-14. differentiation between error syndrome and state syndrome -> maybe rework after discussion
-    + work in additivity of syndromes
-    19. computation relation between different error syndromes if both errors are applied consecutive
-    + shortly derive the xor relation used in pauli frame tracking
-    20. computation relation between different error syndromes, two errors happening in the same detection circuit
-
-15. place final statement of seperation of paulis at the start of the chapter
-    + here i am talking about the basic intro chapter
-
-16. implementation of encoding ?  (could be ignored)
-    + and how does this interact with STEC?
-
-17. propagated noise model appendix!
-
-18. reedit error estimate on data collapse method
-    + bootstrapping 
-    + find a paper to cite?!
-
-19. maybe resize images?
-
-20. add all the collapsed data plots in the appendix 
+2. add all the collapsed data plots in the appendix 
     + automate this process partly!
     + include critical exponent results in those plots 
 
-21. name what is explicitly what is faultless in the circuit-level model!! 
+3. noise model
+    + equations and exmaple circuits?
+    + go into more detail behind the assumption of $t$ weight errors -> and why we can call them t weight errros
+
+4. rework the chapter titles 
+
+5. decoder adaptions to syndrome extraction circuit
+    + make those statements clearer
+    + name the adaption of the decoder to the different configurations more clearly?
+
+6. differentiation between error syndrome and state syndrome -> maybe rework after discussion
+    + work in additivity of syndromes
+    + computation relation between different error syndromes if both errors are applied consecutive
+    + shortly derive the xor relation used in pauli frame tracking
+    + computation relation between different error syndromes, two errors happening in the same detection circuit
+
+7. name what is explicitly what is faultless in the circuit-level model!! 
     + faultless ft syndrome extraction and observable measurement? is this clear    
     + explain observable measurement as a proxy for checking if the state is still ok 
     + show a graph similar to code capcity model for circuit-level noise model
 
-22. motivate in fssa why smallest distances should be excluded
+8. motivate in fssa why smallest distances should be excluded
     + more than just by results!
     + name the assumption for large d!
 
-23. single run example, show circuit lvl case in parallel as this is aruably more important for this thesis!!!
+9. single run example, show circuit lvl case in parallel as this is aruably more important for this thesis!!!
     + at least add it to the appendix and discuss the results!
     + add point our more if we switch?!o
     + why add all use code capcity! argue a bit
 
-24. check if i state the asymmetry part correctly  
+10. check if i state the asymmetry part correctly  
     + what is corrected first also appears more often in the residual error
     + check this part at all location that it appears !! why do i discuss it as so many different positions ... fucking annoying!
 
-25. cutout the round 10 in multi cycle stuff
-    + show more grapppphs!
-    + show rejection rate as a reason to cut it ?!
-
-26. more in conclusion and outlook?!
+11. more in conclusion and outlook?!
     + conclusion take note that we have effects (finite size) leading to a suppressed threshold value
 
-27. get rid of as many we as possible!!!
+12. get rid of as many we as possible!!!
 
+13. QEC cycle as numbered enviorment 
 
 Today:
-
-43. Grid explanation surface code rework, is not inital dxd grid but dxddd something grid
-37. symmetry of surface code in regards to its observables! 
-50. inkscape images, adapt captions!
-14. use \emph{} everywhere?!
-
 18. mapping multiple errors to the same edges? is that happening? does this influence the argument of p beeing cyclic in the probability?
     + yes, it does, but ratio stays the same, is this clear??
 
@@ -106,6 +58,50 @@ IMPORTANT!!!
 15. Syndrome extraction 
     + add circuit for steane type error correection
     + refer to it during the introduction 
+
+
+
+
+
+
+##  Maximal ganz eventuell:
+
+1. General definition of a QEC code
+    + encoding and recovery
+        + and describe all the parts in detail
+
+2. discuss connection, maybe include this somewhere
+    + logical error rate <- how does each of the following influences this?!
+    + correctable errors 
+    + and distance
+    + threshold 
+
+3. states and quotient elements is the similiar as the logical operations and implementation of such operators  (not 1-to-1) 
+
+4. include example of noise and describe it as stochastic! (show channel!!)
+    + partly done but discuss the stochastic part maybe more?!
+
+5. example and discussion of discretization of errors (not yet done)
+    + should i discuss this?25. cutout the round 10 in multi cycle stuff
+    + show more grapppphs!
+    + show rejection rate as a reason to cut it ?!
+
+6. reedit error estimate on data collapse method
+    + bootstrapping 
+    + find a paper t
+7. find paper about bootstrapping
+    + 10.1 include image and extend calculations explaining this processo cite?!
+
+8. place final statement of seperation of paulis at the start of the chapter
+    + here i am talking about the basic intro chapter
+
+9. cosets of stabilizer group and logical cosets -> make those point clearer earlier -> discuss at some point with maarten
+
+10. maybe resize images?
+
+11. implementation of encoding ?  (could be ignored)
+    + and how does this interact with STEC?
+
 
 
 # Master Thesis Structure
