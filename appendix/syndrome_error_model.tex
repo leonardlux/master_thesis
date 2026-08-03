@@ -36,8 +36,8 @@
 This chapter discuses how the circuit-level error model for a STEC circuit, can be mapped to a \emph{syndrome error model} (SEM).
 The syndrome error model, describes the errors observed by the syndrome measurement\footnote{
     This model is also known as effective noise model or propagated noise model \cite{manuel_error_propagation_paper}.
-    We refer to it as syndrome noise model to highlight, that it only contains the modeling for the syndrome,
-    the effect on the data qubit is completely neglected, in its description.
+    We refer to it as syndrome noise model to highlight, that it only contains the modeling of the syndrome.
+    The effects on the data qubit is completely neglected, in its description.
     The relation between data qubits errors and syndrome measurements will be discussed briefly in section \ref{ssec:sem_difference_data_qubits}.
 
 } during the syndrome extraction circuit.
@@ -94,8 +94,8 @@ Each channel gets assigned its own probability for the analysis, the notation to
 \label{circ_dia:start_circ_lvl_noise_define_probabilities}
 \end{figure}
 
-Figure \ref{circ_dia:propagated_noise} illustrate how the syndrome noise model will look like. 
-The `N' measurement indicates that all operators from the noise model acting on the data qubit are neglected.
+Figure \ref{circ_dia:propagated_noise} illustrates the independent fundamental channel from which the SEM is finally computed. 
+The `N' measurement indicates that all operators which act on the data qubit are neglected.
 All possible noise channels and their associated operators are propagated until before the measurements of the ancilla qubits, 
 to model the noise on the syndrome measurements, as those measurements are directly combined to compute the syndrome of the encoded state. 
 
@@ -142,8 +142,7 @@ The calculation of the exact model is discussed in the following section \ref{se
     \gate[1,style={noisy},]{X}&\meter{$Z$}&\setwiretype{c}\\% 5: stabilizer measurement
 \end{quantikz}
 \caption{
-    TOOOODOOOOO extend caption of this circuit!!!
-    Circuit diagram with final possible error models shown.
+    Shown is the circuit diagram with the propagated noise channels, at the last step before combining those into the final syndrome error model.
     }
 \label{circ_dia:propagated_noise}
 \end{figure}
@@ -168,7 +167,7 @@ The calculations of the SEM follows the following steps:
     \item Recombining the resulting individual channels will lead to the syndrome error model. 
     \begin{itemize}
         \item The composition of different channels is discussed in section \ref{ssec:sem_composition_of_channels}. 
-        \item The resulting SEM contains correlations between $X$- and $Z$-errors and is shown in section \ref{sssec:sem_results_correlated_sem}.
+        \item The resulting SEM contains correlations between $X$- and $Z$-errors and is shown in section \ref{ssec:sem_results}.
     \end{itemize}
     % Talk about how to recombine those channels.
     \item The last step consists of adapting the resulting SEM to the ML decoder, by calculating the uncorrelated probability of bit- and phase-flip noise, as discussed in section \ref{sssec:sem_results_bit_phase_flip}. 
@@ -177,7 +176,8 @@ The calculations of the SEM follows the following steps:
 The results of this process is discussed in section \ref{ssec:sem_results}.
 The sections until then deal with the process and details to obtain this error model. 
 
-
+This process uses the same ordering of the STEC half-cycles as implemented in the simulation.
+The results can be generalized for any ordering following the discussion in section \ref{ssec:sem_order}.
 
 
 \subsection{Pauli Channel Commute}\label{ssec:pauli_channel_commute}
@@ -803,7 +803,7 @@ For $P_{X,\mathrm{res}}$ we sum all the probability of all cases where, the synd
     } 
 \begin{equation}
     P_{X,\mathrm{res}} = 
-    + \frac{2}{3}p_{sp\ket{+}}
+    \frac{2}{3}p_{sp\ket{+}}
     + p_{m\ket{0}}
     + \frac{8}{15}p_{D2\ket{+}}
     + \mathcal{O}(p^2)
@@ -811,7 +811,7 @@ For $P_{X,\mathrm{res}}$ we sum all the probability of all cases where, the synd
 Following the same logic we obtain
 \begin{equation}
     P_{Z,\mathrm{res}} = 
-    +\frac{2}{3}p_{sp\ket{+}}
+    \frac{2}{3}p_{sp\ket{+}}
     +\frac{2}{3}p_{sp\ket{+}}
     +p_{m\ket{+}}
     +\frac{8}{15}p_{D2\ket{0}}

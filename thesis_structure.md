@@ -3,8 +3,6 @@
 
 # stuff to add
 
-1. syndrome noise model appendix!
-
 2. add all the collapsed data plots in the appendix 
     + automate this process partly!
     + include critical exponent results in those plots 
@@ -58,7 +56,11 @@ IMPORTANT!!!
     + add circuit for steane type error correection
     + refer to it during the introduction 
 
+
+## should be done, maybe optimize
+
 17. motivate in fssa why smallest distances should be excluded
+    + maybe done already optimize this
     + more than just by results!
     + name the assumption for large d!
 
