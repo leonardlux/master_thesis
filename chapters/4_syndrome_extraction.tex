@@ -109,7 +109,7 @@ This fault-tolerant requirement is the reason we need to repeat the conventional
 Therefore the time required to realize a fault-tolerant conventional syndrome extraction circuit scales linear with the code distance $d$, which is a major disadvantage compared to the Steane Type error correction approach.
 To gain an understanding why we require those $d$ repeated syndrome extractions we will discuss in this section in detail the error propagation properties and how they relate to the fault tolerance of the circuit. 
 
-In this section we discuss how error mechanism from the circuit-level noise model can be propagated through the circuit to show how they influence the resulting syndrome and residual error. 
+This section discuses how the error mechanisms of a circuit-level noise model propagate through the circuit, to explain how the influence the resulting syndrome and residual error. 
 Based on those results we can determine if the circuit is fault-tolerant and what adaptations need to be taken.
 Comparing both circuits we can identify a symmetry between the $X$-type and $Z$-type syndrome extraction, they only differ by a change of basis.
 Therefore we can discuss the elemental error process in one of those circuit and apply the results to both kinds of circuits.
@@ -372,21 +372,18 @@ Instead of taking into account the probability of a given error on the qubit of 
 To determine this error model we meed to propagate the noise models onto the ancilla qubits to optimize our decoding process. 
 Due to the transversal property of the syndrome extraction and noise model, it suffices to look at a single data and ancilla qubit pair and its associated errors.
 
-It is a trivial task to find the propagated error model for the code-capacity case, as the depolarizing noise channel sits only on the data qubit after the initialization.
+It is a trivial task to find the propagated error model, also referred to as the syndrome error model\footnote{
+    We refer to it as syndrome error model, because it is the error model causing the syndrome.
+    They trivially agree for the code-capacity case, but it is this not as simple for the circuit-level noise model, see chapter \ref{chapter:syndrome_error_model}.
+}, for the code-capacity case, as the depolarizing noise channel sits only on the data qubit after the initialization.
 The $X$($Z$)-component of each error is propagated along the CNOT gate of the $Z$($X$)-type half cycle onto the corresponding ancilla qubit, where it is then measured.
 Note that the $Y$-error, which is also part of the depolarizing noise, is partly propagated onto both half cycles. 
 As such the resulting error model is identical and we do not need to make any adaptions to the error model for the code-capacity case.
 
 This is different for the circuit-level noise model.
-Here the task becomes more complex to the multitude of different noise sources, one for each gate, initialization and measurement.
-We will explicitly calculate the propagated noise model in the appendix, see section .\textcolor{red}{Add propagated noise model to the appendix!}
-
-The key result of this propagated model, is the model itself which we can use to perform maximum likelihood decoding on the ancilla.
-We also investigated if we could modify the different noise probabilities of the different sources of the circuit-level noise model, to obtain a simpler noise model\footnote{
-    Here we refer to symmetric noise models, like bit- and phase-flip or depolarizing noise models. 
-    For a detailed description see section\textcolor{red}{Add propagated noise model to the appendix!}.
-} on the ancilla qubit, with the result that such an noise model does not exist for the low error rate regime we are interested in.
-For further details and an in-depth description see the appendix section \textcolor{red}{Add propagated noise model to the appendix!}.
+The task becomes more complex due to the multitude of different noise sources, one for each gate, initialization and measurement.
+This more complex case is discussed in the identically named chapter in the appendix, see chapter \ref{chapter:syndrome_error_model}.
+The key result of this syndrome noise model, is the effective error probabilities of the syndromes which is used to maximum likelihood decode on the logical ancilla qubit.
 
 We will shortly summarize the results and implications on the two decoding approaches we use in the following two subchapter.
 

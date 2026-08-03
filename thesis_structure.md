@@ -3,7 +3,7 @@
 
 # stuff to add
 
-1. propagated noise model appendix!
+1. syndrome noise model appendix!
 
 2. add all the collapsed data plots in the appendix 
     + automate this process partly!
@@ -30,10 +30,6 @@
     + explain observable measurement as a proxy for checking if the state is still ok 
     + show a graph similar to code capcity model for circuit-level noise model
 
-8. motivate in fssa why smallest distances should be excluded
-    + more than just by results!
-    + name the assumption for large d!
-
 9. single run example, show circuit lvl case in parallel as this is aruably more important for this thesis!!!
     + at least add it to the appendix and discuss the results!
     + add point our more if we switch?!o
@@ -49,17 +45,24 @@
 12. get rid of as many we as possible!!!
 
 13. QEC cycle as numbered enviorment 
+    + use enumerate
+
+14. read feedback again and check if i included everything
 
 Today:
-18. mapping multiple errors to the same edges? is that happening? does this influence the argument of p beeing cyclic in the probability?
+15. mapping multiple errors to the same edges? is that happening? does this influence the argument of p beeing cyclic in the probability?
     + yes, it does, but ratio stays the same, is this clear??
 
 IMPORTANT!!!
-15. Syndrome extraction 
+16. Syndrome extraction 
     + add circuit for steane type error correection
     + refer to it during the introduction 
 
+17. motivate in fssa why smallest distances should be excluded
+    + more than just by results!
+    + name the assumption for large d!
 
+18. propagated error model = syndrome error model
 
 
 

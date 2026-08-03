@@ -40,12 +40,12 @@ Consequently, decoding under independent bit- and phase-flip noise is achieved b
 
 Furthermore, there appears to be an error, or at least an inconsistency in the notation, 
 in the description of the independent noise model in \cite{efficient_decoding_algorithm}. 
-The author assumes independent bit- and phase-flip noise with probabilities $p_X=p_Z$ and subsequently states that $p_Y=p_X^2$. 
-However, combining independent bit- and phase-flip channels with probabilities $p_X$ and $p_Z$ results in the effective error probabilities
+The author assumes independent bit- and phase-flip noise with probabilities $p_x=p_z$ and subsequently states that $p_y=p_x^2$. 
+However, combining independent bit- and phase-flip channels with probabilities $p_x$ and $p_z$ results in the effective error probabilities
 \[
-    \tilde{p}_X = p_X(1-p_Z), \qquad
-    \tilde{p}_Z = p_Z(1-p_X), \qquad
-    \tilde{p}_Y = p_X p_Z,
+    \tilde{p}_x = p_x(1-p_z), \qquad
+    \tilde{p}_z = p_z(1-p_x), \qquad
+    \tilde{p}_y = p_x p_z,
 \]
 where $\tilde{p}$ denotes the probabilities in the combined channel, while $p$ denotes the probabilities of the independent channels.
 

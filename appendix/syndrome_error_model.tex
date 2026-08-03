@@ -1,0 +1,965 @@
+\chapter{Syndrome Error Model}\label{chapter:syndrome_error_model}
+
+\begin{figure}[ht]
+\begin{quantikz}
+    % Data qubit
+    \lstick{$\ket{\Psi}_L$}&\qwbundle{n}&\gate[1,style={noisy},]{D}&   % 1: init
+    \targ{}&\gate[1,style={noisy}]{D2}\wire[d][1]{q}&      % 2: 1. CNOT 
+    \ctrl{2}&\gate[1,style={noisy}]{D2}\wire[d][2]{q}&     % 3: 2. CNOT
+    % &&                                                      % 4: 
+    &&\\                                                    % 5: 
+    % 0 ancilla qubit
+    \lstick{$\ket{0}_L$}&\qwbundle{n}&\gate[1,style={noisy},]{D}&      % 1: init
+    \ctrl{-1}&\gate[1,style={noisy}]{D2}&                  % 2: 1. CNOT
+    &&                                                      % 3: 2. CNOT
+    % \gate[]{H}&                                             % 4: 1. change basis aka H
+    % & 
+    % \gate[1,style={noisy},]{D_1}&                           %    2: Error (No errors on H)
+    \gate[1,style={noisy},]{Z}&\meter{$X$}&\setwiretype{c}\\% 5: stabilizer measurement
+    % p ancilla qubit 
+    \lstick{$\ket{+}_L$}&\qwbundle{n}&\gate[1,style={noisy},]{D}&      % 1: init
+    &&                                                      % 2: 1. CNOT
+    \targ{-2}&\gate[1,style={noisy}]{D2}&                  % 3: 2. CNOT
+    % &&                                                      % 4: 
+    \gate[1,style={noisy},]{X}&\meter{$Z$}&\setwiretype{c}\\% 5: stabilizer measurement
+\end{quantikz}
+\caption{
+    Steane circuit diagram with circuit level noise. 
+    Here the channel are marked at their positions.
+    The different noise channels are marked by the red boxes, where the labels are assigned as follows:
+    $D$ is the single qubit depolarizing noise channel (equation \ref{eq:depo_1_noise}), $D2$ is the two qubit depolarizing noise channel (equation \ref{eq:depo_2_noise}) 
+    and $X$($Z$) symbolizes bit-(phase-)flip error channels (equations \ref{eq:bit_flip_channel}, \ref{eq:phase_flip_channel} respectively). 
+    }
+\label{circ:start_circ_lvl_noise}
+\end{figure}
+
+This chapter discuses how the circuit-level error model for a STEC circuit, can be mapped to a \emph{syndrome error model} (SEM).
+The syndrome error model, describes the errors observed by the syndrome measurement\footnote{
+    This model is also known as effective noise model or propagated noise model \cite{manuel_error_propagation_paper}.
+    We refer to it as syndrome noise model to highlight, that it only contains the modeling for the syndrome,
+    the effect on the data qubit is completely neglected, in its description.
+    The relation between data qubits errors and syndrome measurements will be discussed briefly in section \ref{ssec:sem_difference_data_qubits}.
+
+} during the syndrome extraction circuit.
+It is calculated by propagating/commuting the error channels, respectively their operators, trough the circuit and thus determining their influence on the syndrome. 
+A more thorough discussion of the computation follows in section \ref{sec:sem_propagation}.
+
+This error model is needed for the construction of the ML\footnote{
+    Note that, the MWPM approach is cyclic in the effective physical noise rate, if the underlying noise model is transversal, which is the case for STEC. 
+    Therefore the SEM is not required for MWPM, as the whole setup is transversal, see section \ref{sssec:stec_decoder_adaption_MWPM}.
+} decoding approach as discussed in section \ref{sssec:stec_decoder_adaption_ML}.
+
+As the STEC circuit and circuit-level error model is transversal\footnote{
+    The transversality is represented in the notational difference of the initial states of the two circuit figures showing the circuit-level noise model. 
+    Where figure \ref{circ:start_circ_lvl_noise} uses the logical state, we shifted to the physical qubit scale in figure \ref{circ_dia:start_circ_lvl_noise_define_probabilities}. 
+}, 
+we can limit the analysis for a single physical data qubit and its associated ancilla qubit, 
+and generalize the results trivially to all qubits of the code. 
+Moreover, the following calculation, analysis and discussion is not limited to the surface code, due to the transversality of STEC approach, 
+it can be holds for all possible underlying encodings compatible with STEC. 
+
+Applying the circuit-level noise model to STEC results in the noise model shown in figure \ref{circ:start_circ_lvl_noise}.
+As indicated in the circuit figure we use the noise channels introduced in chapter \ref{ssec:error_models}.
+This included the bit- and phase-flip noise channel (equations \ref{eq:bit_flip_channel}, \ref{eq:phase_flip_channel}), 
+the depolarizing one qubit noise channel (equation \ref{eq:depo_1_noise}) and the depolarizing two qubit noise channel (equation \ref{eq:depo_2_noise}).
+Each channel gets assigned its own probability for the analysis, the notation to identify the probability assigned to each channel is shown in figure \ref{circ_dia:start_circ_lvl_noise_define_probabilities}. 
+
+\begin{figure}
+\begin{quantikz}
+    % Data qubit
+    \lstick{$\rho_{\ket{\Psi},i}$}&\gate[1,style={noisy},]{p_{sp.\ket{\Psi}}}&   % 1: init
+    \targ{}&\gate[1,style={noisy}]{p_{D2\ket{0}}}\wire[d][1]{q}&      % 2: 1. CNOT 
+    \ctrl{2}&\gate[1,style={noisy}]{p_{D2\ket{+}}}\wire[d][2]{q}&     % 3: 2. CNOT
+    % &&                                                      % 4: 
+    &&\\                                                    % 5: 
+    % 0 ancilla qubit
+    \lstick{$\rho_{\ket{0},i}$}&\gate[1,style={noisy},]{p_{sp.\ket{0}}}&      % 1: init
+    \ctrl{-1}&\gate[1,style={noisy}]{p_{D2\ket{0}}}&                  % 2: 1. CNOT
+    &&                                                      % 3: 2. CNOT
+    % \gate[]{H}&                                             % 4: 1. change basis aka H
+    % & 
+    % \gate[1,style={noisy},]{D_1}&                           %    2: Error (No errors on H)
+    \gate[1,style={noisy},]{p_{m\ket{0}}}&\meter{$X$}&\setwiretype{c}\\% 5: stabilizer measurement
+    % p ancilla qubit 
+    \lstick{$\rho_{\ket{+},i}$}&\gate[1,style={noisy},]{p_{sp.\ket{+}}}&      % 1: init
+    &&                                                      % 2: 1. CNOT
+    \targ{-2}&\gate[1,style={noisy}]{p_{D2\ket{+}}}&                  % 3: 2. CNOT
+    % &&                                                      % 4: 
+    \gate[1,style={noisy},]{p_{m\ket{+}}}&\meter{$Z$}&\setwiretype{c}\\% 5: stabilizer measurement
+\end{quantikz}
+\caption{
+    Steane circuit diagram with circuit level noise. 
+    The corresponding probability for each channel is shown here.
+}
+\label{circ_dia:start_circ_lvl_noise_define_probabilities}
+\end{figure}
+
+Figure \ref{circ_dia:propagated_noise} illustrate how the syndrome noise model will look like. 
+The `N' measurement indicates that all operators from the noise model acting on the data qubit are neglected.
+All possible noise channels and their associated operators are propagated until before the measurements of the ancilla qubits, 
+to model the noise on the syndrome measurements, as those measurements are directly combined to compute the syndrome of the encoded state. 
+
+One can observe that the $X$-errors has no effects on the $X$-measurements performed on the ancilla  $\ket{0}_L$.
+$X$-errors on the $\ket{0}_L$ state can therefore be neglected for the purpose of the SEM, resulting in $X~I$ and $Y~Z$. 
+Applying the same logic for the $\ket{+}_L$, results in $Z~I$ and $Y~X$. 
+We refer to this concept as syndrome equivalence, as neglecting those parts results in an equivalent in respect to the syndrome. 
+The discussion of this approach will be slightly expanded in section \ref{ssec:sem_syndrome_equivalence}.
+
+The specific noise model shown in figure \ref{circ_dia:propagated_noise}, consists of a composition independent channels.
+It will be shown in section \ref{sec:sem_propagation}, that the shown error model is the result of the propagated circuit-level noise model, and therefore the syndrome error model.
+\textcolor{red}{Put reference to equation here}
+
+As the ML decoder is only able to correct independent bit- or phase-flip noise, we use the exact error model for the syndromes 
+and extract the probability of either $X$-errors or $Z$-errors. 
+These two probabilities, respectively the equations to calculate those, are then used in the construction of the ML decoder.
+
+The calculation of the exact model is discussed in the following section \ref{sec:sem_propagation} 
+
+\begin{figure}
+\centering
+\begin{quantikz}
+    % Data qubit
+    \lstick{$\ket{\Psi}_L$}&
+    \targ{}&
+    \ctrl{2}&
+    \meter{N}
+    % &                                                      
+    \\                                                    
+    % 0 ancilla qubit
+    \lstick{$\ket{0}_L$}&
+    \ctrl{-1}&
+    &
+    &
+    \gate[1,style={noisy}]{D'}\wire[d][1]{q}&
+    \gate[1,style={noisy},]{Z}&\meter{$X$}&\setwiretype{c}\\% 5: stabilizer measurement
+    % p ancilla qubit 
+    \lstick{$\ket{+}_L$}&
+    &
+    \targ{-2}&
+    &
+    \gate[1,style={noisy}]{D'}&
+    % &&                                                      % 4: 
+    \gate[1,style={noisy},]{X}&\meter{$Z$}&\setwiretype{c}\\% 5: stabilizer measurement
+\end{quantikz}
+\caption{
+    TOOOODOOOOO extend caption of this circuit!!!
+    Circuit diagram with final possible error models shown.
+    }
+\label{circ_dia:propagated_noise}
+\end{figure}
+
+% show the resulting equations
+
+\textcolor{red}{Nod to further analysis? and main results are still missing!}
+% nod to further analysis -> maybe explain the main results
+
+\section{Calculation - Propagation of Error Model}\label{sec:sem_propagation}
+
+The calculations of the SEM follows the following steps:
+\begin{enumerate}
+    \item Starting point is the circuit-level noise model, consisting of independent Pauli channels shown in \ref{circ:start_circ_lvl_noise}. 
+    \item The first step of the computation of the SEM is propagating/commuting the Pauli channels to the end of the circuit, in detail discussed in section \ref{ssec:sem_propagation_of_channels}.
+    \begin{itemize}
+        \item Each Pauli channel can be propagated through the channel independently as they commute with all other Pauli channels, shortly discussed in section \ref{ssec:pauli_channel_commute}.
+        \item The CNOT gate, which represents the non trivial part of the propagation, are discussed in section \ref{ssec:cnot_gate}.
+        \item The resulting error channels are simplified by neglecting the error components on the data qubit and by taking the syndrome equivalence into account, see section \ref{ssec:sem_syndrome_equivalence}. 
+    \end{itemize}
+    % Should i discuss here that I can rename the different error operators?!
+    \item Recombining the resulting individual channels will lead to the syndrome error model. 
+    \begin{itemize}
+        \item The composition of different channels is discussed in section \ref{ssec:sem_composition_of_channels}. 
+        \item The resulting SEM contains correlations between $X$- and $Z$-errors and is shown in section \ref{sssec:sem_results_correlated_sem}.
+    \end{itemize}
+    % Talk about how to recombine those channels.
+    \item The last step consists of adapting the resulting SEM to the ML decoder, by calculating the uncorrelated probability of bit- and phase-flip noise, as discussed in section \ref{sssec:sem_results_bit_phase_flip}. 
+\end{enumerate}
+
+The results of this process is discussed in section \ref{ssec:sem_results}.
+The sections until then deal with the process and details to obtain this error model. 
+
+
+
+
+\subsection{Pauli Channel Commute}\label{ssec:pauli_channel_commute}
+
+We this process by shortly showing that all Pauli Channels commute. 
+To show that all Pauli channel commute we define two arbitrary Pauli channels $N_1$ and $N_2$
+\begin{align}
+    N_1 (\rho) &= \sum_P p_P {P} \rho {P}^\dag \\
+    N_2 (\rho) &= \sum_Q p_Q {Q} \rho {Q}^\dag
+\end{align}
+We can write the commutation relation between any two Pauli operators as 
+\begin{equation}
+    {P}{Q} = (-1)^c {Q} {P},
+\end{equation}
+where $c$ is $0$ if they commute or $1$ if they anticommute.
+The composition of the two Pauli channels, can be thus written as
+\begin{align*}
+    N_2  (N_1 (\rho)) & = \sum_{P,Q} p_P p_Q {Q} {P} \rho {P}^\dag {Q}^\dag \\
+    & = \sum_{P,Q} p_P\  p_Q (-1)^c {P} {Q} \rho (-1)^c {Q}^\dag {P}^\dag \\
+    & = (-1)^{2\cdot c} \sum_{P,Q} p_P p_Q  {P} {Q} \rho  {Q}^\dag {P}^\dag \\
+    & = (1)^c \sum_{P,Q} p_P p_Q  {P} {Q} \rho  {Q}^\dag {P}^\dag
+    = N_1  (N_2 (\rho))
+\end{align*}
+which shows that all possible Pauli channels commute with one another.
+
+Because all Pauli channel they can be propagated independently of one another to the end of the circuit. 
+The commutation relation of Pauli channels/operators is discussed in section \ref{ssec:cnot_gate}. 
+
+
+\subsection{Syndrome Equivalence}\label{ssec:sem_syndrome_equivalence}
+% introduce the syndrome interpretation of the measurement 
+
+The SEM is used to model the noises influence on the syndrome.
+Therefore all the noises processes, which have no impact on the syndrome can be neglected.
+This we refer to this as \emph{syndrome equivalence}, and it is formalized in this section.
+
+This chapter discuses the equivalence of operators after they are propagated thorough the CNOT circuit.
+These operators are located in front of the measurements on the ancilla qubits, or on the data qubit. 
+
+The latter ones, operators located on the data qubits, can be neglected for the SEM as they do not influence the syndrome.
+For operator on the data qubit we have to take the following measurement into account, depending if they commute or anticommute, 
+they either do not influence the syndrome $~I^s$ or they influence the syndrome.
+
+We use the notation of the superscript $s$ to indicate that we are using the syndrome equivalence concept.
+For STEC we can formalize the following syndrome equivalence relations for the two ancilla syndromes:
+
+For operators on the $\ket{+}_L$ ancilla qubit:
+\begin{align*}
+    X^{\ket{+}} & \overset{{s}}{\rightarrow} X^{s} \\
+    Y^{\ket{+}} & \overset{{s}}{\rightarrow} X^{s} \\
+    Z^{\ket{+}} & \overset{{s}}{\rightarrow} I^{s} \\
+    I^{\ket{+}} & \overset{{s}}{\rightarrow} I^{s} \\
+\end{align*}
+
+For operators on the $\ket{0}_L$ ancilla qubit:
+\begin{align*}
+    Z^{\ket{0}} & \overset{{s}}{\rightarrow} Z^{s} \\
+    Y^{\ket{0}} & \overset{{s}}{\rightarrow} Z^{s} \\
+    X^{\ket{0}} & \overset{{s}}{\rightarrow} I^{s} \\
+    I^{\ket{0}} & \overset{{s}}{\rightarrow} I^{s} \\
+\end{align*}
+
+Note that after applying the syndrome equivalence we do not have to specify on which ancilla qubit the error acts, 
+as it is implicitly defined.
+
+Note that this is a slight abuse of notation, as these operators do not follow the expected commutation relations for Pauli operators $[X^s,Z^s]=0$. 
+The intuition behind this notation is that we are interpreting the errors from the point of view of the decoder. 
+A $Z^s$ error will be corrected by a $Z$ operator at the same qubit index on the encoded block\footnote{
+    Maybe a better derivation compares the effective errors with equivalent errors of the code-capacity case. 
+    Both intuitions end up at the same notation. 
+}.
+Following this logic we extend the notation to define the syndrome equivalence operator 
+\begin{equation}
+    Y^s = X^s Z^s.
+\end{equation}
+So the two independent errors sitting on the two different ancilla qubits ($Z^{\ket{0}} \otimes X^{\ket{+}}$) will be interpreted as one operator ($Y^s$).
+
+% To highlight the benefits of this notation:
+% A depolarizing channel which acts on a qubit of the $\ket{+}_L$ ancilla can be rewritten as
+% \begin{align*}
+%     N_D(\rho) = & \left( 1- \frac{4}{3} p_D\right) \hat{I}^{\ket{+}} + \frac{1}{3} p_D \sum_{i=0}^3 \hat{E_i}^{\ket{+}}  \\
+% \overset{s}{\rightarrow} & \left(  1- \frac{2}{3}p_D\right) \hat{I}^s + \frac{2}{3} p_D \hat{X}^s
+% \end{align*}
+% a bit flip channel with probability $p_x = 2/3 p_D$, using syndrome equivalence.
+
+% Note that superoperator notation $\hat{M}(\rho) \coloneq M \rho M^\dag $ \cite{manuel_error_propagation_paper} is used here.
+
+
+
+
+\subsection{Propagation of Noise Channels}\label{ssec:sem_propagation_of_channels}
+
+In this section the propagation of each operator of the channels is performed in the following three steps: 
+\begin{enumerate}
+    \item propagation through the CNOTs
+    \item tracing out the data qubit, indicated by $tr$
+    \item stabilizer equivalence due to the measurements, indicated by $\tilde{s}$
+\end{enumerate} 
+Each channel is discussed in the following, ordered by their location in the circuit.
+
+A short note about the influence of the ordering is discussed in \ref{ssec:sem_order}.
+
+
+\subsubsection{State Preparations Noise}
+
+We look at each error channel from the state preparation ($p_{sp.\ket{\Psi}},p_{sp.\ket{0}},p_{sp.\ket{+}}$) independently. 
+
+Starting with the depolarizing channel on the data state ($\ket{\Psi}$):
+\begin{align*}
+    X^{\ket{\Psi}}  
+    &\overset{\text{CNOTs}}{\rightarrow} X^{\ket{\Psi}} X^{\ket{+}} 
+    &\overset{tr}{\rightarrow} &X^{\ket{+}}   
+    &\overset{\tilde{s}}{\rightarrow} X^s  \\
+    Z^{\ket{\Psi}}  
+    &\overset{\text{CNOTs}}{\rightarrow} Z^{\ket{\Psi}} Z^{\ket{0}} 
+    &\overset{tr}{\rightarrow} & Z^{\ket{0}}  
+    &\overset{\tilde{s}}{\rightarrow} Z^s  \\
+    Y^{\ket{\Psi}}  
+    &\overset{\text{CNOTs}}{\rightarrow} Y^{\ket{\Psi}} Z^{\ket{0}} X^{\ket{+}}
+    &\overset{tr}{\rightarrow} & Z^{\ket{0}} X^{\ket{+}} 
+    &\overset{\tilde{s}}{\rightarrow} Y^s  \\
+\end{align*} 
+For the initial data state, the structure of the noise channel is conserved.
+This is expected as STEC is designed to be able to detect those errors. 
+Therefore the initial errors should be identically mapped to the syndrome error model.
+
+The resulting channel has the form 
+\begin{align*}
+    N_{sp.\ket{\Psi}} (\rho) &= (1-p_{sp.\ket{\Psi}}) \hat{I} + \frac{1}{3}p_{sp.\ket{\Psi}}(\hat{X}^{\ket{+}} + \hat{Z}^{\ket{0}} + \hat{X}^{\ket{+}} \hat{Z}^{\ket{0}})\\
+        &=  (1-p_{sp.\ket{\Psi}}) \hat{I^s} + \frac{1}{3} p_{sp.\ket{\Psi}}\sum_{i=1}^3 \hat{E}_{i}^s\\
+\end{align*}
+Note that due to the notation introduced in \ref{ssec:sem_syndrome_equivalence}, we can describe the resulting channels as a depolarizing channel and marked with $D'$.
+The state preparation of the data qubit therefore contributes a depolarizing channel with $p_{D'} = p_{sp.\ket{\Psi}}$.
+
+Continuing with the state preparation of the $\ket{0}$ ancilla qubit:
+\begin{align*}
+    X^{\ket{0}}  
+    &\overset{\text{CNOTs}}{\rightarrow} X^{\ket{0}} X^{\ket{\Psi}} X^{\ket{+}}
+    &\overset{tr}{\rightarrow} &X^{\ket{0}} X^{\ket{+}}
+    &\overset{\tilde{s}}{\rightarrow} X^s  \\
+    Z^{\ket{0}}  
+    &\overset{\text{CNOTs}}{\rightarrow} Z^{\ket{0}} 
+    &\overset{tr}{\rightarrow} & Z^{\ket{0}}   
+    &\overset{\tilde{s}}{\rightarrow} Z^s  \\
+    Y^{\ket{0}}  
+    &\overset{\text{CNOTs}}{\rightarrow} Y^{\ket{0}} X^{\ket{\Psi}} X^{\ket{+}}
+    &\overset{tr}{\rightarrow} & Z^{\ket{0}} X^{\ket{+}} 
+    &\overset{\tilde{s}}{\rightarrow} Y^s  \\
+\end{align*} 
+which results in the channel
+\begin{align*}
+    N_{sp.\ket{0}} (\rho) &= (1-p_{sp.\ket{0}}) \hat{I} + \frac{1}{3}p_{sp.\ket{0}}(\hat{X}^{\ket{+}} + \hat{Z}^{\ket{0}} + \hat{X}^{\ket{+}} \hat{Z}^{\ket{0}})\\
+        &=  (1-p_{sp.\ket{0}}) \hat{I^s} + \frac{1}{3} p_{sp.\ket{0}}\sum_{i=1}^3 \hat{E}_{i}^s\\
+\end{align*}
+which is also a depolarizing channel with $p_{D'} = p_{sp.\ket{0}}$.
+
+Lastly the state preparation of the $\ket{+}$ ancilla qubit:
+\begin{align*}
+    X^{\ket{+}}  
+    &\overset{\text{CNOTs}}{\rightarrow} X^{\ket{+}} 
+    &\overset{tr}{\rightarrow} & X^{\ket{+}} 
+    &\overset{\tilde{s}}{\rightarrow} X^s  \\
+    Z^{\ket{+}}  
+    &\overset{\text{CNOTs}}{\rightarrow} Z^{\ket{+}} Z^{\ket{\Psi}} 
+    &\overset{tr}{\rightarrow} & Z^{\ket{+}}   
+    &\overset{\tilde{s}}{\rightarrow} I^s  \\
+    Y^{\ket{+}}  
+    &\overset{\text{CNOTs}}{\rightarrow} Y^{\ket{+}} Z^{\ket{\Psi}} 
+    &\overset{tr}{\rightarrow} & Y^{\ket{+}} 
+    &\overset{\tilde{s}}{\rightarrow} X^s  \\
+\end{align*} 
+applying those mapping to the channel results in 
+\begin{align*}
+    N_{sp.\ket{+}} (\rho) &= \left(1-\frac{2}{3}p_{sp.\ket{+}}\right) \hat{I} + \frac{2}{3}p_{sp.\ket{0}} \hat{X}^{}
+\end{align*}
+which can be identified as a bit-flip channel on $\ket{+}$ with $p_x=\frac{2}{3} p_{sp.\ket{+}}$.
+
+\subsubsection{Two Qubit Gate Noise}
+
+The discussion of two qubit gate depolarizing noise channel follows. 
+
+Starting with the two qubit channel acting on $\ket{0}$ and $\ket{\Psi}$.
+We only show non trivial terms, so those which are not equal to identity after the propagation: 
+\begin{align*}
+    X^{\ket{\Psi}} 
+    &\overset{\text{CNOTs}}{\rightarrow} X^{\ket{\Psi}}  X^{\ket{+}}  
+    &\overset{tr}{\rightarrow} & X^{\ket{+}} 
+    &\overset{\tilde{s}}{\rightarrow} X^s  \\
+    Y^{\ket{\Psi}} 
+    &\overset{\text{CNOTs}}{\rightarrow} Y^{\ket{\Psi}}  X^{\ket{+}}  
+    &\overset{tr}{\rightarrow} & X^{\ket{+}} 
+    &\overset{\tilde{s}}{\rightarrow} X^s  \\
+    Z^{\ket{0}}  
+    &\overset{\text{CNOTs}}{\rightarrow} Z^{\ket{0}} 
+    &\overset{tr}{\rightarrow} & Z^{\ket{0}}   
+    &\overset{\tilde{s}}{\rightarrow} Z^s  \\
+    Y^{\ket{0}}  
+    &\overset{\text{CNOTs}}{\rightarrow} Y^{\ket{0}} 
+    &\overset{tr}{\rightarrow} & Y^{\ket{0}}   
+    &\overset{\tilde{s}}{\rightarrow} Z^s  \\
+\end{align*} 
+applying those mapping to the channel equation results in  
+\begin{align*}
+    N_{D2\ket{0}} &= \left(1- \frac{16}{15} p_{D2\ket{0}} \right) \hat{I} + \frac{1}{15} p_{D2\ket{0}}(2\hat{I} + 2\hat{Z}^{\ket{0}}) \otimes (2\hat{I} + 2\hat{X}^{\ket{+}})\\
+    &= \left(1- \frac{16}{15} p_{D2\ket{0}} \right) \hat{I} + \frac{4}{15}p_{D2\ket{0}} \sum_{i=0}^{3} \hat{E}_i^s 
+\end{align*}
+This is again the a depolarizing channel with $p_{D'} = \frac{4}{5} p_{D2\ket{0}}$
+
+
+Onto the second two qubit depolarizing channel, between $\ket{\Psi}$ and $\ket{+}$.
+Here the logic is nearly trivial because we do not need to propagate it through any CNOTs.
+We once again only show the none identity mappings.
+\begin{align*}
+    X^{\ket{+}} 
+    &\overset{\text{CNOTs}}{\rightarrow} X^{\ket{+}}  
+    &\overset{tr}{\rightarrow} & X^{\ket{+}} 
+    &\overset{\tilde{s}}{\rightarrow} X^s  \\
+    Y^{\ket{+}} 
+    &\overset{\text{CNOTs}}{\rightarrow} Y^{\ket{+}} 
+    &\overset{tr}{\rightarrow} & X^{\ket{+}} 
+    &\overset{\tilde{s}}{\rightarrow} X^s  \\
+\end{align*}
+It is easy to see that the resulting channel is a bit-flip channel on the $\ket{+}$ qubit, taking the form
+\begin{align*}
+    N_{D2\ket{+}} &= \left(1- p_{D2\ket{+}} \right) \hat{I} + \frac{1}{15} p_{D2\ket{+}}(3\hat{I} + 4 \hat{X}^{\ket{+}} + 4\hat{I} + 4 \hat{X}^{\ket{+}}) \\
+    &= \left(1- \frac{8}{15} p_{D2\ket{+}} \right) \hat{I} + \frac{8}{15}p_{D2\ket{+}}  \hat{X}^{s}
+\end{align*}
+resulting in a bit-flip channel with $p_x = \frac{2}{3}\frac{4}{5}p_{D2\ket{+}}$.
+
+
+\subsubsection{Measurements Noise}
+Both measurement error channels ($p_{m\ket{0}},p_{m\ket{+}}$) stay unchanged.
+And contribute as phase-/bit-flip channel:
+\begin{equation*}
+    N_{m\ket{0}} (\rho) =(1-p_{m\ket{0}})\hat{I} + p_{m\ket{0}} \hat{X}^{\ket{0}} =  (1-p_{m\ket{0}})\hat{I} + p_{m\ket0} \hat{X}^s
+\end{equation*}
+
+\begin{equation*}
+    N_{m\ket{p}} (\rho) =  (1-p_{m\ket{p}})\hat{I} + p_{m\ket{+}} \hat{Z}^{\ket{+}} = (1-p_{m\ket{+}})\hat{I} + p_{m\ket{+}} \hat{Z}^s
+\end{equation*}
+
+
+
+
+\subsection{Composition of Channels}\label{ssec:sem_composition_of_channels}
+% discuss serial composition of error channels
+
+Propagating each channel individually towards the end of the circuit, results in multiple channels which need to be combined to compute the SEM.
+This task is simplified by computing general formulas for the composition of single qubit depolarizing channels (depo), bit- and phase-flip (flip) channels.
+These are the only channels which will appear after propagating the channels through the CNOTs and tracing out the data qubit, as shown in the previous section.
+
+To make the calculations shorter we rewrite the depo channel, 
+by including the identity as $E_0=I$ in the sum, such that 
+\begin{align*}
+    N_{D1}(\rho)    &= (1-p) \rho  + \frac{1}{3} p \sum_{i=1}^3 E_i \rho E_i \\
+                    &= (1-\frac{4}{3}p)\rho + \frac{1}{3} p \sum_{i=0}^{3} E_i \rho E_i.
+\end{align*}
+Note that the summation starts at $i=0$ and therefore 
+\begin{equation*}
+    E_i \in \{ I, X, Y, Z\}. 
+\end{equation*}
+
+The advantage of including the identity operator in the summation is that multiplying the resulting sum by another Pauli operator can be treated uniformly
+\begin{equation}
+    \sum_{i=0}^{3} \hat{Q} \hat{E}_i = \sum_{i=0}^{3} \hat{E}_i\ , \forall \hat{Q} \in \{ \hat{I}, \hat{X}, \hat{Y}, \hat{Z}\}. 
+    \label{eq:sum_trick}
+\end{equation}
+as the sum is invariant under such an operation\footnote{
+    This implicitly assumes that we are using the phase-normalized Pauli group, which we do.
+}.
+
+
+\paragraph{Depo-Depo Channel}
+
+The serial combination of depolarizing channels can be rewritten as 
+\begin{align*}
+    N_{D;p_2}(N_{D;p_1}(\rho)) &= \left( \left(1-\frac{4}{3}p_1\right) \hat{I} + \frac{1}{3} p_1 \sum_{i=0}^{3}\hat{E_i} \right)
+    \cdot \left( \left(1-\frac{4}{3}p_2\right) \hat{I} + \frac{1}{3} p_2 \sum_{i=0}^{3}\hat{E_i} \right) \\
+    &= \left(1-\frac{4}{3}p_1\right)\left(1-\frac{4}{3}p_2\right) \hat{I} \\
+    &  \ \ \ \ + \frac{1}{3}\left((1-\frac{4}{3}p_1)p_2 + (1-\frac{4}{3}p_2)p_1 + \frac{4}{3}p_1 p_2\right) \sum_{i=0}^{3} \hat{E_i} \\
+    &= \left( 1- \frac{4}{3}\left( p_1 + p_2 - \frac{4}{3}p_1 p_2\right) \right) \hat{I} 
+    + \frac{1}{3} \left( p_1 + p_2 - \frac{4}{3}p_1 p_2\right) \sum_{i=0}^{3} \hat{E_i} \\
+    &= (1-\frac{4}{3}p_c)\hat{I} + \frac{1}{3} p_c \sum_{i=0}^{3} \hat{E_i}\\
+    &= N_{D;p_c}(\rho)
+\end{align*}
+
+Because we include the identity operator in the sum, the product of the sums becomes easy to calculate using the equation \ref{eq:sum_trick} 
+\begin{equation*}
+    \left( \sum_{i=0}^{3} \hat{E_i}\right) \cdot \left( \sum_{i=0}^{3} \hat{E_i}\right) = 4 \left( \sum_{i=0}^{3} \hat{E_i}\right) .
+\end{equation*}
+
+We can identify that the composition of two depolarizing one qubit channels 
+is just a depolarizing one qubit channel with the combined probability 
+\begin{equation}
+    p^c_D = f_{2}(p_1,p_2) = p_1 + p_2 - \frac{4}{3}p_1 p_2 = p_1 + (1- \frac{4}{3}p_1) p_2.
+    \label{eq:composition_depo_depo_prob_simple}
+\end{equation}
+Note the that function is symmetric the with respect to its argument, $f_{2}(p_1,p_2)=f_{2}(p_2,p_1)$, 
+as expected since Pauli channels commute. 
+
+The function $f_2$ can be extended recursively to define a function $f_n$, which computes the combined error probability of the composition of $n$ depolarizing channels
+\begin{align*}
+    f_{n}(p_1,p_2,p_3,...,p_n) &= f_{2}\left(p_1,f_{n-1}(p_2,p_3,...,p_n)\right) \\
+    &= f_{2}(p_1,f_{2}(p_2,f_{n-2}(p_3,...,p_n))).
+\end{align*} 
+This function will be used in the following chapter using the following notation 
+\begin{equation}
+    p_D^c(p_1,p_2,...,p_n) = f_{n}(p_1,p_2,...,p_n).
+    \label{eq:depo_depo_composition}
+\end{equation}
+
+We can also rewrite equation \ref{eq:composition_depo_depo_prob_simple} as a sum of non-negative contributions,
+\begin{equation}
+    p^c_D(p_1,p_2) = p_1 (1-p_2) + (1-p_1) p_2 + \frac{2}{3} p_1 p_2
+    \label{eq:sem_depo_depo_not_negative}
+\end{equation}
+from which follows immediately that $p^c_D=0$ if and only if $p_1=p_2=0$.
+
+
+\paragraph{Flip-Flip Channel}
+
+To compose multiple flip channels, we only need to use the fact that an even number of flips cancels out, while an odd number of flips leads to a resulting flip error.
+Therefore, the composition of multiple bit-(phase-)flip channels is once again a bit-(phase-)flip channel, with the combined probability
+\begin{equation*}
+    p_c = \sum_{\vec{n}\in\{\vec{n} \text{ odd}\}} \prod_i p_i^{n_i} \cdot \left( 1-p_i\right)^{1-n_i}
+\end{equation*}
+where we sum over all possible odd occupation vectors $\vec{n}$ of errors.\footnote{The occupation vector is defined such that if $n_i = 1$, the $i$-th flip channel flips the bit.}
+An occupation vector is defined as odd if
+\begin{equation*}
+    \left(\sum_i n_i\right) \mod 2 = 1.
+\end{equation*}
+We once again define a notation for later use:
+\begin{equation}
+    p_{x/z}^c(p_1,p_2,...,p_m) = \sum_{\vec{n}\in\{\vec{n} \text{ odd}\}} \prod_{i=1}^m p_i^{n_i} \cdot \left( 1-p_i\right)^{1-n_i}
+    \label{eq:composition_flip_channel}
+\end{equation}
+
+
+
+\paragraph{Depo-(Bit-)Flip Channel}
+
+The composition of a (bit-)flip and depolarizing channel takes the form
+\begin{align*}
+    N_{X}(N_{D}(\rho)) &= \left( (1-p_x) \hat{I} + p_x \hat{X}\right)
+    \cdot \left( \left(1-\frac{4}{3}p_D\right) \hat{I} + \frac{1}{3} p_D \sum_{i=0}^{3}\hat{E_i} \right) \\
+    &= (1-p_x)\left(1-\frac{4}{3}p_D\right) \hat{I} + \frac{1}{3} p_D \sum_{i=0}^{3}\hat{E_i}  + p_x\left(1-\frac{4}{3}p_D\right) \hat{X}
+\end{align*}
+where we used the trick from equation \ref{eq:sum_trick}
+\begin{equation*}
+    \sum_{i=0}^{3} \hat{X}\hat{E_i} = 
+    \sum_{i=0}^{3} \hat{E_i}. 
+\end{equation*}
+
+
+\paragraph{All Channels}\label{para:composition_all_possible_channels}
+
+To compute the composition of bit-flip, phase-flip and depolarizing channel 
+we combine the previous results with an phase-flip channel to get 
+\begin{align*}
+    N_{final} =&N_Z(N_X(N_D(\rho))) \\
+    =& \left((1-p_z)\hat{I} + p_z \hat{Z}\right) \\
+    & \cdot \left((1-p_x)\left(1-\frac{4}{3}p_D\right) \hat{I} + \frac{1}{3} p_D \sum_{i=0}^{3}\hat{E_i}  + p_x\left(1-\frac{4}{3}p_D\right) \hat{X}\right) \\
+    =& \frac{1}{3} p_D \sum_{i=0}^{3} \hat{E_i} \\
+    &+ \left(1-\frac{4}{3}p_D \right)\cdot\left((1-p_x)(1-p_z) \hat{I}+ (1-p_x) p_z \hat{Z} + p_x (1-p_z) \hat{X} + p_x p_z \hat{Y}\right)
+\end{align*}
+
+From this composition we obtain the final probabilities $p_{i}^t$ of observing each Pauli operator $E_i$ 
+as a function of the probabilities of depolarizing ($p_D$), bit-flip ($p_x$) and phase-flip ($p_z$) channels.
+\begin{align}
+    p_I^t = p_{t,00} =& \frac{1}{3} p_D + \left( 1-\frac{4}{3}p_D\right) (1-p_x)\cdot(1-p_z) \label{eq:total_comp_I}\\
+    p_x^t = p_{t,10} =& \frac{1}{3} p_D + \left( 1-\frac{4}{3}p_D\right) p_x \cdot(1-p_z) \label{eq:total_comp_X}\\
+    p_y^t = p_{t,11} =& \frac{1}{3} p_D + \left( 1-\frac{4}{3}p_D\right) p_x\cdot p_z\label{eq:total_comp_Y}\\
+    p_z^t = p_{t,01} =& \frac{1}{3} p_D + \left( 1-\frac{4}{3}p_D\right) (1-p_x)\cdot p_z\label{eq:total_comp_Z} 
+\end{align}
+
+Which can be rewritten to 
+\begin{equation}
+    p_{t,ij} = \frac{1}{3} p_D^c + \left( 1- \frac{4}{3} p_D^c \right) p_{x,i}^c \cdot p_{z,j}^c 
+    \label{eq_total_comp_short}
+\end{equation}
+with 
+\begin{equation*}
+    p_{x,i}^c = 
+    \begin{cases}
+        p_x^c & \text{if } i=1  \\
+        (1-p_x^c) & \text{if } i=0\\
+    \end{cases}.
+\end{equation*}
+
+
+
+\paragraph{Depo to Flip}\label{para:depo_to_flip}
+
+When either the $X$ or $Z$ operator of a depolarizing channel becomes equal to identity, 
+the resulting channel takes the form of a phase- or bit-flip channel.
+Exemplary for $\hat{Z} \rightarrow \hat{I}$: 
+\begin{align*}
+    N_D (\rho) &= \left(1-\frac{4}{3}p_D\right) \hat{I} + \frac{1}{3} p_D \sum_{i=0}^{3} E_i \\
+    \overset{\hat{Z} \rightarrow \hat{I}}{\rightarrow} & \left( 1- \frac{2}{3}p_D \right) \hat{I}+ \frac{2}{3} p_D \hat{X}
+\end{align*}
+where $\hat{Y} \overset{\hat{Z} \rightarrow \hat{I}}{\rightarrow}\hat{X}$ was used. 
+The resulting channels is a bit-flip channel with the associated probability  $p_x = \frac{2}{3} p_D$
+
+
+\subsection{Results}\label{ssec:sem_results}
+
+The independently propagated channels, shown in section \ref{ssec:sem_propagation_of_channels}, 
+can be combined using the equations describing the composition of channels, shown in \ref{ssec:sem_composition_of_channels}.
+
+This is done in two separate steps, in the first we compute the composition of all channels of the same type. 
+As the propagated channels only take the form of bit-flip, phase-flip or depolarizing channels, we are left with three independent channels at the end of this step,
+which probabilities are combined using equation \ref{eq:composition_flip_channel} for the flip channels and equation \ref{eq:composition_depo_depo_prob_simple} for the depolarizing channels.
+
+The resulting probabilities of the three different combined channels, as shown in figure \ref{circ_dia:propagated_noise}, 
+can be expressed in terms of the individual channel probabilities 
+\begin{align}
+    p_x^f    = &p^c_x \left(\frac{2}{3}p_{sp.\ket{+}}, \frac{2}{3}\frac{4}{5}p_{D2\ket{+}}, p_{m\ket{+}} \right) \label{eq:sem_result_bit_flip_prob}\\
+    p_{z}^f  = &p^c_z \left(p_{m\ket{0}} \right) \label{eq:sem_result_phase_flip_prob}\\
+    p_{D'}^f = &p^c_{D'} \left(p_{sp.\ket{\Psi}},p_{sp.\ket{0}}, \frac{4}{5}p_{D2\ket{0}} \right).
+    \label{eq_align:stab_depo_probability}
+\end{align}
+
+We can combine these three independent channels using the composition derived in section \ref{para:composition_all_possible_channels}, resulting in 
+\begin{equation}
+    p_{t,ij} = \frac{1}{3} p_D^f + \left( 1- \frac{4}{3} p_D^f \right) p_{x,i}^f \cdot p_{z,j}^f.
+    \label{eq:sem_final_correlated_sem_probs_short}
+\end{equation}
+The resulting channel describing our syndrome error model has the form
+\begin{equation}
+    N_{\mathrm{SEM}}(\rho) = \sum_{i,j\in \{0,1\}} p_{t,ij} E_{i+2j}^s \rho E_{i+2j}^{s\dag}.
+\end{equation}
+
+
+% note resulting channel
+
+
+\subsubsection{Bit- or Phase-Flip SEM}\label{sssec:sem_results_bit_phase_flip}
+
+The efficient ML decoder used in this thesis is only designed independently decode bit- and phase-flip errors \cite{efficient_decoding_algorithm}.
+As such we construct a bit- or phase-flip syndrome error model, modeling if the error contains an $X$-error or an $Z$-error respectively.
+Implementing this adaption is trivial as it trivially requires to map one kind of error operator to identity.
+For example the bit-flip syndrome error model 
+\begin{align*}
+    X^s, Y^s &\rightarrow X^{s_x}\\
+    Z^s, I^s &\rightarrow i^{s_x}.
+\end{align*}
+As such the depolarizing noise channel get mapped onto a flip error, as discussed in section \ref{para:depo_to_flip}, 
+and the other kind of flip channel is mapped to identity. 
+The resulting channel defining the syndrome error model is then only consisting of bit-flip or phase-flip channels, with the probabilities 
+\begin{align}
+    p^{f'}_x= p^{c}_x \left(p^{f}_x, \frac{2}{3}p^{f}_{D'}\right) &=p^{c}_x \left(p_{m\ket{+}}, \frac{2}{3}\frac{4}{5}p_{D2\ket{+}},\frac{2}{3}p_{sp.\ket{+}}, \frac{2}{3}p_{m\ket{\Psi}}, \frac{2}{3}\frac{4}{5}p_{D2\ket{0}},\frac{2}{3}p_{sp.\ket{+}}\right) \\
+    p^{f'}_z= p^{c}_z \left(p^{f}_z, \frac{2}{3}p^{f}_{D'}\right) &=p^{c}_z \left(p_{m\ket{0}},\frac{2}{3}p_{sp.\ket{\Psi}}, \frac{2}{3}\frac{4}{5}p_{D2\ket{0}},\frac{2}{3}p_{sp.\ket{0}} \right)   .
+\end{align}
+Here $p^{f'}_x$ is the final probability defining the bit-flip error channel of the bit-flip syndrome error model.
+
+In this thesis we use those SEM, one for each half-cycle, as the underlying error model for efficient ML decoder. 
+As described in section \ref{ssec:error_models}, the simulations use an error model in which all channels have the same defining probability $p_{phy}$.
+% uniform p channel! ?!
+
+
+\subsubsection{Ordering}\label{ssec:sem_order}
+
+Note that due to the symmetric properties of STEC we do not have to derive the SEM for the opposite order of half cycles.
+Changing the order of the half cycles is symmetric to a basis change $\ket{0}\rightarrow \ket{+}$. 
+As such the SEM for the different order can be obtained from the above results be performing this basis change. 
+
+Note as well that while we performed the analysis for a single QEC cycle, assuming an incoming error from the state preparation.
+For repeated syndrome extraction cycles the modeling of the incoming error would likely needs adaption, as the incoming error changes its form as seen in section \ref{ssec:results_circ_multiple_cycles}. 
+For the bulk in this repeated QEC cycle for the quantum memory experiment, it could make sense to use the SEM of only a half cycle, adapting the modeling of the incoming error. 
+
+
+\section{Further analysis}
+
+Given the general equations of the SEM obtained in section \ref{ssec:sem_results}, 
+we can perform some further analysis to gain further insights.
+
+Part of this analysis was trying to find configurations of channel probabilities which lead to a resulting symmetric SEM.
+It will be shown that such symmetric SEM exists, but they are only appear in the regime of high noise rates, which is outside of the are of interest of QEC. 
+This will be discussed in section \ref{ssec:sem_fa_symmetric_channels}, 
+resulting in the conclusion that highly symmetric models are outside of the region of interest of this thesis. 
+
+As part of this further analysis we also computed the syndrome error model in first order in the probabilities, while not discarding the errors on the data qubits. 
+This model is used to quantify which noise channel locations leads to a difference between extracted syndrome and actual data qubit error. 
+As the derivation is identical to the one performed above, only the results are shown in section \ref{ssec:sem_difference_data_qubits}.
+
+
+\subsection{Symmetric Channels}\label{ssec:sem_fa_symmetric_channels}
+
+The motivation behind finding a set of probabilities resulting a symmetric SEM, 
+is that finding possible analytical results for given thresholds of symmetric channels might be easier.
+
+\subsubsection{Product Channel}
+
+To determine for which set of probabilities the SEM can be expressed as a product channel, we start with the probabilities of the SEM, as shown in equation \ref{eq:sem_final_correlated_sem_probs_short}.
+\begin{equation}
+    p_{t,ij} = \frac{1}{3} p_{D'}^f + \left( 1- \frac{4}{3} p_{D'}^f \right) p_{x,i}^f \cdot p_{z,j}^f 
+\end{equation}
+which only factorizes if it can be rewritten as
+\begin{equation}
+    p_{t,ij} = \tilde{p}_{x,i}^f \cdot \tilde{p}_{z,i}^f. 
+\end{equation}
+From the latter equation, it follows that $\underline{p}_t$, written as a matrix with entries $p_{t,ij}$, has linearly dependent columns (and rows)
+Therefore the rank (dimension) of the matrix is $1$ and
+\begin{equation}
+    \det(\underline{p}_t) = 0
+\end{equation}
+follows as a condition.
+
+Evaluating under which conditions the determinant of the matrix, expressed in terms of $p_{D'}^f,p_{x,i}^f, p_{z,i}^f$, is equal to zero
+results in the following cases
+\begin{align}
+    p_{D'}^f &= 0 \ \ \ \rightarrow  \  p_{t,ij} =  p_{x,i}^f \cdot p_{z,j}^f\\
+    p_{D'}^f &= 3/4 \rightarrow\   p_{t,ij} = \frac{1}{4} \\
+    p_x^f &= 1/2 \rightarrow \  p_{t,ij} =  \frac{1}{3}p_D^c + \frac{1}{2}\left(1-\frac{4}{3}p_D^f\right)p_{z,j}^f\\
+    p_z^f &= 1/2 \rightarrow \  p_{t,ij} =  \frac{1}{3}p_D^c + \frac{1}{2}\left(1-\frac{4}{3}p_D^f\right)p_{x,i}^f.
+\end{align}
+The resulting probabilities of the different errors are also shown. 
+
+$p_{D'}^f = 0$ is only achievable  if $p_{sp.}=p_{m}=p_{D2}=0$, as those are the channels resulting in the final depolarizing channel, see equation \ref{eq_align:stab_depo_probability},
+and the discussion around equation \ref{eq:sem_depo_depo_not_negative} has shown that the provability of a composite channel is only equal to zero, if all its components are equal to zero.
+This case is not relevant for the analysis as circuit level noise, as we need to need to assume multiple components as faultless. 
+
+The second case $p_{D'}^f = 3/4 $ is also not of interested as the resulting SEM can not contain any information about the occurred error. 
+It is the complete depolarizing case, essentially cutting the wires, making information extraction through syndrome extraction impossible. 
+
+The last two cases can be rewritten as  proper mixtures 
+\begin{align*}
+    p_x^f &= 1/2 \rightarrow \  p_{t,ij} =  \frac{1}{3}p_{D'}^f (1-p_{z,j}^f) + (1-p_{D'}^f) p_{z,j}^f \\
+    p_z^f &= 1/2 \rightarrow \  p_{t,ij} =  \frac{1}{3}p_{D'}^f (1-p_{x,i}^f) + (1-p_{D'}^f) p_{x,i}^f.
+\end{align*}
+In this case we effective cut the wire of one of the ancilla qubit, fully randomizing one half of the syndrome.
+this case is therefore also not of interest for QEC.
+
+
+As such all possible cases resulting in a product channel as SEM, result in either the loss of information or are based on a trivial error model. 
+
+Below is shown which individual channel probabilities lead to the discussed cases\footnote{We neglected the $p_{D'}^f = 3/4 $ case, as it is fully depolarizing.} 
+\begin{align}
+    p_{D'}^f &= 0 \ \ \ \rightarrow  \ p_{sp.\ket{\Psi}} =  p_{sp.\ket{0}} = p_{D2\ket{0}} = 0   \\
+    p_z^f &= 1/2 \rightarrow \ p_{m\ket{0}} = 1/2 \\
+    p_x^f &= 1/2 \rightarrow \ \text{see below} 
+\end{align}
+
+for $p_x^f=1/2$ we need to satisfy:
+
+\begin{equation}
+    \left(p_{sp.\ket{+}}- \frac{3}{4}\right)
+    \left(p_{D2\ket{+}}-\frac{15}{16}\right)
+    \left(p_{m\ket{+}}-\frac{1}{2}\right) = 0
+\end{equation}
+
+
+\subsubsection{Depolarizing Channel}
+
+The SEM take the form of a depolarizing channel if 
+\begin{equation}
+    p_{t,01}=p_{t,10}=p_{t,11}
+\end{equation}
+with,
+\begin{equation}
+    p_{t,ij} = \frac{1}{3} p_{D'}^f + \left( 1- \frac{4}{3} p_{D'}^f \right) p_{x,i}^f \cdot p_{z,j}^f 
+    \label{eq:thiiiiiiiis_one_only_cited_here}
+\end{equation}
+
+A trivial solution is the fully depolarizing case $p_{D'}=3/4$, as seen and discussed above.
+
+Otherwise the condition for a depolarizing channel applied to equation \ref{eq:thiiiiiiiis_one_only_cited_here} results in 
+\begin{equation}
+    p_{x}^f\cdot p_{z}^f = 
+    (1-p_{x}^f)\cdot p_{z}^f = 
+    p_{x}^f\cdot (1-p_{z}^f)  
+\end{equation}
+which is fulfilled for  
+\begin{align*}
+    p_x^f &= p_z^f = 1/2\\
+    p_x^f &= p_z^f = 0 
+\end{align*}
+
+These, in combination with the trivial solution, are the three possible solutions for a symmetric depolarizing channel.
+
+Where $p_{x/z}=1/2$ is the fully depolarizing case on one of the logical ancilla qubits, which is equivalent to `cutting its wire'.
+
+$p=0$ is the case where we start with only depolarizing noise and therefore only get depolarizing noise.
+This also directly requires to assume that components of the circuit can be faultless, which is going against the concept of a circuit-level noise model.
+
+We therefore can conclude that the highly symmetric channels only exist for cases which are not relevant to this thesis. 
+
+Note that the less strict case for which we only require that bit-flip and phase-flip errors of the syndrome channels are equally likely are possible to achieve, 
+for a single round of QEC.
+This result is rather trivial by looking at the equations \cref{eq:sem_result_phase_flip_prob,eq:sem_result_bit_flip_prob}.
+Since increasing the probability of measurement errors on the ancilla detecting the phase flips $p_{m\ket{0}}$, 
+up until the combined noise rate of the other ancilla (equation \ref{eq:sem_result_bit_flip_prob}), leads to this symmetric case.
+
+\subsection{Quantified Difference: Syndrome - Data Error}\label{ssec:sem_difference_data_qubits}
+
+The correlation between the SEM and the errors on the data qubit can be analyzed by performing computation to obtain the SEM without neglecting the operators on the data qubit. 
+As the resulting model becomes more complicated, as we are not any more limited to only depolarizing, bit- and phase-flip channels, we performed such computation only up to first order in the probabilities.
+The resulting syndrome-data error model is presented in equation \ref{eq:sem_data_qubit}.
+
+It quantifies the relation between the measured syndrome and the actual error on the data qubits. 
+As such we can use it to quantify the probability that the error on the data qubit is equivalent to the measured syndrome $P_{\mathrm{corr}}$, 
+by summing the probabilities of the terms where $E_i^{\ket{\Phi}} = E_i^s$, resulting in 
+\begin{equation}
+    P_{\mathrm{corr}} = 
+    1
+    -\frac{2}{3}p_{sp\ket{0}}
+    -p_{sp\ket{+}}
+    -p_{m\ket{0}}
+    -p_{m\ket{+}}
+    -\frac{8}{15}p_{D2\ket{0}}
+    -\frac{4}{5}p_{D2\ket{+}}  
+    + \mathcal{O}(p^2)
+\end{equation}
+
+The noise channels associated with the probabilities shown above cause, the syndrome to deviate from the actual data errors.
+The factor before the probability of the noise channel shows the influence on the residual error, with smaller number leading to less influence. 
+As such one can observe that the measurement and state preparation of the $\ket{+}$ ancilla qubit has the most influence on the residual error. 
+
+Motivated by the independent treatment of $X$- and $Z$-errors in the efficient ML decoder, 
+we can analysis the probability of $X$- and $Z$-discrepancy between the the error on the data qubit and the syndrome. 
+For $P_{X,\mathrm{res}}$ we sum all the probability of all cases where, the syndrome and error on the data qubit differ by an $X$-component\footnote{
+    We ignore the possible discrepancy or agreement of the $Z$-component. ($Y=XZ$)
+    } 
+\begin{equation}
+    P_{X,\mathrm{res}} = 
+    + \frac{2}{3}p_{sp\ket{+}}
+    + p_{m\ket{0}}
+    + \frac{8}{15}p_{D2\ket{+}}
+    + \mathcal{O}(p^2)
+\end{equation}
+Following the same logic we obtain
+\begin{equation}
+    P_{Z,\mathrm{res}} = 
+    +\frac{2}{3}p_{sp\ket{+}}
+    +\frac{2}{3}p_{sp\ket{+}}
+    +p_{m\ket{+}}
+    +\frac{8}{15}p_{D2\ket{0}}
+    +\frac{8}{15}p_{D2\ket{+}}  
+    + \mathcal{O}(p^2).
+\end{equation}
+
+Assuming that all channels have the same probability we can identify the relation 
+\begin{equation}
+    P_{Z,\mathrm{res}} >
+    P_{X,\mathrm{res}}. 
+\end{equation}
+This quantifies the asymmetry in the residual error.
+The first detected error,  $Z$-errors in our case, have a higher chance to appear in the residual error.
+
+Note as well that 
+\begin{equation}
+    P_{\mathrm{corr}} <
+    1-P_{Z,\mathrm{res}} <
+    1-P_{X,\mathrm{res}}
+\end{equation}
+which trivially states that extracting both type of errors accurately is less likely than correct any type of error individually.
+Therefore it is expectable that redesigning the quantum memory experiment, such that it is is only successful if both types of error are corrected correctly,
+lead to a diminished logical error rate.  
+Given that the logic error rate curves will change, the threshold value will most likely change as well.
+
+This motivates a quantum memory experiment which checks both logical observables to determine if the recovery was successful, 
+which would lead to a more general threshold, as it would be independent of the choice of the ordering for example.
+
+The correlation described in equation \ref{eq:sem_data_qubit} could also be used to improve the ml decoder.
+How to use such correlations poses a further research question. 
+
+\clearpage
+\begin{align}
+N_{SEM,\ket{\Psi}}=&\;
+I^{\ket{\Psi}}
+\Bigg[
+{I}^{s}
+\Big(
+1
+-p_{sp\ket{\Psi}}
+-p_{sp\ket{0}}
+-p_{sp\ket{+}}
+-p_{m\ket{0}}
+-p_{m\ket{+}}
+-\frac{14}{15}p_{D2\ket{0}}
+-\frac{14}{15}p_{D2\ket{+}}
+\Big)
+\nonumber\\
+&\qquad
++X^{s}
+\Big(
+\frac13 p_{sp\ket{+}}
++p_{m\ket{0}}
++\frac{2}{15}p_{D2\ket{+}}
+\Big)
+\nonumber\\
+&\qquad
++Z^{s}
+\Big(
+\frac13 p_{sp\ket{0}}
++p_{m\ket{+}}
++\frac{2}{15}p_{D2\ket{0}}
+\Big)
+\nonumber\\
+&\qquad
++Y^{s}\,\mathcal{O}(p^2)
+\Bigg]
+\nonumber\\[1ex]
+%
+&+X^{\ket{\Psi}}
+\Bigg[
+I^{s}
+\frac{2}{15}p_{D2\ket{+}}
+\nonumber\\
+&\qquad
++X^{s}
+\Big(
+\frac13 p_{sp\ket{+}}
++\frac13 p_{sp\ket{0}}
++\frac{2}{15}p_{D2\ket{0}}
++\frac{2}{15}p_{D2\ket{+}}
+\Big)
+\nonumber\\
+&\qquad
++Z^{s}\,\mathcal{O}(p^2)
+\nonumber\\
+&\qquad
++Y^{s}
+\Big(
+\frac13 p_{sp\ket{0}}
++\frac{2}{15}p_{D2\ket{0}}
+\Big)
+\Bigg]
+\nonumber\\[1ex]
+%
+&+Z^{\ket{\Psi}}
+\Bigg[
+I^{s}
+\Big(
+\frac13 p_{sp\ket{+}}
++\frac{2}{15}p_{D2\ket{0}}
++\frac{2}{15}p_{D2\ket{+}}
+\Big)
+\nonumber\\
+&\qquad
++X^{s}
+\Big(
+\frac13 p_{sp\ket{+}}
++\frac{2}{15}p_{D2\ket{+}}
+\Big)
+\nonumber\\
+&\qquad
++Z^{s}
+\Big(
+\frac13 p_{sp\ket{\Psi}}
++\frac{2}{15}p_{D2\ket{0}}
+\Big)
+\nonumber\\
+&\qquad
++Y^{s}\,\mathcal{O}(p^2)
+\Bigg]
+\nonumber\\[1ex]
+%
+&+Y^{\ket{\Psi}}
+\Bigg[
+I^{s}
+\frac{2}{15}p_{D2\ket{+}}
+\nonumber\\
+&\qquad
++X^{s}
+\Big(
+\frac{2}{15}p_{D2\ket{0}}
++\frac{2}{15}p_{D2\ket{+}}
+\Big)
+\nonumber\\
+&\qquad
++Z^{s}\,\mathcal{O}(p^2)
+\nonumber\\
+&\qquad
++Y^{s}
+\Big(
+\frac13 p_{sp\ket{\Psi}}
++\frac{2}{15}p_{D2\ket{0}}
+\Big)
+\Bigg] + \mathcal{O}(p^2)
+\label{eq:sem_data_qubit}
+\end{align}
+
+
+
