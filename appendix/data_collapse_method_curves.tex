@@ -9,6 +9,7 @@ If not rejection rate curve is shown, then no numerical underflow was detected.
 The determined thresholds and the uncertainty on it is shown and plotted. 
 Only the value of the determined critical threshold is shown. 
 
+\section{Code-Capacity Noise Model}\label{ssec:fssa_plots_code_capacity}
 
 \begin{figure}
     \centering
@@ -86,8 +87,11 @@ Only the value of the determined critical threshold is shown.
 
 
 % circuit
+\clearpage
+\section{Circuit-Level Noise Model}
+\subsection{Single QEC cycle}\label{ssec:fssa_plots_circ_single_cycle}
 
-\begin{figure}
+\begin{figure}[!b]
     \centering
     \includegraphics[width=\linewidth]{circ/circ_ml_x_00.pdf}
     \caption{
@@ -221,10 +225,12 @@ Only the value of the determined critical threshold is shown.
 
 
 % Done with ML 
+\clearpage
+\subsection{Multiple QEC cycles}\label{ssec:fssa_plots_multi_cycle}
 % Now multi round
 
 % ML X
-\begin{figure}
+\begin{figure}[b]
     \centering
     \includegraphics[width=\linewidth]{multi/multi_round_ml_x_00.pdf}
     \caption{
@@ -651,6 +657,8 @@ Only the value of the determined critical threshold is shown.
 \end{figure}
 
 % reference X
+\clearpage
+\subsection{Conventional Syndrome Extraction Circuit}\label{ssec:fssa_plots_cse}
 
 \begin{figure}
     \centering
@@ -711,9 +719,8 @@ Only the value of the determined critical threshold is shown.
         }
     \label{fig_fssa:multi_ref_x_r06}
 \end{figure}
-
+\clearpage
 % Z
-
 \begin{figure}
     \centering
     \includegraphics[width=\linewidth]{multi/multi_round_mwpm_z_00.pdf}
@@ -728,7 +735,6 @@ Only the value of the determined critical threshold is shown.
         }
     \label{fig_fssa:multi_ref_z_r01}
 \end{figure}
-
 \begin{figure}
     \centering
     \includegraphics[width=\linewidth]{multi/multi_round_mwpm_z_01.pdf}
@@ -758,7 +764,6 @@ Only the value of the determined critical threshold is shown.
         }
     \label{fig_fssa:multi_ref_z_r04}
 \end{figure}
-
 \begin{figure}
     \centering
     \includegraphics[width=\linewidth]{multi/multi_round_mwpm_z_03.pdf}

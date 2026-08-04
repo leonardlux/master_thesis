@@ -3,71 +3,17 @@
 
 # stuff to add
 
-2. add all the collapsed data plots in the appendix 
-    + automate this process partly!
-    + include critical exponent results in those plots 
-
-3. noise model
-    + equations and exmaple circuits?
-    + go into more detail behind the assumption of $t$ weight errors -> and why we can call them t weight errros
-
-4. rework the chapter titles 
-
-5. decoder adaptions to syndrome extraction circuit
-    + make those statements clearer
-    + name the adaption of the decoder to the different configurations more clearly?
-
-6. differentiation between error syndrome and state syndrome -> maybe rework after discussion
-    + work in additivity of syndromes
-    + computation relation between different error syndromes if both errors are applied consecutive
-    + shortly derive the xor relation used in pauli frame tracking
-    + computation relation between different error syndromes, two errors happening in the same detection circuit
-
-7. name what is explicitly what is faultless in the circuit-level model!! 
-    + faultless ft syndrome extraction and observable measurement? is this clear    
-    + explain observable measurement as a proxy for checking if the state is still ok 
-    + show a graph similar to code capcity model for circuit-level noise model
-
-9. single run example, show circuit lvl case in parallel as this is aruably more important for this thesis!!!
-    + at least add it to the appendix and discuss the results!
-    + add point our more if we switch?!o
-    + why add all use code capcity! argue a bit
+collapsed data plot try subschapters and clear page
 
 10. check if i state the asymmetry part correctly  
     + what is corrected first also appears more often in the residual error
     + check this part at all location that it appears !! why do i discuss it as so many different positions ... fucking annoying!
 
-11. more in conclusion and outlook?!
-    + conclusion take note that we have effects (finite size) leading to a suppressed threshold value
-
 12. get rid of as many we as possible!!!
-
-13. QEC cycle as numbered enviorment 
-    + use enumerate
 
 14. read feedback again and check if i included everything
 
-Today:
-15. mapping multiple errors to the same edges? is that happening? does this influence the argument of p beeing cyclic in the probability?
-    + yes, it does, but ratio stays the same, is this clear??
-
-IMPORTANT!!!
-16. Syndrome extraction 
-    + add circuit for steane type error correection
-    + refer to it during the introduction 
-
-
-## should be done, maybe optimize
-
-17. motivate in fssa why smallest distances should be excluded
-    + maybe done already optimize this
-    + more than just by results!
-    + name the assumption for large d!
-
-18. propagated error model = syndrome error model
-
-
-
+4. rework the chapter titles 
 
 ##  Maximal ganz eventuell:
 

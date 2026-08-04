@@ -59,7 +59,7 @@ Moreover, the following calculation, analysis and discussion is not limited to t
 it can be holds for all possible underlying encodings compatible with STEC. 
 
 Applying the circuit-level noise model to STEC results in the noise model shown in figure \ref{circ:start_circ_lvl_noise}.
-As indicated in the circuit figure we use the noise channels introduced in chapter \ref{ssec:error_models}.
+As indicated in the circuit figure we use the noise channels introduced in chapter \ref{chapter:error_models}.
 This included the bit- and phase-flip noise channel (equations \ref{eq:bit_flip_channel}, \ref{eq:phase_flip_channel}), 
 the depolarizing one qubit noise channel (equation \ref{eq:depo_1_noise}) and the depolarizing two qubit noise channel (equation \ref{eq:depo_2_noise}).
 Each channel gets assigned its own probability for the analysis, the notation to identify the probability assigned to each channel is shown in figure \ref{circ_dia:start_circ_lvl_noise_define_probabilities}. 
@@ -634,7 +634,7 @@ The resulting channel defining the syndrome error model is then only consisting 
 Here $p^{f'}_x$ is the final probability defining the bit-flip error channel of the bit-flip syndrome error model.
 
 In this thesis we use those SEM, one for each half-cycle, as the underlying error model for efficient ML decoder. 
-As described in section \ref{ssec:error_models}, the simulations use an error model in which all channels have the same defining probability $p_{phy}$.
+As described in section \ref{chapter:error_models}, the simulations use an error model in which all channels have the same defining probability $p_{phy}$.
 % uniform p channel! ?!
 
 

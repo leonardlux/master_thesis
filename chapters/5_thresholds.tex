@@ -1,6 +1,4 @@
-
-
-\chapter{Thresholds}\label{ssec:threshold_theorem}
+\chapter{QEC Thresholds}\label{ssec:threshold_theorem}
 
 The cornerstone of QEC codes and their usefulness is based on the threshold theorem. 
 It states that, even under the assumption that all components are noisy,
@@ -28,11 +26,11 @@ For those models, we can identify a phase transition between an ordered and unor
 
 In this thesis we will use a numerical approach to determine the threshold for different configurations as described in the following section.
 
-\section{Numerical Determination of Thresholds}
+\section{Numerical Computation of Thresholds}
 
 To numerical determine the threshold we first simulate the quantum memory experiment.
 In this thesis we keep the encoding (see section \ref{sec:kitaev_surface_code}) constant 
-and vary the choice of error model (section \ref{ssec:error_models}), syndrome extraction circuit (section \ref{ssec:syndrome_extraction}), decoder (section \ref{sec:decoding_problem_general}) and the logical observable.
+and vary the choice of error model (section \ref{chapter:error_models}), syndrome extraction circuit (section \ref{chapter:syndrome_extraction}), decoder (section \ref{sec:decoding_problem_general}) and the logical observable.
 For each of those QEC configuration we calculate the logical error rate $p_{log}$ for different physical error rates $p_{phy}$ and code distances $d$.
 
 We calculate the logical error rate $p_{log,d}(p_{phy})$ by simulating the quantum circuit.
@@ -77,6 +75,13 @@ The threshold correspond to the critical value in the physical noise rate of the
 Therefore we can use methods from finite-size scaling analysis to identify the value of the threshold. 
 
 \subsection{Data Collapse Method}\label{ssec:data_collapse_method}
+\textcolor{red}{
+17. motivate in fssa why smallest distances should be excluded
+    + maybe done already optimize this
+    + more than just by results!
+    + name the assumption for large d!
+18. auf den anhang mit den plots verweisen
+}
 
 The \emph{Data Collapse Method} (DCM) is used to determine the threshold. 
 It relies on the logical error rate curves $p_{log,d}(p_{phy})$ simulated for different code distances $d$.
@@ -125,7 +130,7 @@ It then returns the values for the threshold $p_{th}$ and the critical exponent 
 We can then use those values to see how well such an optimization process, collapsed the data onto a curve.
 An example is shown later in figure \ref{fig:results_code_capcity_Z_ml_p_log_p_phy_collapsed_data}.
 
-\subsubsection{Bootstrapping the Error}\label{sssec:bootstrapping_error}
+\subsubsection{Bootstrapping an Error}\label{sssec:bootstrapping_error}
 
 To calculate an estimated error for the threshold we use bootstrapping:
 We randomly resample each determined logical error rate selecting randomly a logical error rate from its normal distribution, defined by the logical error rate $p_{log}$ and its associated uncertainty$\delta_{p_{log}}$.

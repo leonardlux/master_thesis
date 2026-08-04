@@ -1,4 +1,4 @@
-\chapter{Syndrome Extraction}\label{ssec:syndrome_extraction}
+\chapter{Syndrome Extraction}\label{chapter:syndrome_extraction}
 
 For a QEC cycle to work we need to be able to obtain the syndrome of the encoded state, without destroying that encoded state.
 This is done by the \emph{syndrome extraction circuit}, which by definition extracts the syndrome of encoded state, without revealing or disturbing the logical information encoded in the data qubits. 
@@ -102,7 +102,7 @@ For the surface code with code distance $d$ the resources needed for the convent
     n_{\text{CNOT}} &= (4m - 4(d-1)) = 8d^2 - 4 d -4.
 \end{align}
 
-\subsection{Circuit-Level Noise Adaption for the Conventional Syndrome Extraction}\label{ssec:conv_se_circ_lvl_noise_adaption}
+\subsection{Adaption to Circuit-Level Noise}\label{ssec:conv_se_circ_lvl_noise_adaption}
 
 Under circuit-level noise the syndrome extraction circuit does not only need to be able to extract the syndrome, it needs to do this fault-tolerantly. 
 This fault-tolerant requirement is the reason we need to repeat the conventional syndrome extraction circuit of the code-capacity case $d$ times, to have an syndrome extraction process which is fault-tolerant. 
@@ -190,7 +190,7 @@ Moreover the number of round required scaled with the code distance $d$ and as s
 Note that for a finite time interval measurement errors in the last syndrome extraction step, are never distinguishable from spatial errors. 
 A possible solution for this is the overlapping recovery method \cite{topological_quantum_memory}.
 
-\subsubsection{Assumptions and Resources}\label{sssec:assumptions_conv_sec}
+\subsection{Resources and Assumptions}\label{sssec:assumptions_conv_sec}
 
 Given that we want to use the conventional syndrome extraction circuit as an reference value we can make a few assumptions to simplify the decoding problem, 
 while at the same time obtaining an upper bound for this syndrome extraction circuits performance.
@@ -223,6 +223,17 @@ We will use the conventional syndrome extraction method, with the assumption des
 
 \section{Steane Type Error Correction}\label{sssec:steane_type_error_correction_intro}
 
+\textcolor{red}{
+16. Syndrome extraction 
+    + add circuit for steane type error correction
+    + refer to it during the introduction 
+17. refer to the analysis done in the appendix
+18. calculated error model and residual error
+10. check if i state the asymmetry part correctly  
+    + what is corrected first also appears more often in the residual error
+    + check this part at all location that it appears !! why do i discuss it as so many different positions ... fucking annoying!
+    }
+
 \begin{figure}
     \centering
     \begin{quantikz}
@@ -239,7 +250,11 @@ We will use the conventional syndrome extraction method, with the assumption des
 
 
 The main topic of this thesis is determining the threshold of \emph{Steane-type error correction} (STEC) \cite{steane_type_EC_og_paper} and to compare it with the conventional syndrome extraction circuit.
-In comparison to the previously syndrome extraction circuit, STEC is inherently fault-tolerant as such we can directly discuss it properties for the circuit-level noise model.
+In comparison to the previously syndrome extraction circuit, STEC is inherently fault-tolerant.
+The properties of this circuit design will therefore be directly discussed under a circuit-level noise model. 
+
+Note that Steane-type error correction, is also known as Steane-type syndrome extraction, as it is in principle a syndrome extraction circuit. 
+The conventional labeling uses the `error correction', which we will follow as well. 
 
 STEC can be used as a syndrome extraction circuit for any CSS codes \cite{gottesmann_book}.
 It relies on two properties that all CSS codes possess \cite{CSS1,CSS2}:
@@ -349,7 +364,12 @@ In the process STEC minimizes the coupling between the data registry and the anc
 The costs is that we have to find a way to prepare fault-tolerant logical encoded qubits with a trusted syndrome, 
 a task which need to solve to obtain a completely functioning QEC code regardless of the choice of syndrome extraction circuit. 
 
-\subsection{Decoder Adaption for the Steane Type Error Correction}\label{ssec:stec_decoder_adaption}
+\subsection{Adaption to Circuit-Level Noise}\label{ssec:stec_decoder_adaption}
+\textcolor{red}{
+5. decoder adaptions to syndrome extraction circuit
+    + make those statements clearer
+    + name the adaption of the decoder to the different configurations more clearly?
+}
 
 We will use this section to discuss how we need to adapt the STEC approach, with a focus on the decoding process, for either a code-capacity noise model or a circuit-level noise model. 
 
@@ -387,7 +407,7 @@ The key result of this syndrome noise model, is the effective error probabilitie
 
 We will shortly summarize the results and implications on the two decoding approaches we use in the following two subchapter.
 
-\subsubsection{MWPM Decoder}\label{sssec:stec_decoder_adaption_MWPM}
+\subsubsection{Minimum Weight Perfect Matching}\label{sssec:stec_decoder_adaption_MWPM}
 
 For STEC we have already discussed, that we can neglect the measurement errors in our decoding process, just accepting their existence and counting them towards the residual error.
 We are therefore in principle decoding a noiseless syndrome of the ancilla qubit, akin to the code-capacity case for the underlying encoding, 
@@ -416,15 +436,26 @@ Due to the independence of the performance of actual probability of the noise mo
 \textcolor{red}{put a reference here}.
 
 
-\subsubsection{Efficient ML Decoder}\label{sssec:stec_decoder_adaption_ML}
+\subsubsection{Maximum Likelihood Decoder}\label{sssec:stec_decoder_adaption_ML}
 
-For the maximum likelihood decoding approach we need to take a slightly different approach.
-We can still use the transversal property to map the decoding problem back to a surface code with a changed error model, 
-but this decoder requires the actual probabilities and therefore we need to calculate the propagated error model, 
-as calculated in \textcolor{red}{put a reference here}.
+For the maximum likelihood decoding approach we need to take a different approach.
+We can still use the transversal property to map the decoding problem back to a surface code with a changed error model.
+This decoder requires the probabilities of the individual errors mechanism at the syndrome level.
+These are modeled in the \emph{syndrome error model} (SEM).
+This model is calculated in the appendix in chapter \ref{chapter:syndrome_error_model}, where the results can be found in section \ref{ssec:sem_results}.
 
-Because we are only decoding the syndrome of the ancilla and are neglecting the measurement errors, one could argue that the resulting that we are not doing maximum likelihood decoding anymore.
-But because we are using the same approach we will continue to refer to this method as ML decoding, leaving the question open if this is truly an ML approach for STEC.
+Given that the syndrome of the ancilla is used in the decoding, as if it was faultless, the correlation between the syndrome and the actual data qubit is neglected in the decoding. 
+Using these correlation could possibly lead to an improved decoding performance, as such the performed decoding is only maximum likelihood decoding on the ancilla qubit. 
+Answering the question if this is equivalent to ML decoding for the general cases\footnote{
+    The following example should illustrate that taking the correlation into account can be useful.
+    If the probability of measurement errors is $100\%$, or close to it, the syndrome is effectively inverted.
+    A decoding process taking the correlation between the data qubits and measured syndrome would be able to use those correlations, 
+    for this example by just decoding the inverse of the measured syndrome. 
+    The decoding process we are using would likely fail at this task, as it has no way to take those correlation into account.
+    Note that this example is not relevant for QEC, as we operate in the low physical noise rate regime. 
+}, requires further research. 
+We will further refer to the approach in which we use the ML decoder as the ML approach, leaving this question open.
+The appendix includes section \ref{ssec:sem_difference_data_qubits}, which discuses and quantizes the difference between the measured syndrome and the error on the data qubit. 
 
 As mentioned in section \ref{sec:kitaev_surface_code} we explicitly choose the surface code to be able to use an efficient and precise ML decoding algorithm \cite{efficient_decoding_algorithm}.
 This decoding algorithm\footnote{

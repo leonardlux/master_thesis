@@ -1,5 +1,8 @@
 \chapter{Quantum Error Correction}\label{chapter:qec}
 
+\textcolor{red}{
+Maybe add: go into more detail behind the assumption of $t$ weight errors -> and why we can call them t weight errros
+}
 % This whole chapter I based on the works of \cite{terhal_qec_formalism}, \cite{intro_to_qec} and \cite{gottesmann_book}.
 
 % Why do we bother to develop quantum computing? <- motivate a bit more
@@ -208,7 +211,7 @@ We will label to the set of linear independent generators of the stabilizer grou
 The reason why we choose to only use the set of operators will become clear in section \ref{ssec:syndrome}. 
 
 
-\subsection{Codespace}\label{ssec:codespace}% rework this headline 
+\subsection{Codespace States}\label{ssec:codespace}
 % Todo, maarten placed a k here... understand why?
 
 As described earlier the basic idea behind QEC codes is to encode the logical information of $k$ logical qubits into $n$ physical qubits.  
@@ -244,7 +247,15 @@ Two operators are called stabilizer equivalent if they differ by a stabilizer el
 Since every codeword is invariant under action of the stabilizer group, such operators have the same action on all codeword states.
 
 
-\subsection{Syndromes and Error Subspaces}\label{ssec:syndrome}
+\subsection{Syndromes Measurements and Error Subspaces}\label{ssec:syndrome}
+
+\textcolor{red}{
+6. differentiation between error syndrome and state syndrome -> maybe rework after discussion
+    + work in additivity of syndromes
+    + computation relation between different error syndromes if both errors are applied consecutive
+    + shortly derive the xor relation used in pauli frame tracking
+    + computation relation between different error syndromes, two errors happening in the same detection circuit
+}
 
 Now that we have defined the codespace, we can detect if a given eigenstate of the stabilizer group\footnote{
     Only such states are of interest, because they are the basis of our logical information. % Improve why only those states are relevant 
@@ -378,7 +389,7 @@ We can only detect errors outside of the centralizer.
 Errors operators which are part of the centralizer are either trivial correctable, in the case of stabilizer operators due to codeword being invariant under their action,
 or they are undetectable errors for the case of logical operators.
 
-\subsubsection{Distance}\label{sssec:distance_stabilizer_formalism}
+\subsubsection{Code Distance}\label{sssec:distance_stabilizer_formalism}
 We are ready not to introduce a characteristic number of a QEC codes. % more general of QEC codes
 The \emph{distance} $d$ of a QEC code is the minium weight of a non-identity logical operator/undetectable error.
 \begin{equation}
@@ -409,8 +420,7 @@ Therefore it is a stabilizer which cannot change a codeword and therefore the we
 % We refer to stabilizer codes by their set of characteristic number as $[[n,k,d]]$ codes.
 % $n$ being the number of physical qubits, $k$ being the number of encoded qubits and $d$ is the distance of the code.
 
-\subsubsection{Logical Operations are Cosets of the Stabilizer Group in the Centralizer}
-% I do not like this section yet, it does not feel free flowing an coherent
+\subsubsection{Cosets of Stabilizer Group - Logical Operators}
 
 In subsection \ref{ssec:intro_centralizer} we introduced the centralizer. 
 There we saw that the centralizer contains the implementation of the logical operations on the encoded qubits (and the stabilizer group, 
@@ -541,8 +551,14 @@ If we do not care about the phase we can just use the phase-normalized realizati
     \label{fig:stabilizer_formalism_cosets_of_centralizer}
 \end{figure}
 
-\subsection{Stepping through a QEC Cycle}\label{ssec:stabilizer_summary_qec_cylce}
-\textcolor{red}{Adapting this to use a numbered is on my todo list, for after the presentation.}
+
+\subsection{Stepping through a Stabilizer QEC Cycle}\label{ssec:stabilizer_summary_qec_cylce}
+
+\textcolor{red}{
+Adapting this to use a numbered is on my todo list, for after the presentation.
+13. QEC cycle as numbered enviorment 
+    + use enumerate
+    }
 
 Having introduced the necessary details of the stabilizer codes and both their linear and group structure,
 let us now put the this together.
@@ -573,7 +589,7 @@ As such our goal during the QEC cycle is to identify the error operator $\tilde{
 We can then apply the adjoint error operator again to recover our original codeword state $\tilde{E}^\dag\tilde{E}\ket{\Phi} = \ket{\Phi}$.
 
 We start the process of identifying the occurred error by measuring the syndrome of this state\footnote{
-The exact circuit/approach of extracting the syndrome of a given state will be discussed in section \ref{ssec:syndrome_extraction}.
+The exact circuit/approach of extracting the syndrome of a given state will be discussed in section \ref{chapter:syndrome_extraction}.
 }, which will give us the error syndrome of the error operator $\sigma(\tilde{E})$. 
 The extracted error syndrome points us directly to the coset of the centralizer which contains the occurred error $\tilde{E} \in E_{\sigma(\tilde{E})}\mathcal{C}(\mathcal{S})$.
 
@@ -658,7 +674,7 @@ This will be done in section \textcolor{red}{Put reference here!}.
 
 % done until here, including Maartens feedback ... at least most of it :Party:!
 
-\section{Decoder}\label{sec:decoding_problem_general}
+\section{Decoding the Syndromes}\label{sec:decoding_problem_general}
 
 We refer to the classical algorithms solving the decoding problem as \emph{decoders}.
 They try to predict the occurred error, or the logical part of it, based on the observed syndrome. 
@@ -677,7 +693,7 @@ As discussed in the previous section, successful recovery additionally requires 
 To infer this information we rely on an error model as an additional resource to be utilized in the decoding algorithm.
 
 The error model assigns a probability $\text{Pr}(E)$ to each error operator $E$, which can be used by the decoder to determine which error or set of errors has likely occurred. 
-The error models used in this thesis are introduced in section \ref{ssec:error_models}.
+The error models used in this thesis are introduced in section \ref{chapter:error_models}.
 
 We will use two different decoding strategies in this thesis.
 The first is called \emph{Maximum Likelihood Decoding} (MLD). 
@@ -742,7 +758,7 @@ Dependent on the specific model and its symmetries, some of those classical diso
 For those we can identify a phase change in the model at the threshold probability, which we will discuss in section \ref{ssec:threshold_theorem}. 
 For some combinations of QEC and error model the MLD problem has been shown to be efficiently solvable \cite{efficient_decoding_algorithm}.
 
-We will go into more detail about this approach and what adaptions we need to make to adjust for the syndrome extraction process in section \ref{ssec:syndrome_extraction}. 
+We will go into more detail about this approach and what adaptions we need to make to adjust for the syndrome extraction process in section \ref{chapter:syndrome_extraction}. 
 
 If we can solve the MLD problem exactly, we can calculate the success rate of the MLD $p_{\text{success}}$ exactly, 
 by summing over the probabilities of the most likely cosets 
@@ -752,7 +768,12 @@ by summing over the probabilities of the most likely cosets
 We will use such a exactly calculated optimal threshold as a reference to which we can compare the results of the code-capacity approach in the corresponding result section, section \ref{sec:results_code_capacity}.
 
 
-\subsection{Minimum Weight Perfect Matching}\label{ssec:general_MWMP_decoder}
+\subsection{Minimum Weight Perfect Matching Decoding}\label{ssec:general_MWMP_decoder}
+
+\textcolor{red}{
+15. mapping multiple errors to the same edges? is that happening? does this influence the argument of p beeing cyclic in the probability?
+    + yes, it does, but ratio stays the same, is this clear??
+}
 
 The second decoding strategy utilized in this thesis is called \emph{minimum weight perfect matching} (MWPM)\cite{pymatching,pymatching_loger_paper}.
 We can summarize the goal of MWPM as finding the physical error operator with the highest probability of occurring consistent with the observed syndrome.
@@ -823,7 +844,7 @@ For now lets close this comparison between MWPM and ML decoding by once again po
 
 % Specific things used
 
-\section{Surface Code}\label{sec:kitaev_surface_code}
+\section{The Surface Code}\label{sec:kitaev_surface_code}
 
 The specific QEC code from the class of the stabilizer codes we are using is the \emph{surface code}\footnote{
     We use the unrotated version because an efficient ML decoder exist for this QEC code \cite{efficient_decoding_algorithm}.
@@ -931,7 +952,7 @@ We could use any CSS code as an underlying encoding for Steane type error correc
 
 % Should I talk about syndrome extraction and state initialization 
 
-\section{Recovery and Pauli Frame Tracking}\label{sec:pauli_frame_tracking}
+\section{Pauli Frame Tracking - Recovery}\label{sec:pauli_frame_tracking}
 
 The last step of a QEC cycle is the recovery and in this section we discuss a way to implement this recovery without applying any operation onto the state, but by reinterpreting the measurements.
 
