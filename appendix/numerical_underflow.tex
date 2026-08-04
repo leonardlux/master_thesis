@@ -95,7 +95,7 @@ We refer to this method to construct the representative error as the \emph{Bravy
 Before the rejection rate was implemented as a mitigation strategy, the logical error rate exhibited the form shown in \ref{fig:exmaple_observed_numerical_underflow}.
 The simulation was performed using code-capacity noise model with only bit-flip errors, measuring the corresponding logical $Z$ observable.
 The logical error rate $p_{log}$ generally follows the expected behavior for high physical error rates $p_{phy}$.
-In particular the logical error rate curves for the code distances $d\in \{3,5,7\}$, show no obvious anomaly and they exhibit the asymptotic scaling predicted by equation \ref{eq:p_log_asymptotic_behavior}, as discussed in section \ref{ssec:threshold_theorem}.
+In particular the logical error rate curves for the code distances $d\in \{3,5,7\}$, show no obvious anomaly and they exhibit the asymptotic scaling predicted by equation \ref{eq:p_log_asymptotic_behavior}, as discussed in section \ref{chapter:qec_thresholds}.
 
 Starting with the logical error rate curve of a distance $d=9$ surface code, an anomalous upward trend becomes apparent.
 We can observe that the logical error rate exhibits an upward trend, 
@@ -165,7 +165,7 @@ which is plotted alongside all logical error rate curves\footnote{
 }, to indicate the susceptibility to numerical underflow at a given physical error rate. 
 
 The combination of logarithmic calculation and rejection rate strategy yield logical error rate curves that exhibit the expected asymptotic scaling, 
-as shown in figure \ref{fig:results_code_capcity_Z_ml_p_log_p_phy_slopes}. 
+as shown in figure \ref{fig:results_code_capacity_Z_ml_p_log_p_phy_slopes}. 
 
 Note that the rejection rate strategy, in combination with assigning a fixed representative error for each syndrome, results in the deterministic rejection of certain syndromes. 
 Since each syndrome is always mapped to the same representative error, any syndrome whose representative errors leads to numerical underflow in the main part of the decoder\footnote{

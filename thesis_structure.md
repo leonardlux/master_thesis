@@ -214,7 +214,7 @@ Meaning of threshold vs distance for the capacity of a code (maybe a bit to earl
 ## 'Basic'/repeated Surface code ancilla syndrome extraction ciruit
 
 0. Talk about basic layout
-    + for code capcity case
+    + for code capacity case
     + explain concept of hook error 
 2. error on ancilla qubit and how they propagate through correction
     + -> not fault-tolerant
@@ -330,7 +330,7 @@ Modifiable parameters of Circuit
     + Z
     + ToDo: X & Z
 3. Noise Model
-    + Code capcity
+    + Code capacity
     + Circuit-Level Noise
 4. State Preparation (ToDo)
 5. Order 

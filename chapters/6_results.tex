@@ -8,7 +8,7 @@
 Having introduced all the necessary components we can start looking at the obtained thresholds as results.
 What follows is a rough outline of the results chapter with reference to the previous chapters and section in which we introduced the necessary concepts.
 
-In this chapter we look at the thresholds (see section \ref{ssec:threshold_theorem}) of different configurations.
+In this chapter we look at the thresholds (see section \ref{chapter:qec_thresholds}) of different configurations.
 All of those configurations are encoded in the surface code (see section \ref{sec:kitaev_surface_code}) with varying code distance $d$.
 We change the applied error model (see section \ref{chapter:error_models}) and the syndrome extraction circuit (see section \ref{chapter:syndrome_extraction}),
 with the goal of characterizing the Steane-type error correction circuit (see section \ref{sssec:steane_type_error_correction_intro}). 
@@ -39,7 +39,7 @@ The final conclusion of those results will then be drawn in chapter \ref{chapter
 9. single run example, show circuit lvl case in parallel as this is aruably more important for this thesis!!!
     + at least add it to the appendix and discuss the results!
     + add point our more if we switch?!o
-    + why add all use code capcity! argue a bit
+    + why add all use code capacity! argue a bit
 }
 
 In the following we will show and discuss the analysis and intermediate results in the process to determine the threshold of a fixed configuration.
@@ -53,7 +53,7 @@ For the code-capacity case\footnote{
 } the logical observable also fixes the specific error mechanism applied to the data qubits, $\bar{Z} \rightarrow $ bit-flip errors and $\bar{X} \rightarrow $ phase-flip errors. 
 Using those relations it is enough to name the logical observable and the other relations are implied.
 
-To determine the threshold, we implement the approach described in detail in section \ref{ssec:threshold_theorem}.
+To determine the threshold, we implement the approach described in detail in section \ref{chapter:qec_thresholds}.
 We use the \texttt{stim} library to construct and simulate the quantum circuit, with the designated noise model, to obtain the syndrome and observable measurement.
 The syndromes are then decoded using the decoder of choice, adapted to this noise model and circuit.
 Utilizing Pauli frame tracking, introduced in section \ref{sec:pauli_frame_tracking}, we can check if the measurement agrees with the predicted recovery or if the recovery would have been unsuccessful.
@@ -81,17 +81,17 @@ To use reasonable physical error rates $p_{phy,i}$ for the noise model we use ph
             The graphs includes the determined threshold $p_{th}$ and its uncertainty, highlighted in green and light green respectively.
             It also includes the maximal rejection rate curve over all distances, for each physical noise rate, in light blue, which is scaled based on the second y-axis.   
         }
-    \label{fig:results_code_capcity_Z_ml_p_log_p_phy}
+    \label{fig:results_code_capacity_Z_ml_p_log_p_phy}
 \end{figure}
 
 We can plot the physical error rate $p_{phy}$ against for the logical error rate $p_{log}$ the multiple code distance $d$ we simulated. 
-The results can be seen in figure \ref{fig:results_code_capcity_Z_ml_p_log_p_phy} for the logical $\bar{Z}$ observable, under circuit-level noise and using the efficient ML decoder.
-We spot the approximate location of the threshold as the point where the logical error rates of different code distances cross, as described in section \ref{ssec:threshold_theorem}, 
+The results can be seen in figure \ref{fig:results_code_capacity_Z_ml_p_log_p_phy} for the logical $\bar{Z}$ observable, under circuit-level noise and using the efficient ML decoder.
+We spot the approximate location of the threshold as the point where the logical error rates of different code distances cross, as described in section \ref{chapter:qec_thresholds}, 
 which for the shown configuration is at roughly $p_{phy}=10^{-1}$. 
 
 \subsubsection{Asymptotic Scaling of the logical error rate}
 The asymptotic behavior described by equation \ref{eq:p_log_asymptotic_behavior}, can also be identified toward lower physical error rates.
-To determine the scaling behavior we performed a fit on the logical error rate curves, as shown in figure \ref{fig:results_code_capcity_Z_ml_p_log_p_phy_slopes}.
+To determine the scaling behavior we performed a fit on the logical error rate curves, as shown in figure \ref{fig:results_code_capacity_Z_ml_p_log_p_phy_slopes}.
 For the fits we choose the data points in the lowest $20\%$ of the physical error rates $p_{phy}$. 
 We can quantize this interval with the upper and lower bound of approximately
 \begin{equation}
@@ -118,12 +118,12 @@ The exponents derived from this fit are noted in the table \ref{tab:fit_exponent
 9. single run example, show circuit lvl case in parallel as this is aruably more important for this thesis!!!
     + at least add it to the appendix and discuss the results!
     + add point our more if we switch?!o
-    + why add all use code capcity! argue a bit
+    + why add all use code capacity! argue a bit
     \caption{
         Fitted exponents of the logical error rate $p_{log} \propto p_{phy}^{\,\text{exp}}$ for varying code distances $d$.
         The expected exponent is written in the second column as $(t+1)$, as given by \ref{eq:p_log_asymptotic_behavior}.
         Those fits are performed on the data generated by a code-capacity noise model, measuring the logical $\bar{Z}$ observable and performing ML decoding.
-        The whole curves and their fits are shown in figure \ref{fig:results_code_capcity_Z_ml_p_log_p_phy_slopes}.
+        The whole curves and their fits are shown in figure \ref{fig:results_code_capacity_Z_ml_p_log_p_phy_slopes}.
         The fits where performed on the $20\%$ of data points with the lowest $p_{phy}$, which results in the range $6.3\% < p_{phy,fit} < 7.6\%$.
     }
     \label{tab:fit_exponents}
@@ -139,7 +139,7 @@ We only require logical error rates around the threshold to perform our analysis
 Moreover going to smaller physical error rates becomes computable problematic using our ML implementation due to numerical underflow errors.
 
 \subsubsection{Numerical Underflow of the ML Decoder}
-Given that we use the ML decoder, we encounter the numerical underflow problem in this configuration, as indicated by the faint blue line in figure \ref{fig:results_code_capcity_Z_ml_p_log_p_phy}.
+Given that we use the ML decoder, we encounter the numerical underflow problem in this configuration, as indicated by the faint blue line in figure \ref{fig:results_code_capacity_Z_ml_p_log_p_phy}.
 The faint blue line shows the maximal rejection rate for a given physical error rate.
 For the ML decoder we are able to detect occurrence of a numerical underflow error, by observing a certain quantity\footnote{
     This quantity is a norm of a state and is discussed in more detail in the appendix \ref{chapter:numerical_underflow}.
@@ -154,21 +154,21 @@ Using higher and higher distances in the determination of the threshold, leads t
 We therefore have to take the rejection rate into consideration when choosing the set of distances used.
 
 Here we can state that in the interval in which we are interest in, the interval around the thresholds, the numerical rejection rate is low enough to be neglected for the example case.
-This interval of $p_{phy}$ is also shown in figure \ref{fig:results_code_capcity_Z_ml_p_log_p_phy_fssa_window}.
+This interval of $p_{phy}$ is also shown in figure \ref{fig:results_code_capacity_Z_ml_p_log_p_phy_fssa_window}.
 Note that the MWPM decoder does not suffer from the same problem. 
 
 % do this next
 \subsubsection{Determining the Threshold - The Data Collapse Method}
 
 The main part of our analysis, determining the threshold, relies on the data collapse method, as introduced in section \ref{eq:data_collapse_method}.
-We limit the data used to an interval of the physical error rate $p_{phy}$ close to the estimated threshold $\tilde{p}_th$, and therefore close to the pase transition, as shown in figure \ref{fig:results_code_capcity_Z_ml_p_log_p_phy_fssa_window}.
+We limit the data used to an interval of the physical error rate $p_{phy}$ close to the estimated threshold $\tilde{p}_th$, and therefore close to the pase transition, as shown in figure \ref{fig:results_code_capacity_Z_ml_p_log_p_phy_fssa_window}.
 This interval of the used physical error rate $p_{phy,dcm}$ is defined by 
 \begin{equation}
     \tilde{p}_{th} \cdot 10^{-k} < p_{phy,dcm} < \tilde{p}_{th} \cdot 10^{k}, 0 < k 
     \label{eq:data_interval}
 \end{equation}
 and as equally spaced around the threshold on a logarithmic scale. 
-We choose the value of the scaling parameter $k=0.1$, as shown in figure \ref{fig:results_code_capcity_Z_ml_p_log_p_phy_fssa_window}.
+We choose the value of the scaling parameter $k=0.1$, as shown in figure \ref{fig:results_code_capacity_Z_ml_p_log_p_phy_fssa_window}.
 
 Note here that we also choose to excluded the two smallest distances $d\notin\{3,5\}$, as those distances have significant finite size effects, which are not accounted for, 
 leading to worse performance of our chosen method of determining the threshold.
@@ -178,18 +178,18 @@ This aspect will be further discussed in section \ref{sssec:finite_size_min_d}.
     \centering
     \includegraphics[width=\linewidth]{graphics/code_capacity_ml_z_log_error_rate_fssa_rejection_rate.pdf}
     \caption{
-        This figure is a cutout of the previously shown figure \ref{fig:results_code_capcity_Z_ml_p_log_p_phy}.
+        This figure is a cutout of the previously shown figure \ref{fig:results_code_capacity_Z_ml_p_log_p_phy}.
         The data shown is from the configuration using the code-capacity noise model and ML decoding, while observing the logical $\bar{Z}$ observable.
         The interval shown here is the interval chosen for the data collapse method. 
         }
-    \label{fig:results_code_capcity_Z_ml_p_log_p_phy_fssa_window}
+    \label{fig:results_code_capacity_Z_ml_p_log_p_phy_fssa_window}
 \end{figure}
 
 By performing the optimization process to collapse the data points onto a single curve, as described in section \ref{ssec:data_collapse_method}, 
 we are able to determine the threshold of the configuration and its critical exponent.
 As described in section \ref{sssec:bootstrapping_error}, we follow the bootstrapping approach to estimate an error of the threshold.
 
-The result of the optimization process, based on equation \ref{eq:data_collapse_method}, using the determined threshold and critical exponent, are shown in figure \ref{fig:results_code_capcity_Z_ml_p_log_p_phy_collapsed_data}.
+The result of the optimization process, based on equation \ref{eq:data_collapse_method}, using the determined threshold and critical exponent, are shown in figure \ref{fig:results_code_capacity_Z_ml_p_log_p_phy_collapsed_data}.
 Based on this graph we can judge if the optimization process was successful, by looking of the spread of those data points along the curve. 
 We therefore show the curves of all of those fitting used in this thesis in the appendix in section \ref{appendix:data_collapse_figures}. 
 For this case the data collapse method worked and we were able to correctly determine the threshold.
@@ -202,9 +202,9 @@ We will discuss the determined threshold and the conclusion we can draw from it 
     \caption{
             This graph shows the result for the optimization process performed during the data collapse method.
             The data point follow the curve described by equation \ref{eq:data_collapse_method}, where we used the determined critical exponent and fundamental threshold. 
-            The underlying data is the same as in figure \ref{fig:results_code_capcity_Z_ml_p_log_p_phy_fssa_window}, as this is the collapsed data of this graph.
+            The underlying data is the same as in figure \ref{fig:results_code_capacity_Z_ml_p_log_p_phy_fssa_window}, as this is the collapsed data of this graph.
         }
-    \label{fig:results_code_capcity_Z_ml_p_log_p_phy_collapsed_data}
+    \label{fig:results_code_capacity_Z_ml_p_log_p_phy_collapsed_data}
 \end{figure}
 
 This method can fail if we use a wrong initial estimate for the threshold, this will the result in the optimization process not being able to collapse the data onto a curve.
@@ -217,7 +217,7 @@ This is further discussed in the next section.
 In the determination of the threshold we can find finite size effects.
 Those effect become visible at physical error rates close to the thresholds.
 Given that we are considering a first-order transition, we would expect all logical error curves to cross at one point, the threshold.
-But due to finite size effect the smaller distances cross the other curves before the threshold, as seen in the zoomed in data of figure \ref{fig:results_code_capcity_Z_ml_p_log_p_phy_min_d3_zoom}.
+But due to finite size effect the smaller distances cross the other curves before the threshold, as seen in the zoomed in data of figure \ref{fig:results_code_capacity_Z_ml_p_log_p_phy_min_d3_zoom}.
 For this graph we included the distances $d\in\{3,5\}$ in our analysis, here for the circuit-level noise model, observing $\bar{Z}$ and once again decoding using the ML decoder.
 
 \begin{figure}[ht]
@@ -228,7 +228,7 @@ For this graph we included the distances $d\in\{3,5\}$ in our analysis, here for
         The data is generated from a circuit-level noise model, with ML decoding and observing $\bar{Z}$.
         Note that we show no rejection rate in this plot, because no numerical underflow occurred in the given interval. 
         }
-    \label{fig:results_code_capcity_Z_ml_p_log_p_phy_min_d3_zoom}
+    \label{fig:results_code_capacity_Z_ml_p_log_p_phy_min_d3_zoom}
 \end{figure}
 
 
@@ -257,7 +257,7 @@ Given that we have no available reference value for the threshold, we focused on
 
 As we are also interest in such high distance thresholds and not in the finite size effects due to small sizes we try to avoid the smaller distances in our analysis.
 Note that increasing the distance would lead to a more accurate result, as we would further suppress the finite size effects, 
-as visible in figure \ref{fig:results_code_capcity_Z_ml_p_log_p_phy_min_d3_zoom} and figure \ref{fig:finite_size_shifting_window_code_capacity}.
+as visible in figure \ref{fig:results_code_capacity_Z_ml_p_log_p_phy_min_d3_zoom} and figure \ref{fig:finite_size_shifting_window_code_capacity}.
 But this comes with a tradeoff of longer computations due to the exponential growth with distance and the numerical underflow problem which also appears more often with increased distance.
 Therefore we usually start our analysis with distance $d=7$ and in cases where the aforementioned numerical underflow issues becomes problematic we use distance $d=5$ as a minimum distance.
 The latter will be the case for the repeated independent QEC cycles.
@@ -289,7 +289,7 @@ or we measure the $\bar{X}$ observable, where we use phase-flip errors (equation
 Regarding the decoder algorithm we use the two decoding algorithm introduced in section \ref{sec:decoding_problem_general}, either MWPM or ML decoding.
 Note that the ML decoder is exact, as it assumes either bit-flip or phase-flip noise, which is the noise model used in this example.
 
-For each of those measurement series we perform the analysis, described in the threshold chapter \ref{ssec:threshold_theorem} and discussed in detail in the section \ref{ssec:results_example_process}, to determine the threshold.
+For each of those measurement series we perform the analysis, described in the threshold chapter \ref{chapter:qec_thresholds} and discussed in detail in the section \ref{ssec:results_example_process}, to determine the threshold.
 \textcolor{red}{I should show the data collapse plots for this chapter somewhere!!}
 
 The thresholds that result from this analysis are gathered in table \ref{tab:results_code_capacity}.
@@ -365,7 +365,7 @@ while at the same time we have an upper limit at $d=15$ to keep the numerical un
 } at a reasonable level. 
 We choose to perform $n_{shots}=100k$ shots for each combination of distance $d$ and physical error rate $p_{phy}$. 
 
-The analysis is performed following the procedure introduced in section \ref{ssec:threshold_theorem} and as discussed in detail in section \ref{ssec:results_example_process}.
+The analysis is performed following the procedure introduced in section \ref{chapter:qec_thresholds} and as discussed in detail in section \ref{ssec:results_example_process}.
 
 We determined the thresholds for the following different configurations, all using the circuit-level noise model:
 Starting with the STEC syndrome extraction circuit, here we iterated between the logical $\bar{Z}$ and $\bar{X}$ observable\footnote{
