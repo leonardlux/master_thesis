@@ -2,18 +2,15 @@
 # ToDo:
 
 # stuff to add
-
-collapsed data plot try subschapters and clear page
-
-10. check if i state the asymmetry part correctly  
-    + what is corrected first also appears more often in the residual error
-    + check this part at all location that it appears !! why do i discuss it as so many different positions ... fucking annoying!
-
-12. get rid of as many we as possible!!!
+\textcolor{red}{
+9. single run example, show circuit lvl case in parallel as this is aruably more important for this thesis!!!
+    + at least add it to the appendix and discuss the results!
+    + add point our more if we switch?!o
+    + why add all use code capacity! argue a bit
+    + add least show the slopes or at least least comment on everything is the same for those!
+}
 
 14. read feedback again and check if i included everything
-
-4. rework the chapter titles 
 
 ##  Maximal ganz eventuell:
 
