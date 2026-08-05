@@ -2,18 +2,18 @@
 
 Fault-tolerant quantum computing relies on quantum error correction (QEC) schemes whose performance can be characterized by a threshold: 
 a critical physical error rate below which logical errors can be suppressed by increasing the code distance. 
-In this thesis, we investigate the threshold for Steane-type error correction circuits which perform syndrome extraction by logical encoded ancilla qubits in a fault-tolerant and single-shot setting.
+In this thesis, we investigate the threshold for Steane-type error correction circuits which performs syndrome extraction using logical encoded ancilla qubits in a fault-tolerant and single-shot setting.
 We determine the logical error rate under a circuit-level noise model with faults in both gate operations and measurements.
 Decoding is performed using an efficient maximum likelihood (ML) decoder designed for the surface code under bit- or phase-flip noise and compared to minimum weight perfect matching decoder (MWPM). 
 We find that the threshold for Steane-type error correction takes a value of approximately $3\%$ for a single QEC cycle, 
-which falls of to a threshold value of $2\%$ for repeated independent QEC cycles.
+which falls off to a threshold value of $2\%$ for repeated independent QEC cycles.
 Compared to a conventional repeated syndrome extraction circuit, which shows a threshold at approximately $1\%$ under circuit-level noise,
-we are able to show an improvement of factor $2$, respectively $3$. 
+we are able to show an improvement of factor $3$, falling of to a factor of $2$ for the repeated QEC cycles. 
 We furthermore investigate the influence of the order of the two independent half-cycles of Steane-type error correction, 
 finding a significant asymmetry for the single QEC cycle case which is suppressed for the repeated cycle case. 
-We perform those simulations using both a MWPM and ML decoder to understand the influence of the decoder on the performance. 
-We find that the ML decoder in consistently performing better, even under restriction that we reduce the underlying error model to a phase- or bit-flip model. 
+We perform those simulations using both a MWPM and a ML decoder to understand the influence of the decoder on the performance. 
+We find that the ML decoder performs consistently better, even under restriction that we reduce the underlying error model to a phase- or bit-flip model. 
 
-A limitation of this work is the assumption of access to fault-tolerant prepared logical ancilla states, which warrants further investigation.
+A central limitation of this work is the assumption of access to fault-tolerantly prepared logical ancilla states, which warrants further investigation.
 
 \end{abstract}
