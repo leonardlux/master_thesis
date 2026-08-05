@@ -1,28 +1,31 @@
 \chapter{Syndrome Error Model}\label{chapter:syndrome_error_model}
 
 \begin{figure}[ht]
-\begin{quantikz}
-    % Data qubit
-    \lstick{$\ket{\Psi}_L$}&\qwbundle{n}&\gate[1,style={noisy},]{D}&   % 1: init
-    \targ{}&\gate[1,style={noisy}]{D2}\wire[d][1]{q}&      % 2: 1. CNOT 
-    \ctrl{2}&\gate[1,style={noisy}]{D2}\wire[d][2]{q}&     % 3: 2. CNOT
-    % &&                                                      % 4: 
-    &&\\                                                    % 5: 
-    % 0 ancilla qubit
-    \lstick{$\ket{0}_L$}&\qwbundle{n}&\gate[1,style={noisy},]{D}&      % 1: init
-    \ctrl{-1}&\gate[1,style={noisy}]{D2}&                  % 2: 1. CNOT
-    &&                                                      % 3: 2. CNOT
-    % \gate[]{H}&                                             % 4: 1. change basis aka H
-    % & 
-    % \gate[1,style={noisy},]{D_1}&                           %    2: Error (No errors on H)
-    \gate[1,style={noisy},]{Z}&\meter{$X$}&\setwiretype{c}\\% 5: stabilizer measurement
-    % p ancilla qubit 
-    \lstick{$\ket{+}_L$}&\qwbundle{n}&\gate[1,style={noisy},]{D}&      % 1: init
-    &&                                                      % 2: 1. CNOT
-    \targ{-2}&\gate[1,style={noisy}]{D2}&                  % 3: 2. CNOT
-    % &&                                                      % 4: 
-    \gate[1,style={noisy},]{X}&\meter{$Z$}&\setwiretype{c}\\% 5: stabilizer measurement
-\end{quantikz}
+    \begin{center}
+        
+    \begin{quantikz}
+        % Data qubit
+        \lstick{$\ket{\Psi}_L$}&\qwbundle{n}&\gate[1,style={noisy},]{D}&   % 1: init
+        \targ{}&\gate[1,style={noisy}]{D2}\wire[d][1]{q}&      % 2: 1. CNOT 
+        \ctrl{2}&\gate[1,style={noisy}]{D2}\wire[d][2]{q}&     % 3: 2. CNOT
+        % &&                                                      % 4: 
+        &&\\                                                    % 5: 
+        % 0 ancilla qubit
+        \lstick{$\ket{0}_L$}&\qwbundle{n}&\gate[1,style={noisy},]{D}&      % 1: init
+        \ctrl{-1}&\gate[1,style={noisy}]{D2}&                  % 2: 1. CNOT
+        &&                                                      % 3: 2. CNOT
+        % \gate[]{H}&                                             % 4: 1. change basis aka H
+        % & 
+        % \gate[1,style={noisy},]{D_1}&                           %    2: Error (No errors on H)
+        \gate[1,style={noisy},]{Z}&\meter{$X$}&\setwiretype{c}\\% 5: stabilizer measurement
+        % p ancilla qubit 
+        \lstick{$\ket{+}_L$}&\qwbundle{n}&\gate[1,style={noisy},]{D}&      % 1: init
+        &&                                                      % 2: 1. CNOT
+        \targ{-2}&\gate[1,style={noisy}]{D2}&                  % 3: 2. CNOT
+        % &&                                                      % 4: 
+        \gate[1,style={noisy},]{X}&\meter{$Z$}&\setwiretype{c}\\% 5: stabilizer measurement
+    \end{quantikz}
+    \end{center}
 \caption{
     Steane circuit diagram with circuit level noise. 
     Here the channels are marked at their positions.
@@ -65,6 +68,8 @@ the depolarizing one qubit noise channel (equation \ref{eq:depo_1_noise}) and th
 Each channel gets assigned its own probability for the analysis, the notation to identify the probability assigned to each channel is shown in figure \ref{circ_dia:start_circ_lvl_noise_define_probabilities}. 
 
 \begin{figure}
+    \begin{center}
+        
 \begin{quantikz}
     % Data qubit
     \lstick{$\rho_{\ket{\Psi},i}$}&\gate[1,style={noisy},]{p_{sp.\ket{\Psi}}}&   % 1: init
@@ -87,6 +92,7 @@ Each channel gets assigned its own probability for the analysis, the notation to
     % &&                                                      % 4: 
     \gate[1,style={noisy},]{p_{m\ket{+}}}&\meter{$Z$}&\setwiretype{c}\\% 5: stabilizer measurement
 \end{quantikz}
+    \end{center}
 \caption{
     Steane circuit diagram with circuit level noise. 
     The corresponding probability for each channel is shown here.
@@ -107,7 +113,6 @@ The discussion of this approach will be slightly expanded in section \ref{ssec:s
 
 The specific noise model shown in figure \ref{circ_dia:propagated_noise}, consists of a composition independent channels.
 It will be shown in section \ref{sec:sem_propagation}, that the shown error model is the result of the propagated circuit-level noise model, and therefore the syndrome error model.
-\textcolor{red}{Put reference to equation here}
 
 As the ML decoder is only able to correct independent bit- or phase-flip noise, we use the exact error model for the syndromes 
 and extract the probability of either $X$-errors or $Z$-errors. 
@@ -148,9 +153,6 @@ The calculation of the exact model is discussed in the following section \ref{se
 \end{figure}
 
 % show the resulting equations
-
-\textcolor{red}{Nod to further analysis? and main results are still missing!}
-% nod to further analysis -> maybe explain the main results
 
 \section{Calculation - Propagation of Error Model}\label{sec:sem_propagation}
 

@@ -13,10 +13,6 @@
 
 14. read feedback again and check if i included everything
 
-\textcolor{red}{
-15. mapping multiple errors to the same edges? is that happening? does this influence the argument of p beeing cyclic in the probability?
-    + yes, it does, but ratio stays the same, is this clear??
-}
 Maybe add: go into more detail behind the assumption of $t$ weight errors -> and why we can call them t weight errros
 6. differentiation between error syndrome and state syndrome -> maybe rework after discussion
     + work in additivity of syndromes
