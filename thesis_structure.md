@@ -13,6 +13,23 @@
 
 14. read feedback again and check if i included everything
 
+\textcolor{red}{
+15. mapping multiple errors to the same edges? is that happening? does this influence the argument of p beeing cyclic in the probability?
+    + yes, it does, but ratio stays the same, is this clear??
+}
+Maybe add: go into more detail behind the assumption of $t$ weight errors -> and why we can call them t weight errros
+6. differentiation between error syndrome and state syndrome -> maybe rework after discussion
+    + work in additivity of syndromes
+    + computation relation between different error syndromes if both errors are applied consecutive
+    + shortly derive the xor relation used in pauli frame tracking
+    + computation relation between different error syndromes, two errors happening in the same detection circuit
+
+Adapting this to use a numbered is on my todo list, for after the presentation.
+13. QEC cycle as numbered enviorment 
+    + use enumerate
+
+
+
 ##  Maximal ganz eventuell:
 
 1. General definition of a QEC code

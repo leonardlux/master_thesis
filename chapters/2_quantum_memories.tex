@@ -1,11 +1,5 @@
 \chapter{Quantum Error Correction}\label{chapter:qec}
 
-\textcolor{red}{
-Maybe add: go into more detail behind the assumption of $t$ weight errors -> and why we can call them t weight errros
-}
-% This whole chapter I based on the works of \cite{terhal_qec_formalism}, \cite{intro_to_qec} and \cite{gottesmann_book}.
-
-% Why do we bother to develop quantum computing? <- motivate a bit more
 
 Quantum computing is interesting because it offers the possibility to use quantum phenomena like superposition in algorithms, which could lead to a quantum advantage.
 Such algorithms can solve some problems efficiently for which we do not know efficient classical algorithms.
@@ -13,27 +7,28 @@ A famous example is the problem of integer factorization, which can be solved ef
 
 To realize quantum computations we need a quantum state which can store our quantum information, analogous to the (classical) bit of a (classical) computer.
 Such a state is called a quantum bit (qubit) in the quantum case.
-In this thesis will focus on maintaining the quantum information contained in just one qubit over time. 
-Such experiment are called quantum memory experiments. 
+In this thesis we will focus on maintaining the quantum information contained in just one qubit over time. 
+Such experiments are called quantum memory experiments. 
 
-There are many different approaches of realizing qubits as physical systems, 
+There are many different approaches to realizing qubits as physical systems, 
 like trapped ions,  % TODO cite references
-neutral ions,       % TODO cite references
+neutral atoms,       % TODO cite references
 molecules,          % TODO cite references
 photons,            % TODO cite references
 superconducting circuits,% cite find references
 and more. 
 Each has its own advantages and disadvantages. 
-But all of them still share the same problem, they have a residual coupling with an environment and are therefore susceptible to faults through noise. 
+But all of them still share the same problem. 
+They have a residual coupling with an environment and are therefore susceptible to faults through noise. 
 Those faults can introduce errors which could change the information contained in the qubit and therefore degrade the quantum information. 
 This degraded quantum information could be reduced to only classical information or even completely destroyed. 
 
 % The following is to illustrate to the reader (at the level of my mother) why quantum states are more susceptible.
 % But this part is so vague I do not know if I want to keep it.
-By taking a look at the examples of a trapped ion setup, we can illustrate why a quantum computer might be more susceptible to noise than a classical computer.
+By taking a look at the example of a trapped ion setup, we can illustrate why a quantum computer might be more susceptible to noise than a classical computer.
 In the quantum computer the quantum information is stored in a single excited state of an ion.
 In comparison the classical information contained in one bit is stored in approximately $10^4$ electrons \cite{classical_bits_electrons}.
-Therefore one can intuitively understand that a qubit is intrinsically less robust, than a classical bit in regards to errors, without even taking quantum processes into account.
+Therefore one can intuitively understand that a qubit is intrinsically less robust, than a classical bit in regard to errors, without even taking quantum processes into account.
 
 To mitigate the influence of errors and safeguard the quantum information against errors, \emph{quantum error correction} (QEC) codes were developed. %should put same papers here
 Quantum error-correction codes differ from classical error-correcting codes. 
@@ -48,7 +43,7 @@ Based on this information we can take actions to correct those occurred errors a
 % should I cite in detail or is it enough to name them in the beginning.
 
 A general QEC code starts with $n$ noisy physical qubits.
-Through an encoding, a set of $k$ logical qubit is constructed, which is protected against a set of errors characterized\footnote{
+Through an encoding, a set of $k$ logical qubits is constructed, which is protected against a set of errors characterized\footnote{
     As seen we will show in section \ref{sssec:distance_stabilizer_formalism} the connection between the number of correctable errors $t$ and the distance of the code $d$ is given by $t=(d-1)/2$ for odd distances. 
 } by the code distance $d$.
 The QEC process can therefore be defined by an encoding and a decoding process in combination with a set of correctable errors.
@@ -57,8 +52,8 @@ We will go into more detail in section \ref{sec:stabilizer_formalism}, where we 
 The encoding used in this thesis belongs to this class of codes.
 
 
-Before that we discuss how we can correct errors at all, given that there are an endless amount of errors that can occur in the section about Pauli errors \ref{sec:pauli_errors}.
-% could also make sense to first introduce pauli errors. 
+Before that, in the section on Pauli errors (section \ref{sec:pauli_errors}), we
+address how errors can be corrected at all, given that infinitely many of them can occur.
 
 % should I include a more general definition of QEC code and an abstract circuit example or equations, to explain what exactly defines a QEC code.
 % namely encoding + information extraction + decoding + correction
@@ -66,10 +61,10 @@ Before that we discuss how we can correct errors at all, given that there are an
 % This is new at this position so adapt the previous and later text
 \section{Pauli Operators and General Errors}\label{sec:pauli_errors}
 
-Before we discuss how to correct error, we first need to discuss what types of errors can occur and how we can model them \cite{terhal_qec_formalism}, \cite{gottesmann_thesis} and \cite{intro_to_qec}.
+Before we discuss how to correct errors, we first need to discuss what types of errors can occur and how we can model them \cite{terhal_qec_formalism}, \cite{gottesmann_thesis} and \cite{intro_to_qec}.
 
 Towards this goal we first introduce the Pauli group.
-Afterwards we will discuss how general quantum noise/errors behaves and how we can connect them to the Pauli group.
+Afterwards we will discuss how general quantum noise behaves and how we can connect it to the Pauli group.
 
 \subsection{Pauli Group}\label{ssec:intro_pauli_group}
 
@@ -104,58 +99,58 @@ together with an overall phase $\{\pm1,\pm i\}$
 
 % Make the 
 Note that a global phase of a state has no physically observable consequence and as such we can omit it in most cases.
-Following this argumentation it can be sometimes useful to omit the overall phase of an operator in some cases.
+Following this argumentation, it is sometimes useful to omit the overall phase of an operator.
 When we want to talk about the Pauli group without a phase we will refer to it as $\hat{\mathcal{P}}_n$.
 
 At this point we introduce the weight, denoted $|P|$, of a Pauli operator $P\in\mathcal{P}_n$ as the number of non-identity Paulis in the tensor product that defines $P\in\mathcal{P}_n$.
 This quantity will become interesting when we talk about the distance of codes and what errors are guaranteed to be correctable in section \ref{sssec:distance_stabilizer_formalism}. 
 
 The Pauli operators are closed under multiplication, especially $Y = i X Z$.
-Each Pauli squared, disregarding the phase, is identical to identity
+Each Pauli squared, disregarding the phase, is identical to the identity
 \begin{equation}
     I = X^2 = Z^2 = Y^2.
 \end{equation} 
-Resulting from this any tensor product of Paulis, is also its own inverse, when we disregard the overall phase
+Resulting from this, any tensor product of Paulis is also its own inverse, when we disregard the overall phase
 \begin{equation}
     \tilde{P} \tilde{P} = I \ \forall \tilde{P} \in \hat{\mathcal{P}}_n.
     \label{eq:pauli_squared_is_identity}
 \end{equation}
 Taking the phase into account the square of an element of the Pauli group is $\pm I $, where the sign depends on the overall phase.  
-This property becomes important when we want to find a recovery for a given Pauli error in section \ref{ssec:stabilizer_summary_qec_cylce}. 
-Where we will use that we can recover from the error $P$ by reapplying the same Pauli. 
-In the process we might change the overall phase of the state but otherwise act with the identity, under the assumption that we where able to correctly identify error and could therefore reapply it.
+This property becomes important when we want to find a recovery for a given Pauli error in section \ref{ssec:stabilizer_summary_qec_cylce}, 
+where we will use that we can recover from the error $P$ by reapplying the same Pauli. 
+In the process we might change the overall phase of the state but otherwise act with the identity, 
+under the assumption that we were able to correctly identify the error and could therefore reapply it.
 
-Another property of the Pauli group is that all their elements either commute or anticommute.
-For the one qubit Pauli group all non trivial pairings anticommute, we will use $\{A,B\}$ to indicate the anticommutator, 
+Another property of the Pauli group is that all its elements either commute or anticommute.
+For the one qubit Pauli group all non-trivial pairings anticommute, we will use $\{A,B\}$ to indicate the anticommutator, 
 \begin{equation}
     \{X,Z\} = \{X,Y\} = \{Z,Y\} = 0.
 \end{equation} 
-Elements of the $n$ qubit Pauli group $\mathcal{P}_n$ can also non trivially commute if they have an even number of anticommute elements. 
+Elements of the $n$ qubit Pauli group $\mathcal{P}_n$ can also commute if they anticommute on an even number of elements. 
 
-Each Pauli operator splits the Hilbert space in half, with each half either being associated with the eigenvalue $+1$ or $-1$.
-A fact that we use to define the codespace.
+Each Pauli operator splits the Hilbert space in half, with each half being associated with the eigenvalue $+1$ or $-1$,
+a fact that we use to define the codespace.
 
-We can use the $n$-qubit Pauli group as a basis to express any quantum channel. 
-As it spans the space of all $n$-qubit linear operations.
-% Should I here discuss more the Superoperators: Maarten commented this here in feedback 1
-Which will become important when we discuss general errors.
+We can use the $n$-qubit Pauli group as a basis to express any quantum channel, 
+as it spans the space of all $n$-qubit linear operations.
+This will become important when we discuss general errors.
 
-We will refer to $X$-type Pauli operator as bit-flip, as this error flips the $\ket{0}$ state to the $\ket{1}$ state and vice versa 
+We will refer to $X$-type Pauli operators as bit-flips, as this error flips the $\ket{0}$ state to the $\ket{1}$ state and vice versa 
 \begin{equation}
     X \ket{\Psi} = X(\alpha \ket{0} + \beta \ket{1}) = \beta \ket{0} + \alpha \ket{1}.
 \end{equation}
-And we will refer to the $Z$ Pauli operator as phase-flip, as it maps the $\ket{1}$ basis state to $-\ket{1}$, while leaving the $\ket{0}$ basis state unchanged
+And we will refer to the $Z$ Pauli operator phase-flips, as they map the $\ket{1}$ basis state to $-\ket{1}$, while leaving the $\ket{0}$ basis state unchanged
 \begin{equation}
     Z \ket{\Psi} = Z(\alpha \ket{0} + \beta \ket{1}) = \alpha \ket{0} - \beta \ket{1}.
 \end{equation}
 
-The $Y$ Pauli is just bit- and phase-flip applied with an additional overall phase of $i$.
+The $Y$ Pauli is just bit- and phase-flip applied together with an additional overall phase of $i$.
 
 \subsection{General Errors}
 
 Having introduced the Pauli group and its two fundamental errors, the bit- and phase-flip, we can discuss general quantum errors.
-This subsection will only be used to shortly introduce some needed concepts to introduce the stabilizer formalism, we will later return to the topic on how to model quantum errors in our circuits.
-We will use the term quantum error, quantum noise, error operator or error interchangeably. 
+This subsection will only be used to briefly introduce some needed concepts to introduce the stabilizer formalism, we will later return to the topic on how to model quantum errors in our circuits.
+We will use the terms quantum error, quantum noise, error operator or error interchangeably. 
 
 The quantum states $\ket{\Psi}$ form a continuous set 
 \begin{equation}
@@ -164,51 +159,41 @@ The quantum states $\ket{\Psi}$ form a continuous set
 The same holds for the set of all possible quantum errors.
 As such there are an infinite number of possible errors that can occur.
 
-% I need to discuss this! Unsure if this is valid description 
-It is sufficient to correct a finite set of errors, namely the Pauli group $\mathcal{P}_n$,
-to correct any error, if we assume that the interaction operator acts independently on each qubit \cite{knill_laflamme}.  % is not really independent
-Which means that we can we express the error process as a tensor product of single system interactions.
-And this possible due to the digitization of errors by the parity check measurements. % is this possible for all error processes?! Discuss this part!
-As any error can be expanded in elements of the Pauli group, we can limit our analysis to the Pauli group.
-
-% Should I go into more detail about digitization?
-% Should I refer to the syndrome extraction, and then go into detail there? 
-% Should I explain the process by example of decoherence as done  
-% And explain how this can be mapped to a Pauli?
+Any one of those infinite error operator acting on $n$ qubits can be expanded in the Pauli basis, since the Pauli group spans the space of $n$-qubit linear operators. 
+Measuring the stabilizer generators then projects the state onto a single term of that expansion, so it suffices to be able to correct the finite set of Pauli errors \cite{knill_laflamme}.
 
 We only look at Markovian processes in this thesis.
 We also do not take into account leakage or erasure errors.
 
-% Maybe include this line in a later version
-% The exact error models we are going to use will be introduced in section \ref{sec:error_models}.
 
 \section{Stabilizer Codes and their Structure}\label{sec:stabilizer_formalism}
 
-The goal of this chapter is to introduce the structure and formalism behind \emph{stabilizer codes} \cite{gottesmann_book,gottesmann_thesis,terhal_qec_formalism}.
-We want focus on the group structure behind stabilizer codes to motivate the later the chapter about possible decoder approaches, see \ref{sec:decoding_problem_general}, and other concepts like Pauli frame tracking, see section \ref{sec:pauli_frame_tracking}. 
+The goal of this section is to introduce the structure and formalism behind \emph{stabilizer codes} \cite{gottesmann_book,gottesmann_thesis,terhal_qec_formalism}.
+We want to focus on the group structure behind stabilizer codes to motivate the later the section about possible decoder approaches, see section \ref{sec:decoding_problem_general}, 
+and other concepts like Pauli frame tracking, see section \ref{sec:pauli_frame_tracking}. 
 
 In this and in all the following chapters we limit ourselves to Pauli operators as possible errors. 
-The argumentation why this is assumption valid is presented in section \ref{sec:pauli_errors}.
+The argument for why this assumption is valid is presented in section \ref{sec:pauli_errors}.
 
-At the end of this section after we introduced all necessary components and their structure, we will step through one QEC cycle in detail in section \ref{ssec:stabilizer_summary_qec_cylce}.
+At the end of this section, after we introduced all necessary components and their structure, we will step through one QEC cycle in detail in section \ref{ssec:stabilizer_summary_qec_cylce}.
 
 \subsection{Stabilizer Group}
 
 The stabilizer formalism is based on some choice of subgroup of the Pauli group $\mathcal{P}_n$ called the \emph{stabilizer group} $\mathcal{S}$. 
-The reason for naming the subgroup stabilizers becomes clear in the next subsection \ref{ssec:codespace}, when we talk about the codespace.
+The reason for naming the subgroup `stabilizers' becomes clear in the next subsection \ref{ssec:codespace}, when we talk about the codespace.
 
 By choosing the stabilizer group one defines the specific stabilizer code and the specific encoding of the QEC code.
-We will later in section \ref{sec:kitaev_surface_code} discuss a specific choice. 
+We will discuss a specific choice, later in section \ref{sec:kitaev_surface_code}.
 In the following we take a general view upon stabilizer codes. 
 One can freely choose which operators to use to define a stabilizer group, with the following limitations for the resulting stabilizer group.
 It must be an Abelian subgroup of the $n$-qubit Pauli group $\mathcal{P}_n$ and it is not allowed to contain $-I$. 
 
-Many of the following definitions will be formulated by taking a set of $m$ linear independent generators of the stabilizer group, which we will label as $S_i$, such that the stabilizer group can be written\footnote{
-    Here the angled brackets $\langle S_1, ..., S_m \rangle= \mathcal{P}_N$ denotes that the group is generated by the set inside of the brackets.
-    The group $\mathcal{P}_n$, then consists off all finite products of elements of this denoted set and of their inverses. 
+Many of the following definitions will be formulated by taking a set of $m$ linearly independent generators of the stabilizer group, which we will label as $S_i$, such that the stabilizer group can be written\footnote{
+    Here the angled brackets $\langle S_1, ..., S_m \rangle= \mathcal{S}$ denotes that the group is generated by the set inside of the brackets.
+    The group $\mathcal{S}$, then consists of all finite products of elements of this denoted set and of their inverses. 
     } as $\langle S_1, S_2, ..., S_m\rangle= \mathcal{S}$.
-We will label to the set of linear independent generators of the stabilizer group by $\mathcal{S}_G$ and refer to them simply as generators.
-The reason why we choose to only use the set of operators will become clear in section \ref{ssec:syndrome}. 
+We will label the set of linear independent generators of the stabilizer group by $\mathcal{S}_G$ and refer to them simply as generators.
+The reason why we choose to only use the set of generators will become clear in section \ref{ssec:syndrome}. 
 
 
 \subsection{Codespace States}\label{ssec:codespace}
@@ -223,18 +208,19 @@ or given that each element of the stabilizer can be generated by the set of gene
 \begin{align}
     \mathcal{L} &= \left\{  \ket{\Psi} \in  \mathcal{H}_{2^n} : S \ket{\Psi} = \ket{\Psi} \forall S \in \mathcal{S} \right\}
     \label{eq:defintion_codespace_whole_group} \\
-     &= \left\{  \ket{\Psi} \in  \mathcal{H}_{2^n} : S \ket{\Psi} = \ket{\Psi} \forall S_i \in \mathcal{S}_G \right\}.
+     &= \left\{  \ket{\Psi} \in  \mathcal{H}_{2^n} : S_i \ket{\Psi} = \ket{\Psi} \forall S_i \in \mathcal{S}_G \right\}.
     \label{eq:defintion_codespace_generators}
 \end{align}
 
-Given that we have $n$ physical qubits into which we encode the logical information and given we use a stabilizer group with $m$ linear independent generators, we can encode $k=n-m$ logical qubits into the resulting codespace. 
-Which we can understand by following the argumentation:
-Each of the $m$ linear independent generators splits splits the $2^n$ dimensional Hilbert space into two subspaces associated with the eigenvalues $+1$ and $-1$.
+Given that we have $n$ physical qubits into which we encode the logical information and given we use a stabilizer group with $m$ linear independent generators, 
+we can encode $k=n-m$ logical qubits into the resulting codespace, 
+which we can understand as follows.
+Each of the $m$ linear independent generators splits the $2^n$ dimensional Hilbert space into two subspaces associated with the eigenvalues $+1$ and $-1$.
 The resulting codespace is therefore a $2^k=2^n/2^m$ dimensional Hilbert space, which is characterized by being the $+1$ eigenspace of all generators (and all stabilizers).
 
-We will refer to the states in the codespace, as codewords or logical states $\ket{\Phi}\in \mathcal{L}$.
+We will refer to the states in the codespace as codewords or logical states $\ket{\Phi}\in \mathcal{L}$.
 
-Here we note explicitly that acting with an element of the stabilizer group on any codeword is equivalent to acting with the identity on them,
+Here we note explicitly that acting with an element of the stabilizer group on any codeword is equivalent to acting with the identity on it,
 given that the codewords states are defined as being $+1$ eigenstates of all elements of the stabilizer group
 \begin{equation}
     S \ket{\Phi} = \ket{\Phi}.
@@ -244,30 +230,23 @@ Therefore the codeword states are invariant under the action of the stabilizer g
 
 We can extend this notion to operators.
 Two operators are called stabilizer equivalent if they differ by a stabilizer element. 
-Since every codeword is invariant under action of the stabilizer group, such operators have the same action on all codeword states.
+Since every codeword is invariant under the action of the stabilizer group, such operators have the same action on all codeword states.
 
 
-\subsection{Syndromes Measurements and Error Subspaces}\label{ssec:syndrome}
+\subsection{Syndrome Measurements and Error Subspaces}\label{ssec:syndrome}
 
-\textcolor{red}{
-6. differentiation between error syndrome and state syndrome -> maybe rework after discussion
-    + work in additivity of syndromes
-    + computation relation between different error syndromes if both errors are applied consecutive
-    + shortly derive the xor relation used in pauli frame tracking
-    + computation relation between different error syndromes, two errors happening in the same detection circuit
-}
-
-Now that we have defined the codespace, we can detect if a given eigenstate of the stabilizer group\footnote{
+Now that we have defined the codespace, we can detect whether a given eigenstate of the stabilizer group\footnote{
     Only such states are of interest, because they are the basis of our logical information. % Improve why only those states are relevant 
-} is in the codespace or if it has left the codespace by occurrence of some error. 
-We determine the eigenvalues of the generators of the stabilizer groups for the given state $\ket{\Psi}$.
-Based on the eigenvalues we can assign the state a $m$-bit string, called the \emph{syndrome}, $\sigma(\ket{\Psi}) \in \mathbb{Z}_2$, following 
+} is in the codespace or whether it has left the codespace by the occurrence of some error. 
+We determine the eigenvalues of the generators of the stabilizer group for the given state $\ket{\Psi}$.
+
+Based on the eigenvalues we can assign the state a $m$-bit string, called the \emph{syndrome}, $\sigma(\ket{\Psi}) \in \mathbb{Z}_2^m$, following 
 \begin{equation}
     S_i \ket{\Psi} = (-1)^{\sigma_i} \ket{\Psi}\ \sigma_i \in \{0,1\},
     \label{eq:state_syndrome}
 \end{equation}
-If the state is a $+1$ ($-1$) eigenstate of $i$-th generator, the $i$-th bit of the syndrome takes the value $0$ ($1$).
-By definition the state lies in the codespace if and only if it is the $+1$ eigenstate of all generators.
+If the state is a $+1$ ($-1$) eigenstate of the $i$-th generator, the $i$-th bit of the syndrome takes the value $0$ ($1$).
+By definition the state lies in the codespace if and only if it is a $+1$ eigenstate of all generators.
 This corresponds to a syndrome consisting of an all-zero bit string.
 We will refer to this syndrome as the trivial syndrome.
 All states with non-trivial syndromes lie outside of our defined codespace. 
@@ -275,7 +254,7 @@ All states with non-trivial syndromes lie outside of our defined codespace.
 Note that given we have $m$ generators, there are $2^m$ possible different syndromes.
 
 We can construct a similar syndrome string for elements of the Pauli group $E\in \mathcal{P}_n$. 
-Note that we assumed that we can represent errors as elements $E\in \mathcal{P}_N$. 
+Note that we assumed that we can represent errors as elements $E\in \mathcal{P}_n$. 
 To define the error syndrome $\tilde{\sigma}(E) \in \mathbb{Z}_2^m$ we imagine an error with operator $E$ acting on some codeword $\ket{\Phi}$.
 Then we determine the syndrome of the resulting state $E\ket{\Phi}$ following the procedure above.
 We define the resulting syndrome as the error syndrome of the operator $E$
@@ -292,44 +271,47 @@ Given that the codeword has the trivial syndrome, we will neglect this mathemati
 
 Looking at the definition of the $i$-th bit of the error syndrome, 
 \begin{equation}
-    S_i E \ket{\Phi} = (-1)^{\sigma_i} E S_i \ket{\Phi}.
+    S_i E \ket{\Phi} = (-1)^{\tilde{\sigma_i}} E S_i \ket{\Phi},
 \end{equation}
 we can identify that the $i$-th bit of the error syndrome is defined by the type of commutation relation between the error and the $i$-th generator.
 If the generator and the error operator commute (anticommute) the error syndrome of the $i$-th bit has the value $0$ ($1$).
-Given that we only consider errors and generator as Pauli operators, commutation or anticommutation are the only two possibilities.
+Given that we only consider errors and generators as Pauli operators, commutation or anticommutation are the only two possibilities.
 
 Note that the choice of the specific codeword does not matter to determine the syndrome of an error operator.
-The error operators changes the syndrome of each codeword by its associated error syndrome. 
-A key result is that it maps the whole codespace onto a different subspace where the eigenvalue for all stabilizers is no longer $+1$ but the syndrome of the error operator for each codeword.
+The error operator changes the syndrome of each codeword by its associated error syndrome. 
+A key result is that it maps the whole codespace onto a different subspace 
+where the eigenvalue for all stabilizers is no longer $+1$ but is given by the syndrome of the error operator for each codeword.
 
-This implies that the quantum information is preserved and just moved to a different subspace, from which it can be recovered.
-And all of those $2^m$ subspaces are isomorphic to the codespace.
+This implies that the quantum information is preserved and just moved to a different subspace, from which it can be recovered,
+and all of those $2^m$ subspaces are isomorphic to the codespace.
 This means we can use any of those subspaces as codespace.
 A fact that we are going to use in subsection \ref{ssec:cosets_of_the_centralizer}.
 
-To change the codespace to the space associated with the syndrome $\sigma'$, we redefine the $i$-th generator $S_i$ to be $-S_i$ for each bit in the syndrome ${\sigma'}$ which takes the value $1={\sigma'}$. 
-When we use the resulting set of linear independent generators to define the stabilizer group, the subspace corresponding to the syndrome ${\sigma'}$ using the previous set on linear independent generators, 
-has now trivial syndrome and is therefore our chosen codespace. % this sentence is to long and cumbersome!
-We will use this fact in section \ref{sec:pauli_frame_tracking} where we talk about Pauli Frame Tracking.
+To change the codespace to the space associated with the syndrome $\sigma'$, we redefine the $i$-th generator $S_i$ to be $-S_i$ 
+for each bit in the syndrome ${\sigma_i'}$ which takes the value $1$.
+With respect to this new set of generators, the subspace that previously carried the syndrome $\sigma'$ now carries the trivial syndrome, 
+and is therefore our chosen codespace.
+We will use this fact in section \ref{sec:pauli_frame_tracking} where we talk about Pauli frame tracking.
 
-Summarizing we have $2^m$ subspaces which are isomorphic to the codespace, one for each syndrome. 
-All of those subspaces are orthogonal to each other, because they have different eigenvalues/different syndromes.
+To summarize, we have $2^m$ subspaces which are isomorphic to the codespace, one for each syndrome. 
+All of those subspaces are orthogonal to each other, because they have different syndromes.
 Each of these subspaces is $2^k$  dimensional and encodes the $k$-logical qubits, where $k=n-m$.
 Therefore we can decompose the full Hilbert space $\mathcal{H}_{2^n}$ into a direct sum of the $2^m=2^{n-k}$ subspaces, each one associated with a different syndrome.
-The distinction of one quantum code space out of the $2^m$ possible isomorphic spaces is a classical choice that cen be altered during QEC, under certain conditions discussed in section \ref{sec:pauli_frame_tracking}.
+The distinction of one quantum codespace out of the $2^m$ possible isomorphic spaces is a classical choice that can be altered during QEC, 
+under certain conditions discussed in section \ref{sec:pauli_frame_tracking}.
 
 
 \subsection{Centralizer, Cosets and Group Structure}\label{ssec:intro_centralizer} % find a better title 
 
-% As eluded to in the introduction, there is a certain group structure to both the Hilbert space and Pauli group when using the stabilizer formalism which we will now investigate.
-% already discovered half of this structure in the syndrome.
 When looking at the syndrome we were able to find a certain structure in the Hilbert space. 
-We can find a similar structure for the Pauli group $\mathcal{P}_n$, when take a look at the inner structure of this group.%, motivated by the error syndrome and its connection to the type of commutations relations.
-This will allows us to identify the logical operators that transform the encoded logical information.
+We can find a similar structure for the Pauli group $\mathcal{P}_n$, when we take a look at the inner structure of this group.%, motivated by the error syndrome and its connection to the type of commutations relations.
+This will allow us to identify the logical operators that transform the encoded logical information.
 
 \subsubsection{Centralizer}\label{sssec:centralizer_intro_and_defintion}
 
-Motivated by the above observed importance of commutation relations between operators and stabilizers regarding the syndrome, we look at the \emph{centralizer}\footnote{Also known as commutant.} $\mathcal{C}(\mathcal{S})$ of the stabilizer group $\mathcal{S}$
+Motivated by the above observed importance of commutation relations between operators and stabilizers regarding the syndrome, we look at the \emph{centralizer}\footnote{
+    Also known as the commutant.
+    } $\mathcal{C}(\mathcal{S})$ of the stabilizer group $\mathcal{S}$
 \begin{equation}
     \mathcal{C}(\mathcal{S}) = \left \{  P \in \mathcal{P}_n \mid \  P S_i = S_i P\  \forall S_i \in \mathcal{S}_G \right \}.
 \end{equation}
@@ -339,7 +321,7 @@ We will refer to the centralizer of the stabilizer group as just the centralizer
 We see that all elements in the centralizer have the trivial error syndrome, because they commute with all generators.
 % Note that having a trivial syndrome is equivalent with the operators being not detectable. % TODO expand this thought
 
-Given that the stabilizer group itself is Abelian, the centralizer contains the stabilizer group as a subgroup $\mathcal{S} \subset \mathcal{C}(S)$.
+Given that the stabilizer group itself is Abelian, the centralizer contains the stabilizer group as a subgroup $\mathcal{S} \subset \mathcal{C}(\mathcal{S})$.
 The centralizer also contains the sets $-\mathcal{S}, \pm i \mathcal{S}$. 
 If we consider the operators in the context of possible errors acting on the space, rather than measurement operators used to determine the syndrome, we can treat the phase as a global phase and are therefore no longer concerned with it.
 Following \cite{gottesmann_book} we will indicate the quotient group for which we ignore these four possible phases of the operators by a hat symbol
@@ -348,7 +330,7 @@ Following \cite{gottesmann_book} we will indicate the quotient group for which w
 \end{equation}
 We will use the hat notation to indicate that the global phases are neglected for the corresponding group.
 
-\subsubsection{Logical operators on the Codespace}\label{sssec:logical_operators_on_the_codespace_intro}
+\subsubsection{Logical Operators on the Codespace}\label{sssec:logical_operators_on_the_codespace_intro}
 
 In this section we will identify the \emph{logical operators}, operators which change encoded quantum information, as a subset of the centralizer. 
 We define the logical operators as those operators which map the codespace back onto the codespace, while mapping codeword states to different\footnote{
@@ -359,24 +341,24 @@ We define the logical operators as those operators which map the codespace back 
 We can observe that the phase normalized centralizer $\hat{\mathcal{C}}(\mathcal{S})$ contains the stabilizer group $\hat{\mathcal{S}}$ 
 and all other elements of the Pauli group $\hat{\mathcal{P}}_n$ which have the trivial syndrome.
 
-The set-difference between the centralizer and the stabilizer, denoted $\hat{\mathcal{C}}(\mathcal{S})\setminus \hat{\mathcal{S}}$, is the set of operators which map states from the codespace to different state from the codespace.
-The underlying reasoning is those operators have the trivial syndrome, and therefore map the codespace back to the codespace, 
-but by definition they do not map the same codeword onto itself, otherwise they would belong to stabilizer group, which we have excluded here.
+The set-difference between the centralizer and the stabilizer, denoted $\hat{\mathcal{C}}(\mathcal{S})\setminus \hat{\mathcal{S}}$, 
+is the set of operators which map states from the codespace to different states in the codespace.
+The underlying reasoning is that those operators have the trivial syndrome, and therefore map the codespace back to the codespace, 
+but by definition they do not map the same codeword onto itself, otherwise they would belong to the stabilizer group, which we have excluded here.
 % How do we know that this set is not empty! It could be should I put some arguments here? I mean it can be empty! but i guess it is not relevant
 Therefore they map codeword states to other codeword states and fulfill the definition of logical operators described at the start of this section.
 
 Note that we did not need to choose anything but the stabilizer group yet.
-The set of logical operators exist\footnote{Note that this set can be empty, if we encode zero logical qubits $m=n\rightarrow k=0$ \cite{gottesmann_book}.} due to properties of the Pauli group. 
-We will make a specific choice of which of those operators to use as implementation of the logical operators on the encoded space later, see equation \ref{eq:centralizer_stbailizer_quotient_group_logicals}. 
+The set of logical operators exists\footnote{Note that this set can be empty, if we encode zero logical qubits $m=n\rightarrow k=0$ \cite{gottesmann_book}.} due to properties of the Pauli group. 
+We will make a specific choice of which of those operators to use as the implementation of the logical operators on the encoded space later, see equation \ref{eq:centralizer_stbailizer_quotient_group_logicals}. 
 
 \paragraph{Non-detectable Errors}
 
-Logical operators change from one codeword to another, which means to apply a logical onto the encoded qubit. 
-% i do not like the following sentence
-But if they happen through noise acting on the system, the logical information contained in the encoded qubit, represented by a codeword, will change.
+Logical operators map one codeword to another, which is precisely what it means to apply a logical operation to the encoded qubit. 
+If such an operator is instead applied by noise, the logical information carried by the codeword changes without our intending it. 
 This represents an undetectable error. 
 It is undetectable because our quantum error correcting code can only tell if a state is a valid codeword. 
-It cannot distinguish whether a state is reached by original encoding/purposefully applied logical operators or by occurrence of errors, hence the name. 
+It cannot distinguish whether a state is reached by the original encoding/purposefully applied logical operators or by the occurrence of errors, hence the name \cite{gottesmann_book}. 
 
 Therefore the set of all possible implementations of non-identity logical operators is identical to the set of undetectable errors.
 
@@ -384,21 +366,23 @@ Therefore the set of all possible implementations of non-identity logical operat
 Note that all operators outside of the centralizer anticommute with at least one generator of the stabilizer group and therefore all of them are detectable. 
 We will talk about this set of errors in subsection \ref{ssec:cosets_of_the_centralizer}.
 
-Summarizing, we can detect errors by measuring the syndrome of the state acted upon with an error. 
+To summarize, we can detect errors by measuring the syndrome of the state acted upon by an error. 
 We can only detect errors outside of the centralizer.
-Errors operators which are part of the centralizer are either trivial correctable, in the case of stabilizer operators due to codeword being invariant under their action,
+Error operators which are part of the centralizer are either trivially correctable, in the case of stabilizer operators due to the codewords being invariant under their action,
 or they are undetectable errors for the case of logical operators.
 
 \subsubsection{Code Distance}\label{sssec:distance_stabilizer_formalism}
-We are ready not to introduce a characteristic number of a QEC codes. % more general of QEC codes
-The \emph{distance} $d$ of a QEC code is the minium weight of a non-identity logical operator/undetectable error.
+We are ready now to introduce a characteristic number of a QEC code. % more general of QEC codes
+The \emph{distance} $d$ of a QEC code is the minimum weight of a non-identity logical operator/undetectable error.
 \begin{equation}
-    d = \min_{E\in \mathcal{C}(\mathcal{S})\setminus \mathcal{S}} |E|
+    d = \min_{E\in \hat{\mathcal{C}}(\mathcal{S})\setminus \hat{\mathcal{S}}} |E|
 \end{equation}
-As introduced in section \ref{ssec:intro_pauli_group}, the weight $|E|$ of an operator $E\in \mathcal{P}_n$ is the number of qubits on which the operator acts non trivially.
+As introduced in section \ref{ssec:intro_pauli_group}, the weight $|E|$ of an operator $E\in \mathcal{P}_n$ is the number of qubits on which the operator acts non-trivially.
 
 The distance $d$ of a code is determined by the choice of the stabilizer group, since it directly determines the centralizer. 
-The particular representatives from the set $\mathcal{C}(\mathcal{S})\setminus \mathcal{S}$ chosen to implement the logical operators do not alter the stabilizer group or the associated centralizer and therefore do not affect the distance.
+The particular representatives from the set $\mathcal{C}(\mathcal{S})\setminus \mathcal{S}$ 
+chosen to implement the logical operators do not alter the stabilizer group 
+or the associated centralizer and therefore do not affect the distance.
 
 Changing the phases of the generators of the stabilizer group does not modify the centralizer, since the phases do not affect commutation relations. 
 Therefore the change of codespace and stabilizer group employed in Pauli frame tracking, see section \ref{sec:pauli_frame_tracking}, leaves the code distance $d$ unchanged.
@@ -411,16 +395,20 @@ A distance $d$ code can correct $t$ errors, with
 \end{equation}
 This can be seen following the reasoning \cite{terhal_qec_formalism}: 
 
-If we have a weight $t$ error $E$, our decoder can find a correction $R$ with the same syndrome, with at most weight $t$.
-The combined operators $RE$ has then at most weight $2t$, which by the definition above, must be smaller than the distance $d$.
-This combined operators has no error syndrome, therefore belongs to the centralizer and can by definition of the distance not be a non identity logical operator.
+If we have a weight $t$ error $E$, our decoder\footnote{
+    This holds because our decoder is able to determine a minimum weight error consistent with the syndrome, see section for a corresponding algorithm \ref{ssec:general_MWMP_decoder}.
+    As $E$ itself is a candidate such an correction must exist. 
+} can find a correction $R$ with the same syndrome, of at most weight $t$.
+The combined operator $RE$ has then at most weight $2t$, which by the definition above, must be smaller than the distance $d$.
+This combined operators has the trivial error syndrome, therefore belongs to the centralizer and can by definition of the distance not be a non identity logical operator.
 Therefore it is a stabilizer which cannot change a codeword and therefore the we can recover from this error. 
 
-% Now we have all necessary quantities to introduce a notation characterizing stabilizer codes.
-% We refer to stabilizer codes by their set of characteristic number as $[[n,k,d]]$ codes.
-% $n$ being the number of physical qubits, $k$ being the number of encoded qubits and $d$ is the distance of the code.
+Now we have all necessary quantities to introduce a notation characterizing stabilizer codes.
+We refer to stabilizer codes by their set of characteristic number as $[[n,k,d]]$ codes.
+$n$ being the number of physical qubits, $k$ being the number of encoded qubits and $d$ is the distance of the code.
+This notation is used to simplify the description of QEC codes.
 
-\subsubsection{Cosets of Stabilizer Group - Logical Operators}
+\subsubsection{Cosets of the Stabilizer Group - Logical Operators}
 
 In subsection \ref{ssec:intro_centralizer} we introduced the centralizer. 
 There we saw that the centralizer contains the implementation of the logical operations on the encoded qubits (and the stabilizer group, 
@@ -430,15 +418,16 @@ Understanding this structure will become important for the decoding problem late
 
 % should I introduce the general concept of cosets here?
 
-The key observation is that if and only if two operators from the centralizer $L_1, L_2 \in \mathcal{C}(\mathcal{S})$ act the same way on each codeword $\ket{\Phi}$, 
+The key observation is that if and only if two operators from the centralizer $L_1, L_2 \in \mathcal{C}(\mathcal{S})$ act 
+the same way on each codeword $\ket{\Phi}$, 
 \begin{equation}
-    L_1 \ket{\Phi}=L_2 \ket{\Phi}; L_1, L_2 \in \mathcal{C}(\mathcal{S}); \forall \ket{\Phi} \in \mathcal{L}.
+    L_1 \ket{\Phi}=L_2 \ket{\Phi}; L_1, L_2 \in \mathcal{C}(\mathcal{S}); \forall \ket{\Phi} \in \mathcal{L},
     \label{eq:two_logical_operators_acting_identical_on_all_codeword_states}
 \end{equation}
 they realize the same logical operation, 
-they then are in the same cosets of the stabilizer group.
+and then they must be in the same cosets of the stabilizer group.
 
-For an operator $F$ and group $\mathcal{G}$, the coset\footnote{Note that we will only use left cosets in this thesis.} $F\mathcal{G}$ is determined by $F$ is defined by
+For an operator $F$ and group $\mathcal{G}$, the coset\footnote{Note that we will only use left cosets in this thesis.} $F\mathcal{G}$ determined by $F$ is defined by
 \begin{equation}
     F \mathcal{G} = \{F g \mid \ g \in \mathcal{G}\}.
 \end{equation}
@@ -450,7 +439,7 @@ By defining $M =  L_1^\dag L_2$, we can rearrange (eq. \ref{eq:two_logical_opera
 \end{equation}
 
 We see that the operator $M$ is by definition (eq. \ref{eq:defintion_codespace_whole_group}) an element of the stabilizer group, because all codewords are its $+1$ eigenstates.
-If we rearrange the definition of $M$ we get the that $L_1$ and $L_2$ are in the same coset of the stabilizer group
+If we rearrange the definition of $M$ we get that $L_1$ and $L_2$ are in the same coset of the stabilizer group
 \begin{equation}
     L_2 = L_1 M \text{ with } M \in \mathcal{S}.
 \end{equation}
@@ -461,9 +450,10 @@ Thus all the different possible choices of implementation of the same logical op
 
 All elements of the same coset of the stabilizer group act therefore the same on all codewords.
 They all realize the same logical operation. 
-We see that there is no 1-to-1 correspondence between logical operations and possible implementations but to a coset of operators.
+We see that there is no 1-to-1 correspondence between logical operations and possible implementations, but rather to a coset of operators.
 
-The collection of cosets also from a group called the quotient group $\mathcal{C}(\mathcal{S})/\mathcal{S}$ we find that it is equal the group of all distinct logical operations \footnote{
+The collection of cosets also forms a group called the quotient group $\mathcal{C}(\mathcal{S})/\mathcal{S}$. 
+We find that it is equal to the group of all distinct logical operations \footnote{
     Note that we keep track of the phase. One can do the same analysis for the sets in which we disregard the global phases.
 } on the encoded qubit and as such is isomorphic to the Pauli group $\mathcal{P}_k$ on $k$ qubits
 \begin{equation}
@@ -473,20 +463,21 @@ The collection of cosets also from a group called the quotient group $\mathcal{C
 We can therefore realize logical operations on the encoded state by using an operator of the corresponding coset of the stabilizer group in the centralizer.
 The exact choice of element from the coset is not important for our use case\footnote{
     Note that the choice is rather important for experimentalists, due to the difference in weight of the operator and support on the physical qubits between the possible realizations 
-    }, all elements are logical equivalent and they only differ by an element of the stabilizer group, 
+    }. 
+All elements are logically equivalent and they only differ by an element of the stabilizer group, 
 which by stabilizer equivalence is to say, they do not differ. 
 
 % Note about that the Centralizer can be written as a disjoint union of all of those cosets
-Note that a pair of cosets of the stabilizer group in the normalizer is either identical or disjoint.
+Note that a pair of cosets of the stabilizer group in the centralizer is either identical or disjoint.
 The centralizer $\mathcal{C}(\mathcal{S})$ can therefore be partitioned into cosets of the stabilizer group, each realizing a unique logical operator.
-We fix a set of operators, one for each logical operator from each cosets, and refer to the set as realizations of the logical operators $\bar{\mathcal{P}}$. 
+We fix a set of operators, one for each logical operator from each coset, and refer to the set as realizations of the logical operators $\bar{\mathcal{P}}$. 
 % can this set be generally a group? I would doubt it 
 Using it we can express the centralizer as 
 \begin{equation}
     \mathcal{C}(\mathcal{S}) = \bigcup_{\bar{P} \in\bar{\mathcal{P}}} \bar{P}\mathcal{S},
     \label{eq:centralizer_partitioned_into_cosets_of_stabilizer_group}
 \end{equation}
-where $\bar{P}\mathcal{S}$ is the notation for the right coset of the stabilizer group by applying the operator $\bar{P}$.
+where $\bar{P}\mathcal{S}$ is the notation for the left coset of the stabilizer group by applying the operator $\bar{P}$.
 
 % Should I show that I can we can define the set of generators of the centralizer as: stabilizer generators + realizations of logical operators?
 
@@ -494,7 +485,7 @@ where $\bar{P}\mathcal{S}$ is the notation for the right coset of the stabilizer
 
 % Note about freedom in assigning logical operators 
 Note as well that we have some freedom in assigning the logical operators to the different cosets.
-We just have to make sure that the commutations relations between the realizations of the logical operators are correct.
+We just have to make sure that the commutation relations between the realizations of the logical operators are correct.
 (As an example it is trivial to switch the logical $\bar{X}$ with the logical $\bar{Z}$ operator.)
 
 \subsubsection{Cosets of the Centralizer}\label{ssec:cosets_of_the_centralizer}
@@ -503,12 +494,12 @@ The centralizer can be partitioned into cosets of the stabilizer group.
 Each of those cosets is associated with a logical operator on the codespace.
 Complementary to this, in subsection \ref{ssec:syndrome} we showed that each syndrome is associated with a subspace and each of those subspaces is isomorphic to the codespace.
 
-Changing the subspace, changes the associated syndrome.
+Changing the subspace changes the associated syndrome.
 Conversely the syndrome associated with a given subspace can be changed by redefining the stabilizer group.
 We thus consider the elements of the same Pauli group $\mathcal{P}_n$ and partition them into sets according to their error syndrome.
 
-This results in a structure where all operators with the same error syndrome are collected in cosets of the centralizer, labeled by the syndromes. 
-Similar to the previous section where all operators associated to the trivial syndrome are collected in centralizer.
+This results in a structure where all operators with the same error syndrome are collected in cosets of the centralizer, 
+labeled by the syndromes, similar to the previous section where all operators associated with the trivial syndrome were collected in the centralizer.
 We can choose for each syndrome a representative error $E_{\sigma}$.
 In the following we assume that we fix this representative error once for all syndromes.
 
@@ -518,17 +509,19 @@ The whole Pauli group $\mathcal{P}_n$ can then be partitioned into cosets of the
 \end{equation}
 
 All $2^m$ cosets of the centralizer have the same internal group structure.
-Each of those cosets of centralizer can be partitioned further into the cosets of the stabilizer group associated with a logical operator, as described in equation \ref{eq:centralizer_partitioned_into_cosets_of_stabilizer_group},
+Each of those cosets of the centralizer can be partitioned further into the cosets of the stabilizer group associated with a logical operator, as described in equation \ref{eq:centralizer_partitioned_into_cosets_of_stabilizer_group},
 where each of those cosets also inherits the representative error $E_\sigma$ of the associated syndrome.
 As a result we can partition the whole Pauli group into cosets of the stabilizer group.
 This structure is illustrated in figure \ref{fig:stabilizer_formalism_cosets_of_centralizer}.
 
-We can rewrite any operator from the Pauli group $P \in \mathcal{P}_n$ as a combinations of three operators
+We can rewrite any operator from the Pauli group $P \in \mathcal{P}_n$ as a combination of three operators
 \begin{equation}
     P =  E_\sigma \bar{L} S \forall P \in \mathcal{P}_n; S \in \mathcal{S}, \bar{L} \in \bar{\mathcal{P}}.
     \label{eq:pauli_rewriting_stabilizer_formalism}
 \end{equation}
-Using one operator each from the stabilizer group $\mathcal{S}$, the set of realizations of the logical operators $\bar{\mathcal{P}}$ and the set of canonical representative errors associated with the syndromes, the associated operator is denoted by $E_\sigma$.
+Each defining operator is taken from one of the three sets: the stabilizer group $\mathcal{S}$,
+the set of realizations of the logical operators $\bar{\mathcal{P}}$, and the set of canonical
+representative errors $E_\sigma$ associated with the syndromes.
 Here the overall phase is contained in the logical operator $\bar{L}$.
 If we do not care about the phase we can just use the phase-normalized realizations of logical operators.
 
@@ -536,17 +529,17 @@ If we do not care about the phase we can just use the phase-normalized realizati
     \centering
     \input{graphics/tex_stuff/pauli_group.pdf_tex}
     \caption{
-        This figure shows a visual representation of equation \ref{eq:pauli_rewriting_stabilizer_formalism} and its adopted from \cite{gottesmann_book}.
+        This figure shows a visual representation of equation \ref{eq:pauli_rewriting_stabilizer_formalism} and is adapted from \cite{gottesmann_book}.
         It shows how the complete Pauli group $\mathcal{P}_n$ can be partitioned into cosets of the centralizer $E_\sigma\mathcal{C}(\mathcal{S})$, here represented by the black boxes. 
         Each of those cosets is associated with a representative error $E_\sigma$.
-        The first black block show the centralizer $\mathcal{C}(\mathcal{S})$, including the stabilizer group $\mathcal{S}$ is marked by the green colored area.
+        The first black box show the centralizer $\mathcal{C}(\mathcal{S})$, in which the stabilizer group $\mathcal{S}$ is marked by the green colored area.
         Note here that we indicated the phase of the cosets of the stabilizer in the faint grey color, and separated the cosets only differing by a phase, 
         with a grey dotted line. 
         When we talk about the phase normalized operators or cosets we collect all those cosets, ending up with the phase normalized stabilizer group $\hat{\mathcal{S}}$. 
-        Each of the cosets $\hat{\mathcal{S}}$ in the centralizer realizes a different logical operator. 
+        Each of the cosets of $\hat{\mathcal{S}}$ in the centralizer realizes a different logical operator. 
         For the visualization we assumed that we only encode a single logical qubit resulting in the (phase-normalized) logical Pauli group $\bar{P} \in \{\bar{I},\bar{X},\bar{Z},\bar{Y}\}$, 
         as shown in the first black box corresponding to the centralizer.
-        Each following black box is the showing a cosets of the centralizer $E_\sigma\mathcal{C}(\mathcal{S})$, and this image should in principle extend up until the $2^m$ cosets of the centralizer are shown.
+        Each following black box shows a cosets of the centralizer $E_\sigma\mathcal{C}(\mathcal{S})$, and this image should in principle extend up until the $2^m$ cosets of the centralizer are shown.
         }
     \label{fig:stabilizer_formalism_cosets_of_centralizer}
 \end{figure}
@@ -554,34 +547,24 @@ If we do not care about the phase we can just use the phase-normalized realizati
 
 \subsection{Stepping through a Stabilizer QEC Cycle}\label{ssec:stabilizer_summary_qec_cylce}
 
-\textcolor{red}{
-Adapting this to use a numbered is on my todo list, for after the presentation.
-13. QEC cycle as numbered enviorment 
-    + use enumerate
-    }
-
 Having introduced the necessary details of the stabilizer codes and both their linear and group structure,
-let us now put the this together.
-And ask the question: How does this help us to detect and correct errors?
+let us now put this together
+and ask the question: How does this help us to detect and correct errors?
 
 To see this, we will talk through one QEC cycle, which describes the process of detecting and correcting an error.
 
 To be able to detect errors we start in a logical codeword state\footnote{
-We will talk at in section \textcolor{red}{Put ref here} about the preparation of a logically encoded qubit. 
 Note that we do not care which codeword state this is, as such we do not know the logical information encoded in those $k$ qubits.
 Also note that the logical operators, by definition, all commute with the stabilizers and therefore we can construct the syndrome, without collapsing any possible superposition of codeword states or learning anything about the encoded state. 
 } $\ket{\Phi}$.
 
-If an error operator
-% \footnote{
-    % We still assume that our error operator is an element of the Pauli group $\mathcal{P}_n$.
-% } 
-$\tilde{E}$ acts on our codeword state $\ket{\Phi}$. 
-We get the resulting faulty state $\tilde{E}\ket{\Phi}$.
+If an error operator $\tilde{E}$ acts on our codeword state $\ket{\Phi}$,
+we get the resulting faulty state $\tilde{E}\ket{\Phi}$.
+
 
 The goal at the end of the cycle is to recover the original codeword state $\ket{\Phi}$.
-To achieve this we need to find a way to inverse\footnote{
-As discussed in section \ref{ssec:intro_pauli_group}, the square of any operator is the identity, in addition to some global phase which has no physical relevance.
+To achieve this we need to find a way to invert\footnote{
+As discussed in section \ref{ssec:intro_pauli_group}, the square of any Pauli operator is the identity, in addition to some global phase which has no physical relevance.
 Therefore we could recover our original codeword state if we apply the exact same error to our faulty state $\tilde{E}\ket{\Phi}$.
 We would obtain a global phase which we could ignore $\tilde{E}\tilde{E}\ket{\Phi} = \alpha \ket{\Phi}$, with $\alpha=\pm 1$.
 } the error $\tilde{E}$.
@@ -589,25 +572,25 @@ As such our goal during the QEC cycle is to identify the error operator $\tilde{
 We can then apply the adjoint error operator again to recover our original codeword state $\tilde{E}^\dag\tilde{E}\ket{\Phi} = \ket{\Phi}$.
 
 We start the process of identifying the occurred error by measuring the syndrome of this state\footnote{
-The exact circuit/approach of extracting the syndrome of a given state will be discussed in section \ref{chapter:syndrome_extraction}.
+The exact circuit/approach of extracting the syndrome of a given state will be discussed in chapter \ref{chapter:syndrome_extraction}.
 }, which will give us the error syndrome of the error operator $\sigma(\tilde{E})$. 
 The extracted error syndrome points us directly to the coset of the centralizer which contains the occurred error $\tilde{E} \in E_{\sigma(\tilde{E})}\mathcal{C}(\mathcal{S})$.
 
 We thus know that the error $\tilde{E}$ must be an element of the set $\tilde{E}\in E_{\sigma(\tilde{E})}\mathcal{C}(\mathcal{S})$.
-We do not know yet from which coset of the stabilizer group in the cosets of the centralizer this error is from.
+We do not know yet which coset of the stabilizer group within the cosets of the centralizer this error is from.
 
-Each coset of the stabilizer in the centralizer realizes a logical operator on the encoded qubit.
-Asking the question, which coset the error belong to is asking the question, which logical error $\bar{L}_{\tilde{E}} \in \bar{\mathcal{P}}$ does the error contain.
+Each coset of the stabilizer group in the centralizer realizes a logical operator on the encoded qubit.
+Asking which coset the error belongs to is asking the question, which logical error $\bar{L}_{\tilde{E}} \in \bar{\mathcal{P}}$ does the error contain.
 Here we adapt the rewriting introduced in equation \ref{eq:pauli_rewriting_stabilizer_formalism} to the occurred error 
 \begin{equation}
     \tilde{E} = E_{\sigma(\tilde{E})}\bar{L}_{\tilde{E}}\tilde{S}.
 \end{equation}
 
-The problem of determining from which cosets of the stabilizer the error is part of, or which logical operator it includes, is the so called decoding problem.
+The problem of determining which cosets of the stabilizer the error is part of, or which logical operator it includes, is the so called decoding problem.
 It is handled by so called decoders\footnote{ 
 We will go into more detail about possible approaches to decode a syndrome in the following section \ref{sec:decoding_problem_general}.
 }.
-For now lets assume our decoder give us a prediction from which coset of the stabilizer group the error operator should be from.
+For now let us assume our decoder give us a prediction of which coset of the stabilizer group the error operator should be from.
 This prediction can be represented as a logical operator, which we refer to as $\bar{L}_D\in\bar{\mathcal{P}}$.
 
 We can then construct a possible\footnote{
@@ -616,18 +599,18 @@ Note that we do not have any information about the stabilizer component $\tilde{
 \begin{equation}
     R = E_{\sigma(\tilde{E})}\bar{L}_{D} S_R.
 \end{equation}
-where combined the representative error $E_{\sigma(\tilde{E})}$ obtained by the syndrome of the error, with the logical component $\bar{L}_D \in \bar{\mathcal{P}}$ predicted by the decoder.
+where we combined the representative error $E_{\sigma(\tilde{E})}$ obtained by the syndrome of the error, with the logical component $\bar{L}_D \in \bar{\mathcal{P}}$ predicted by the decoder.
 
-By applying this recovery operation $R^\dag$, we hope to be able to undo the previously occurred error $E$, so we would succeed if  
+By applying this recovery operation $R^\dag$, we hope to be able to undo the previously occurred error $\tilde{E}$, so we would succeed if  
 \begin{equation}
     R^\dag E \ket{\Phi} = \ket{\Phi}.
 \end{equation}
 
 The final question is: 
 Did we recover the state correctly?
-So lets look at the state\footnote{
-    Given that we can ignore global phase of a state we could also apply $R\tilde{E}$, instead of $R^\dag\tilde{E}$ and we would change the phase by commuting the operators to the correct position.
-    But I found it more illustrative to recover the Pauli by applying the adjoint.
+So let us look at the state\footnote{
+    Given that we can ignore the global phase of a state we could also apply $R\tilde{E}$, instead of $R^\dag\tilde{E}$ and we would change the phase by commuting the operators to the correct position.
+    But it is more illustrative to recover the Pauli by applying the adjoint.
     } $R^\dag \tilde{E} \ket{\Phi}$,
 \begin{equation}
     R^\dag \tilde{E} \ket{\Phi} = S_R^\dag \bar{L}_D^\dag E_{\sigma(\tilde{E})}^\dag E_{\sigma(\tilde{E})}\bar{L}_{\tilde{E}}\tilde{S}\ket{\Phi}.
@@ -650,29 +633,26 @@ Resulting in
     R^\dag \tilde{E} \ket{\Phi} = \bar{L}_D^\dag \bar{L}_{\tilde{E}} \ket{\Phi}.
 \end{equation}
 
-We thus must be get the prediction of the logical 
+We must therefore get the prediction of the logical 
 \footnote{
-Note that the choice of stabilizer element of the recovery $S_R$ does not matter, as such we only need to determine the correct cosets of the stabilizer group, not the identical error operator.
-If they are not identical, they would implement a different logical operator $\bar{L}_\Delta = \bar{L}_D^\dag \bar{L}_{\tilde{E}}$, 
-as indicated by the isomorphism between the chosen realizations of the logical operators $\bar{\mathcal{P}}$ and the Pauli group for the the encoded logical qubit $\mathcal{P}_k$.
-Which then would change our codeword resulting in an unsuccessful recovery.
+Note that the choice of stabilizer element of the recovery $S_R$ does not matter, as such we only need to determine the correct coset of the stabilizer group, not the exact error operator.
+If $\bar{L}_D$ and $\bar{L}_{\tilde{E}}$ are not identical, they implement a different logical operator $\bar{L}_\Delta = \bar{L}_D^\dag \bar{L}_{\tilde{E}}$, 
+as indicated by the isomorphism between the chosen realizations of the logical operators $\bar{\mathcal{P}}$ and the Pauli group $\mathcal{P}_k$ for the the encoded logical qubits.
+This would change our codeword resulting in an unsuccessful recovery.
 } component of the error correct $\bar{L}_D=\bar{L}_{\tilde{E}}$, to recover our original codeword state $\ket{\Phi}$.
 
-We therefore see that the crucial part of the QEC cycle, and consequently its success rate, is dependent on solving the decoding problem correctly.
+We therefore see that the crucial part of the QEC cycle, and consequently its success rate, depends on solving the decoding problem correctly.
 As such the choice of decoding strategy is quite influential on our QEC code performance.
 
 Fortunately, there exist approaches that exploit properties and structure of the stabilizer codes to solve this task, utilizing mappings to mathematical optimization problems or to well-studied physics problems from other areas. 
 We will investigate those approaches in the following section \ref{sec:decoding_problem_general} in detail.
 
-We can quantify the decoding success by a logical error rate $p_L$, the rate at which we make logical mistakes in our identification\footnote{
+We can quantify the decoding success by a logical error rate $p_{log}$, the rate at which we make logical mistakes in our identification\footnote{
     Given that we either assume that our recovery is perfect or that we do not actually apply a recovery by using Pauli frame tracking, see section \ref{sec:pauli_frame_tracking}.
 } of the occurred error.
-This will be done in section \textcolor{red}{Put reference here!}.
 
-% Discuss here the difference influences on logical error rate?
+We will further discuss how we can obtain a threshold from such logic error rate curves in chapter \ref{chapter:qec_thresholds}.
 
-
-% done until here, including Maartens feedback ... at least most of it :Party:!
 
 \section{Decoding the Syndromes}\label{sec:decoding_problem_general}
 
@@ -693,12 +673,12 @@ As discussed in the previous section, successful recovery additionally requires 
 To infer this information we rely on an error model as an additional resource to be utilized in the decoding algorithm.
 
 The error model assigns a probability $\text{Pr}(E)$ to each error operator $E$, which can be used by the decoder to determine which error or set of errors has likely occurred. 
-The error models used in this thesis are introduced in section \ref{chapter:error_models}.
+The error models used in this thesis are introduced in chapter \ref{chapter:error_models}.
 
 We will use two different decoding strategies in this thesis.
 The first is called \emph{Maximum Likelihood Decoding} (MLD). 
 This decoding approach has the highest likelihood of returning a successful recovery.
-It can be summarized, in the context of stabilizer codes, as determining the coset of the stabilizer group, in the coset of the centralizer with the corresponding syndrome, that has the highest total probability of occurring.
+It can be summarized, in the context of stabilizer codes, as determining the coset of the stabilizer group, within the coset of the centralizer with the corresponding syndrome, that has the highest total probability of occurring.
 As such we need to compare the total probability of each coset consistent with the syndrome, for which we need to take into account all errors.
 In return we are able to determine the recovery operation that has the highest likelihood of resulting in a successful recovery for the given error model and syndrome.
 We will go into more detail in the following section \ref{ssec:general_ML_decoder}. 
@@ -710,38 +690,39 @@ MWPM uses structures in the interaction between stabilizers and occurred errors 
 Compared to MLD, it generally achieves a lower probability of successful recovery but can generally be solved more efficiently. 
 We will go into more detail in the section \ref{ssec:general_MWMP_decoder}. 
 
-The main difference between MLD and MWPM is that MLD determines the recovery with the overall highest success probability by identify the logical error with highest total probability of occurring, obtained by summing over all corresponding physical errors. 
+The main difference between MLD and MWPM is that MLD determines the recovery with the overall highest success probability by identifying the logical error with the highest total probability of occurring, 
+obtained by summing over all corresponding physical errors. 
 In contrast MWPM identifies a single error event which is most likely physical and consistent with the measured syndrome.
 
 The number of possible syndromes scales exponentially with the distance of the code for the surface code\footnote{This will be discussed in detail in section \ref{sec:kitaev_surface_code}.}.
-As such it becomes unfeasible to compute a look up table ahead of time for larger code distances. 
+As such it becomes infeasible to compute a look-up table ahead of time for larger code distances. 
 Under certain conditions\footnote{We will discuss those conditions a bit when we talk about Pauli frame tracking \ref{sec:pauli_frame_tracking}.} we need to be able to correct the errors in real time or close to it \cite{terhal_qec_formalism}.
 Therefore efficient decoding techniques are relevant to enable real time decoding and correction of occurred errors during QEC cycles. 
-The method in this thesis does not require syndrome to be decoded in time but we still benefit from the reduced computational time. 
+The method used in this thesis does not require the syndrome to be decoded in real time but we still benefit from the reduced computational time. 
 
 
 \subsection{Maximum Likelihood Decoding}\label{ssec:general_ML_decoder}
 
 In this section we will formalize the \emph{maximum likelihood} (ML) decoding strategy for stabilizer codes \cite{mld_decoding_intro_luis}.
-The MLD problem consists of identify the coset, identified by the logical component $\bar{L}_{MLD}$, of the stabilizer group, 
-in the centralizer with the corresponding syndrome $\sigma$, with the highest total probability of occurring, for the given error model.
+The MLD problem consists of identifying the coset, identified by the logical component $\bar{L}_{MLD}$, of the stabilizer group, 
+within the coset of the centralizer with the corresponding syndrome $\sigma$, with the highest total probability of occurring, for the given error model.
 We can formalize this as
 \begin{equation}
     \bar{L}_{\text{MLD};\sigma} = \arg \max_{\bar{L} \in  {\bar{\mathcal{P}}}} \text{Pr}(E_\sigma \bar{L} \mathcal{S}), 
 \end{equation}
 where $\bar{L}_{\text{MLD}}$ is the prediction for the logical component of the error and
-$\text{Pr}(E_\sigma \bar{L}\mathcal{S})$ is the total probability of the cosets of the stabilizer group $\mathcal{S}$. 
+$\text{Pr}(E_\sigma \bar{L}\mathcal{S})$ is the total probability of the coset of the stabilizer group $\mathcal{S}$. 
 The representative error $E_\sigma$ is based on the measured syndrome. 
 The MLD decoder chooses as the argument the logical component $\bar{L} \in {\bar{\mathcal{P}}}$ with the highest total coset probability, 
 taking all cosets in the centralizer into account by taking all possible logical components into account. 
 Note that we use the phase-normalized set of operators, as the global phase does not influence our recovery.
 
-We can expend this equation in terms of probabilities of individuals Pauli operators as 
-\begin{eqnarray}
-    \bar{L}_{\text{MLD};\sigma} = \arg \max_{\bar{L} \in  {\bar{\mathcal{P}}}} \sum_{S \in \mathcal{S}} \text{Pr}(E\bar{L}S). 
-\end{eqnarray}
-The number of operators in this summation grows exponentially with the distance of the codes as the number of stabilizer elements of the stabilizer group grows exponentially with the distance of the code\footnote{
-    This will be shown in the section introducing the surface code (section \ref{sec:kitaev_surface_code}) where we discuss in detail how the number of generators of the stabilizer group scale with code distance. 
+We can expand this equation in terms of probabilities of individual Pauli operators as 
+\begin{equation}
+    \bar{L}_{\text{MLD};\sigma} = \arg \max_{\bar{L} \in  {\bar{\mathcal{P}}}} \sum_{S \in \mathcal{S}} \text{Pr}(E_\sigma\bar{L}S). 
+\end{equation}
+The number of operators in this summation grows exponentially with the distance of the code as the number of elements of the stabilizer group grows exponentially with the distance of the code\footnote{
+    This will be shown in the section introducing the surface code (section \ref{sec:kitaev_surface_code}) where we discuss in detail how the number of generators of the stabilizer group scales with code distance. 
 }.
 
 Note that by taking all possible operators into account the ML decoder takes the degeneracy of errors into account.
@@ -754,11 +735,11 @@ The problem of determining the correct logical component using MLD has been show
 % make the following more precise, which models and why?
 The MLD problem of stabilizer codes can be mapped to the partition function of classical disordered spin models \cite{topological_quantum_memory}. 
 For this the summation over different Pauli operators is mapped to the partition function of a classical disordered spin model.
-Dependent on the specific model and its symmetries, some of those classical disordered spin models can be solved exactly \cite{topological_quantum_memory,fundamental_thresholds}.
-For those we can identify a phase change in the model at the threshold probability, which we will discuss in section \ref{chapter:qec_thresholds}. 
-For some combinations of QEC and error model the MLD problem has been shown to be efficiently solvable \cite{efficient_decoding_algorithm}.
+Depending on the specific model and its symmetries, some of those classical disordered spin models can be solved exactly \cite{topological_quantum_memory,fundamental_thresholds}.
+For those we can identify a phase transition in the model at the threshold probability, which we will discuss in chapter \ref{chapter:qec_thresholds}. 
+For some combinations of QEC code and error model the MLD problem has been shown to be efficiently solvable \cite{efficient_decoding_algorithm}.
 
-We will go into more detail about this approach and what adaptions we need to make to adjust for the syndrome extraction process in section \ref{chapter:syndrome_extraction}. 
+We will go into more detail about this approach and what adaptations we need to make to adjust for the syndrome extraction process in chapter \ref{chapter:syndrome_extraction}. 
 
 If we can solve the MLD problem exactly, we can calculate the success rate of the MLD $p_{\text{success}}$ exactly, 
 by summing over the probabilities of the most likely cosets 
@@ -770,14 +751,11 @@ We will use such a exactly calculated optimal threshold as a reference to which 
 
 \subsection{Minimum Weight Perfect Matching Decoding}\label{ssec:general_MWMP_decoder}
 
-\textcolor{red}{
-15. mapping multiple errors to the same edges? is that happening? does this influence the argument of p beeing cyclic in the probability?
-    + yes, it does, but ratio stays the same, is this clear??
-}
 
 The second decoding strategy utilized in this thesis is called \emph{minimum weight perfect matching} (MWPM)\cite{pymatching,pymatching_loger_paper}.
 We can summarize the goal of MWPM as finding the physical error operator with the highest probability of occurring consistent with the observed syndrome.
-The downside of this approach is that we determine a single error operator, we are not taking the degeneracy of possible errors into account or 
+The downside of this approach is that we determine a single error operator: 
+We are not taking the degeneracy of possible errors into account or 
 even the possibility that different logical classes/cosets could have multiple errors with the lowest weight\footnote{
     Note as well that there exist approaches where the degeneracy is also included in such maximum probability decoders \cite{degeneracy_enhanced_mp_decoding}.
 }.
@@ -786,100 +764,106 @@ The MWPM decoder is based on mapping the error model with the stabilizers onto a
 
 To get from the error model to the DEM, we determine how each error mechanism changes the bits of the syndrome.
 We represent each bit of the syndrome as a detector. 
-An error mechanism triggers such an detector if the corresponding bit is changed by the error.
+An error mechanism triggers such a detector if the corresponding bit is changed by the error.
 Mapping which error mechanism triggers which detectors is therefore equivalent to identifying which generator of the stabilizer group anticommutes with which error mechanism.
-The DEM contains the mapping which error mechanism trigger which detectors.
+The DEM contains the mapping of which error mechanisms triggers which detectors.
 This mapping will be used to construct the matching graph \cite{pymatching,pymatching_loger_paper}.
 
 If each error mechanism triggers at most two detectors, we can refer to the DEM as a graphlike error model.
 For this to be a valid assumption we might need to decompose the $Y$-type errors into $X$-type errors and $Z$-type errors ($Y = i XZ$), to ensure the graphlike property of our error model.
-We will at this point assume\footnote{This is a valid assumption for the surface code, if we introduce boundary notes into our graph for errors connecting to the boundary \cite{topological_quantum_memory,pymatching_loger_paper}.} that we have such an error model.
-We then solve the $X$-type and $Y$-type MWPM decoding problems independently.
+We will at this point assume\footnote{
+    This is a valid assumption for the surface code, if we introduce boundary nodes into our graph for errors connecting to the boundary \cite{topological_quantum_memory,pymatching_loger_paper}.
+    } that we have such an error model.
+We then solve the $X$-type and $Z$-type MWPM decoding problems independently.
 
-We map this graph like error model onto a matching graph by representing the detector as  nodes and error mechanism as edges.
+We map this graphlike error model onto a matching graph by representing the detectors as nodes and error mechanisms as edges.
 Each edge represents an\footnote{
-    Or multiple errors if all of them have the same effect. Then we weight the corresponding edge with the combined probability.
-    } error $E$ and is weighted $w(E)$ by the probability of the error $\text{Pr}(E)$ with
+    Or multiple errors if all of them have the same effect. 
+    Then we weight the corresponding edge with the combined probability.
+    This combined probability preserves the ratios errors.
+    } error $E$ and is weighted by $w(E)$ by the probability of the error $\text{Pr}(E)$ as
 \begin{equation}
     w(E) = \log \left( \frac{1-\text{Pr}(E)}{\text{Pr}(E)}\right).
 \end{equation}
 Each edge connects the nodes, which represent the detectors that the associated error mechanism triggers \cite{pymatching,pymatching_loger_paper}. 
 
 The MWPM decoder then identifies the most probable error event consistent with the syndrome.
-Finding a error consistent with the syndrome correspondence to finding a set of edges, such that all triggered detectors have an odd number of incident edges and non triggered detectors have an even number of incident matches.
+Finding an error consistent with the syndrome corresponds to finding a set of edges, such that all triggered detectors have an odd number of incident edges 
+and non triggered detectors have an even number of incident edges.
 To choose the most probable of such configurations we need to find the set of edges, that fulfills the above condition with the lowest total weight $\sum_E w(E)$. 
-Note at this point that we are following here the definition of an minimum weight embedded matching, which is a variation of the MWPM problem. 
-It is the basis of \texttt{PyMatching}, the implementation of th MWPM decoder which we are going to use \cite{pymatching_loger_paper}. 
-\textcolor{green}{should i name the algorithm (this blossom one) that is used to find the minimum weight matching? or should i say that it can be found in the paper?}
+Note at this point that we are following here the definition of a minimum weight embedded matching, which is a variation of the MWPM problem. 
+It is the basis of \texttt{PyMatching}, the implementation of the MWPM decoder which we are going to use \cite{pymatching_loger_paper}. 
 
-To keep tack of how the logical operator changes under the predicted error, we label each error in the DEM, respectively each edge in the matching graph, with the additional information on how the associated error mechanism commutes with the logical observable.
+To keep track of how the logical operator changes under the predicted error, we label each error in the DEM, respectively each edge in the matching graph, with the additional information on how the associated error mechanism commutes with the logical observable.
 This implements the Pauli frame tracking (see section \ref{sec:pauli_frame_tracking}) approach directly in the decoder. 
-As a basis we need to fix a realization of logical operator, which is measured at the end of the circuit, and therefore which measurement result we want to predict.
+As a basis we need to fix a realization of the logical operator, which is measured at the end of the circuit, and therefore which measurement result we want to predict.
 We label each edge whose associated error mechanism anticommutes with the logical observable.
 This labeling will be used to determine the effect of the determined most probable error on the observed logical observable. 
-If the set of edges represent the most likely error includes an odd number of edges labeled to anticommute with the logical operator, we can conclude that the most probable error mechanism represented by those edges anticommutes with the logical observable.
+
+If the set of edges representing the most likely error includes an odd number of edges labeled to anticommute with the logical operator, we can conclude that the most probable error mechanism represented by those edges anticommutes with the logical observable.
 This anticommutation of the error with the logical observable results in us predicting a flipped observable measurement at the end of the simulation, by the principles of Pauli frame tracking. 
 For an even number we do not expect the measurement of the chosen implementation\footnote{
-    Note here that even if for one choice of the logical operator, the measurement does not change. 
-    A different implementation of the same logical operator could, just differing by a stabilizer, could anticommute with the predicted error and therefore result in a flipped measurement. 
-    This is the reason we need to fix the logical observable used in the beginning, if we want to utilize the Pauli frame tracking approach.
+    Note that the measurement outcome is unchanged only for the chosen realization of the logical operator. 
+    A different realization, differing from it by a stabilizer, could anticommute with the predicted error and therefore give a flipped measurement. 
+    This is why we must fix the logical observable at the outset if we want to use the Pauli frame tracking approach
 } logical operator to change. 
 If the prediction agrees with the observed logical measurement at the end of the circuit our prediction was successful, without needing to reconstruct the exact error mechanism.
 
-Note that the mapping between errors and the nodes of the graph is not necessary a $1-to-1$ mapping, as we can map multiple errors with the same effects in the DEM to a single edge with the combined probability. 
-This improves the performance of the MWPM approach, taking a small part of the degeneracy of the errors into account, and simplifies the matching graph, but complicates mapping the set of edges back to a concrete error event. 
-As multiple error events might fit to the set of edges.
-But because all of them have the same effect on the circuit, it is in principle irrelevant which one we would choose to implement, if we would like to implement it as the recovery operation.
-Resulting from this discussion we can see, that using the Pauli frame tracking approach instead of determining the actual predicted error, results in having to do less computations while arriving at the same result for our use case.
+Note that the mapping between errors and the edges of the graph is not necessary a one-to-one mapping, as we can map multiple errors with the same effect in the DEM to a single edge with the combined probability. 
+This improves the performance of the MWPM approach, taking a small part of the degeneracy of the errors into account, 
+and simplifies the matching graph, but complicates mapping the set of edges back to a concrete error event, 
+as multiple error events might fit to the set of edges.
+But because all of them have the same effect on the circuit, it is in principle irrelevant which one we would choose to implement as the recovery operation.  
+Resulting from this discussion we can see that using the Pauli frame tracking approach instead of determining the actual predicted error, results in fewer computations while arriving at the same result for our use case.
 
-\textcolor{green}{I should get rid of the next paragraph, correct @Maarten?}
 The use of the detectors which just represent changes of bits in the syndrome instead of the absolute value of the syndrome, relates to the isomorphism between the codespace and the other orthogonal subspaces of the Hilbert space.
-As we discussed in section \ref{ssec:syndrome} each subspace associated to a syndrome is isomorphic to the codespace. 
+As we discussed in section \ref{ssec:syndrome} each subspace associated with a syndrome is isomorphic to the codespace. 
 Given that we are only interested in the change of the syndrome, we can use this MWPM decoding setup, to return corrupted codeword states of isomorphic spaces to their original state.
-We would still get the same prediction as if we would have started in a state belonging to the codespace, assuming the same error occurred.
+We would still get the same prediction as if we had started in a state belonging to the codespace, assuming the same error occurred.
 We will discuss this principle in more detail in section \ref{sec:pauli_frame_tracking}.
 
-For now lets close this comparison between MWPM and ML decoding by once again pointing out that MWPM find the most probable single error event, while ML finds most likely coset and as such the most likely occurred logical operation.
+For now let us close this comparison between MWPM and ML decoding by once again pointing out that MWPM finds the most probable single error event, 
+while ML finds the most likely coset and as such the most likely occurred logical operation.
 
-
-% Specific things used
+The implementation and more details of the decoding algorithm is discussed in chapter \ref{chapter:syndrome_extraction}.
+After introducing the syndrome extraction circuits, we discuss if and how we can use the above described decoders to decode the extracted syndromes.
 
 \section{The Surface Code}\label{sec:kitaev_surface_code}
 
 The specific QEC code from the class of the stabilizer codes we are using is the \emph{surface code}\footnote{
-    We use the unrotated version because an efficient ML decoder exist for this QEC code \cite{efficient_decoding_algorithm}.
+    We use the unrotated version because an efficient ML decoder exists for this QEC code \cite{efficient_decoding_algorithm}.
     } \cite{kitaev_surface_code,other_surface_code_paper}. 
 The surface code is closely related to the toric code \cite{kitaev_toric_code}.
 The difference between the toric code and the surface code is the change from periodic boundary conditions of the toric code, to open boundaries for the surface code \cite{topological_quantum_memory}.
 
 To visualize the toric code of distance $d$, we arrange $n=d^2 + (d-1)^2$ physical qubits on a lattice,
-by placing the qubits on the nodes connecting the sites of the lattice.
+by placing the qubits on the edges connecting the sites of the lattice.
 For the surface code with open boundary conditions we remove the edges connecting top and bottom lattice sites to form two rough boundaries.
-The resulting constructing can be seen in figure \ref{fig:surface_code_explaination} a).
+The resulting construction can be seen in figure \ref{fig:surface_code_explaination} a).
 %, with the associated indexing we are using for the qubits.
 
-As described in section \ref{sec:stabilizer_formalism}, a stabilizer code can be specified by fixing the stabilizer group, or the generator of this group.
+As described in section \ref{sec:stabilizer_formalism}, a stabilizer code can be specified by fixing the stabilizer group, or the generators of this group.
 For the surface code this set can be split up into site and plaquette stabilizers, 
-where the site stabilizer are only using $X$-type Pauli operators and plaquette stabilizers are only using $Z$-type Pauli operators.
+where the site stabilizers only use $X$-type Pauli operators and plaquette stabilizers only use $Z$-type Pauli operators.
 The surface code is therefore part of the class of CSS codes \cite{CSS1,CSS2}, as the stabilizer generators can be split up into two separate groups, 
 each only consisting of either $X$-type or $Z$-type Pauli operators.
 
-Site stabilizers are placed on the sites of the lattice and act (nontrivial) on each physical qubit sitting on edges incident to this site with a $X$-type Pauli operator.
+Site stabilizers are placed on the sites of the lattice and act (non-trivially) on each physical qubit sitting on edges incident to this site with a $X$-type Pauli operator.
 Plaquette stabilizers are placed in the middle of each cell and operate with a $Z$-type Pauli operator on each physical qubit located on the edges of the given cell.
 The placement of both types is visualized in figure \ref{fig:surface_code_explaination} b) and c) respectively. 
-The complete resulting stabilizer setup is the visualized in the same figure as d).
+The complete resulting stabilizer setup is visualized in the same figure as d).
 
 \begin{figure}[ht]
     \centering
     \input{graphics/tex_stuff/surface_code.pdf_tex}
     \caption{
         Figure showing the structure of a surface code with code distance $d=3$. 
-        The first, figure a), shows the labeling and position of the physical qubits at each edge of the lattice.
-        The labeling is identical with the one used in the implementation, see section \ref{chapter:git_repo} for the source code. 
-        Figures b),c) and d) are displaying the generators of the stabilizer group and on which physical qubits each acts, 
-        indicated by the colored area they show.
+        The first panel a), shows the labeling and position of the physical qubits at each edge of the lattice.
+        The labeling is identical to the one used in the implementation, see section \ref{chapter:git_repo} for the source code. 
+        Figures b),c) and d) are displaying the generators of the stabilizer group and on which the physical qubits each acts, 
+        indicated by the colored areas they show.
         Each qubit connected to the area is acted upon with the associated Pauli operator.
-        Figure e) and f) show one possible realization of the logical operators $\bar{X}$ and $\bar{Z}$ respectively. 
+        Figures e) and f) show one possible realization of the logical operators $\bar{X}$ and $\bar{Z}$ respectively. 
         }
     \label{fig:surface_code_explaination}
 \end{figure}
@@ -895,10 +879,11 @@ We can express the plaquette stabilizers as
     S_{Z,i} =  \bigotimes_{j \in B_i} Z_j,
 \end{equation}
 where $B_i$ are the edges forming the cell of the $i$-th plaquette stabilizer.
-Note that the site and plaquette stabilizers in the bulk act on $4$ qubits each, whereas the generators on the edge only act on $3$ qubits each.
+
+Note that the site and plaquette stabilizers in the bulk act on $4$ qubits each, whereas the generators on the boundary only act on $3$ qubits each.
 Both those claims can be seen in figure \ref{fig:surface_code_explaination} b),c) and d).
 
-We can easily check that all generators commute, given each site always overlap on an even number of qubits, either $0$ or $2$, with all plaquette stabilizer and vice versa.
+We can easily check that all generators commute, given that each site stabilizer always overlaps on an even number of qubits, either $0$ or $2$, with all plaquette stabilizers and vice versa.
 Site and plaquette stabilizers trivially commute with other stabilizers of their type, given that they are either only of $X$- or $Z$-type.
 
 We defined $m=2d(d-1)$ linear independent generators.
@@ -908,79 +893,78 @@ Therefore we can encode
 \end{equation} 
 logical qubit.
 
-The associated logical operators are the logical bit-flip $\bar{Z}$, a string of $Z$-type Paulis connecting\footnote{
+The associated logical operators are the logical phase-flip $\bar{Z}$, a string of $Z$-type Paulis connecting\footnote{
     The need for the logical operators to connect the boundaries can be traced back to the toric code and its non contractable loops.
     } the rough boundaries (top and bottom),
-and the logical phase-flip $\bar{X}$, a string of $X$-type Paulis connecting the smooth boundaries (left and right site).
+and the logical bit-flip $\bar{X}$, a string of $X$-type Paulis connecting the smooth boundaries (left and right site).
 One representation of each is shown in figure \ref{fig:surface_code_explaination} in e) and f) respectively.
 As the logical operators need to connect the boundaries, we can identify the code distance $d$ as the minimal number of qubits along such a line, which is the length of the lattice.
-Connecting the boundaries of the surface code is therefore analogous to the noncontractable loop of the toric code \cite{topological_quantum_memory}.
+Connecting the boundaries of the surface code is therefore analogous to the non-contractable loop of the toric code \cite{topological_quantum_memory}.
 
 Note that the two logical operators are symmetric.
 A rotation of the surface code by $\pi/2$, combined with a basis change from $\ket{0}$ to $\ket{+}$,maps $\bar{X}$ to $\bar{Z}$ or vice versa. 
 
 Consequently, the code has a symmetry enabling the exchange of $X$ and $Z$, and therefore also under the exchange of bit- and phase-flip errors. 
 This symmetry is exploited in the adaptation\footnote{
-    Instead of reimplementing a new decoder, we can just change rotate the syndrome by $\pi/2$, to switch between bit- and phase-flip errors.
+    Instead of reimplementing a new decoder, we can just rotate the syndrome by $\pi/2$, to switch between bit- and phase-flip errors.
 } of the ML decoder proposed in \cite{efficient_decoding_algorithm}.
 As a result, we expect the code-capacity noise model to produce identical results for pure bit-flip and pure phase-flip noise, since the code-capacity noise model is itself symmetric.\footnote{
-The circuit-level noise model breaks this symmetry due asymmetry between $X$ and $Z$ introduced by the syndrome-extraction circuit.
+The circuit-level noise model breaks this symmetry due to the asymmetry between $X$ and $Z$ introduced by the syndrome-extraction circuit.
 } This expectation is confirmed in the results presented in section \ref{sec:results_code_capacity}.
 
 
-
-The surface codes scales by increasing the size of the lattice and therefore the code distance $d$. 
-The surface code scales with code distance $d$ as 
+The surface code scales by increasing the size of the lattice and therefore the code distance $d$. 
+It scales with code distance $d$ as 
 \begin{equation}
     [[n= d^2 + (d-1)^2, k=1, d]].
 \end{equation}
-As such the surface code will stay constant in the number of logical encoded qubits, always encoding one logical qubit.
+As such the surface code will stay constant in the number of encoded logical qubits, always encoding one logical qubit.
 In contrast the number of physical qubits\footnote{
     Note that we do not take into account any qubits needed for syndrome extraction.
 } required to encode this qubit will scale quadratically in the distance $d$.
+
 We have $m=n-k$ stabilizers and 
 \begin{equation}
    2^m = 2^{2d^2 - 2d} 
 \end{equation}
 possible different syndromes.
-Given that the syndromes scales exponentially with the distance, it would be wise of us to use an algorithm which can decode the syndrome efficiently.
 
-Luckily for us, such an algorithm exist for maximum likelihood decoding for the surface code for a certain set of error models \cite{efficient_decoding_algorithm}.
-This algorithm is the reason we choose to use the surface code.
-We could use any CSS code as an underlying encoding for Steane type error correction, because in all CSS codes logical CNOT gates can be implemented transversely. 
+Given that the number of syndromes scales exponentially with the distance, an algorithm that can decode the syndrome efficiently is essential. 
 
+Such an algorithm exist for maximum likelihood decoding for the surface code for a certain set of error models \cite{efficient_decoding_algorithm}.
+We could use any CSS code as an underlying encoding for Steane-type error correction, because in all CSS codes logical CNOT gates can be implemented transversally, 
+but this efficient ML decoder is a good reason to use the surface code.
 
-% Should I talk about syndrome extraction and state initialization 
 
 \section{Pauli Frame Tracking - Recovery}\label{sec:pauli_frame_tracking}
 
 The last step of a QEC cycle is the recovery and in this section we discuss a way to implement this recovery without applying any operation onto the state, but by reinterpreting the measurements.
 
 This approach is called \emph{Pauli frame tracking} \cite{pauli_frame_tracking_knill} and it is essentially just the bookkeeping of the corrections.
-The approach is based on the isomorphism between the error subspaces and codespace.
-And closely related to the concept of splitting the Pauli into different parts, as shown in equation \ref{eq:pauli_rewriting_stabilizer_formalism}. 
-We can treat the recovery the same way as the errors\footnote{The stabilizer parts is once again neglectable, as is the phase.}, separating it into a canonical representation of the syndrome $E_\sigma$, determined through the extracted syndrome, and a logical component $\bar{L}$ given by the decoder.
+The approach is based on the isomorphism between the error subspaces and the codespace,
+and is closely related to the concept of splitting the Pauli into different parts, as shown in equation \ref{eq:pauli_rewriting_stabilizer_formalism}. 
+We can treat the recovery the same way as the errors\footnote{The stabilizer part is once again negligible, as is the phase.}, separating it into a canonical representation of the syndrome $E_\sigma$, determined through the extracted syndrome, and a logical component $\bar{L}$ given by the decoder.
 This combination is the so-called Pauli frame.
 
-As we have discussed already in section \ref{ssec:syndrome}, each syndrome can be associated with an subspace which is isomorphic to the codespace.
+As we have discussed already in section \ref{ssec:syndrome}, each syndrome can be associated with a subspace which is isomorphic to the codespace.
 We can then just redefine the error subspace, in which the state currently lies, as the new codespace.
 It is therefore not necessary to apply the canonical representation of the syndrome $E_\sigma$ as a correction to the circuit, to map the state back to the $+1$ eigenspace of all generators of the stabilizer group. 
 We could just change the sign of the generators, such that the trivial syndrome points to this new subspace.
-This redefinitions of the signs of the generators can be done in post processing\footnote{
-    I use the term \emph{post processing} here to refer to processing applied to the final measurements.
+This redefinition of the signs of the generators can be done in post processing\footnote{
+    We use the term \emph{post processing} here to refer to processing applied to the final measurements.
     As such those operations can be done independently of the execution of the circuit.
-} by taking the logical XOR of the measured error syndrome with syndrome of the redefined codespace.
+} by taking the logical XOR of the measured error syndrome with the syndrome of the redefined codespace.
 
 Under the assumption that the circuit consists of only Clifford gates\footnote{
 Note that to be able to perform general quantum computations we need to be able to also perform non-Clifford operations. 
 In those cases we need to be able to apply the correction in time \cite{terhal_qec_formalism}. 
 But because we are only interested in a quantum memory simulation, we do not face this problem. 
-}, we can postpone the logical correction and just reinterpretation the result of the observable measurements.
+}, we can postpone the logical correction and just reinterpret the result of the observable measurements.
 The basis for this is that we can commute the Pauli frame through the complete circuit, as Clifford gates map Pauli operators to Pauli operators.
 The exact Pauli frame is therefore only needed in the post processing after the execution of the circuit, and not while executing the circuit for Clifford only circuits.
-And we can predict the logical observable we observable we would expect to see, or the change to it, by analyzing how the Pauli frame commute with the observable. 
+And we can predict the logical observable we would expect to see, or the change to it, by analyzing how the Pauli frame commutes with the observable. 
 
-\textcolor{red}{Maybe use a few equations to show that we can reduce the correction problem for only paulis + clifford circuit to a commutation or anticommutation problem.}
+% \textcolor{red}{Maybe use a few equations to show that we can reduce the correction problem for only paulis + clifford circuit to a commutation or anticommutation problem.}
 % As such we can perform multiple rounds of error correction after another without applying any operation to the system.
 % To give an example lets start in a known state $\ket{0}_L$ with the trivial syndrome $\sigma_0$, followed by two independent rounds of QEC with the syndromes $\sigma_1$ and $\sigma_2$.
 % We label the occurred errors by $E_1 = E_{\sigma_1} \bar{L}_1 S_1$ and $E_2 = E_{\sigma_2} \bar{L}_2 S_2$, following the notation from equation \ref{eq:pauli_rewriting_stabilizer_formalism} $E_\sigma$ is the canonical representation of the syndrome, $\bar{L}$ is an logical operator and $S$ is an element of the stabilizer group. 
