@@ -63,15 +63,16 @@ To implement this error model we use the following error channels.
 Measurement errors are simulated by placing a bit- or phase-flip channel (eq. \eqref{eq:bit_flip_channel} and eq. \eqref{eq:phase_flip_channel} respectively) onto measured qubits before the measurement.
 Bit-flip errors are placed before $Z$ measurements and phase-flip errors are placed before $X$ measurements to simulate faulty measurements.
 
-For two-qubit gates, such as CNOTs, two-qubit depolarizing noise $\varepsilon_{D_2}$ is applied on both qubits, $q1$ and $q2$, after the gates acted on those qubits 
+For two-qubit gates, such as CNOTs, two-qubit depolarizing noise $\varepsilon_{D_2}$ is applied on both qubits, $q_1$ and $q_2$, after the gates acted on those qubits 
 \begin{equation}
     \varepsilon_{D_2}(\rho) = (1-p_{phy}) \rho + \frac{p_{phy}}{15} \sum_{i=1}^{15} E_i \rho E_i,
     \label{eq:depo_2_noise}
 \end{equation}
 with
 \begin{equation}
-    E_i \in \{E_{k}^{q1} \otimes E_{l}^{q2} | E_k,E_l \in \{I,X,Y,Z\} \} \setminus \{I\otimes I \}.
+    E_i \in \{E_{k}^{q_1} \otimes E_{l}^{q_2} | E_k,E_l \in \{I,X,Y,Z\} \} \backslash \{I\otimes I \}.
 \end{equation}
+with $ k,l \in  \{0,1,2,3\}$
 
 After initialization of the qubits we place a depolarizing single-qubit noise channel $\varepsilon_{D_1}$ on each qubit
 \begin{equation}
@@ -136,9 +137,9 @@ and how the specific circuit design influences it.
 
 \subsection{CNOT Gate}\label{ssec:cnot_gate}
 
-Error do not affected the circuit at fixed positions, their effect can also be propagated through the circuit as shown by the example of the \emph{CNOT gate}. 
+Errors do not only affect the circuit at fixed positions, their effect can also be propagated through the circuit as shown by the example of the \emph{CNOT gate}. 
 
-The CNOT gate is a two qubit gate and which implements the quantum version of the controlled NOT operation.
+The CNOT gate is a two qubit gate which implements the quantum version of the controlled NOT operation.
 Especially important for the use case in this thesis is how this gate propagates errors ($E$) \cite{gottesmann_book}.
 The CNOT operation is unitary and hermitian, as such its action on a faulty state can be written as 
 \begin{equation}
@@ -150,6 +151,10 @@ An error acting only on the control qubit of the CNOT gate, $E = X \otimes I$, w
 This can be expressed as the statement: 
 the CNOT gate propagates $X$-type errors from the control qubit onto the target qubit.
 This effect is also illustrated in figure \ref{circ:cnot_x_error_prop}
+A similar propagation can be observed for $Z$-errors.
+$E = I \otimes Z$, becomes $Z \otimes Z$ following equation \eqref{eq:cnot_commutation}. 
+As such $Z$-type errors are propagated from the target qubit onto the target and control qubit by the CNOT gate.
+
 
 \begin{figure}
     \begin{center}
@@ -167,15 +172,11 @@ This effect is also illustrated in figure \ref{circ:cnot_x_error_prop}
     \label{circ:cnot_x_error_prop}
 \end{figure}
 
-A similar propagation can be observed for $Z$-errors.
-$E = I \otimes Z$, becomes $Z \otimes Z$ following equation \eqref{eq:cnot_commutation}. 
-As such $Z$-type errors are propagated from the target qubit onto the target and control qubit by the CNOT gate.
 
-Therefore each CNOT gate, even if free of faults, can therefore increase the effective number of errors present in the circuit.
+Each CNOT gate, even if free of faults, can increase the effective number of errors present in the circuit.
 Given that errors can occur at all possible locations in the circuit, 
 the circuit should be designed in a way that the propagation of errors is kept under control.
 This property will be formalized as the fault tolerance of a circuit in the next section.
-
 The error propagation property of CNOT gates is used advantageously in the construction of syndrome extraction circuit as discussed in chapter \ref{chapter:syndrome_extraction}. 
 
 
@@ -199,7 +200,7 @@ The fault-tolerant condition is introduced to preserve the relation between the 
 A circuit is defined as fault-tolerant if at least $t+1$ independent error events are required to produce a logical operator on the encoded code block at the end of the QEC cycle.
 If a single error event leads to a reduction in the effective weight of a logical operator
 \footnote{
-    Here, the term effective weight of the logical operator refers to the number of independent error events required to realize it.
+    Here, the term effective weight of the logical operator refers to the minimal number of independent error events required to realize it.
     We can define the effective weight of an error event, as the weight it can contribute to a logical operator. 
     For the code-capacity setting, the effective weight of an error is identical to its physical weight. 
     Consequently, the effective and physical weight of a logical operator is also identical.
@@ -217,7 +218,7 @@ This is the case for the Steane-type syndrome extraction circuit, as shown in se
 
 In section \ref{sssec:standard_syndrome_extraction_circuit} we discuss hook errors for the conventional syndrome extraction circuit. 
 Those are single error events propagating onto multiple qubits of an encoded code block, but they do not (necessarily) break fault tolerance.
-This is because hook errors can be oriented such that the propagated error does not lead to an reduced effective weight of the logical operators of the QEC code.
+This is because hook errors can be oriented such that the propagated error does not lead to a reduced effective weight of the logical operators of the QEC code.
 
 % residual error
 \subsubsection{Residual Error}\label{sssec:residual_error}
