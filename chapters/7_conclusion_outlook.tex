@@ -6,7 +6,7 @@ resulting in thresholds which are consistent with the literature values when tak
 
 Regarding the finite-size effects, we observed their occurrence and were able to show
 that their impact on the threshold can be reduced by raising the lower bound of the code distance.
-With the code distances used in this thesis, we determined thresholds roughly between $0.03\%$ (MWPM) and $0.1\%$ (ML) below the expected literature value.
+With the code distances used in this thesis, we determined thresholds roughly between $0.03\%$ (MWPM) and $0.1\%$ (ML) below the expected literature values of $10.31\%$ (MWPM) and $10.94\%$ (ML).
 We concluded that this difference is due to the suppression of the threshold by finite-size effects, 
 which also affect all thresholds obtained for the circuit-level noise setting.
 
@@ -19,7 +19,7 @@ The occurrence of those numerical underflow error grows with decreasing physical
 By setting an upper limit on the code distance, and by implementing some of the proposed mitigation strategies, 
 we were able to perform the threshold analysis with negligible rejection rates.
 
-Turning the focus to the task at hand, the characterization of Steane-type error correction under circuit-level noise,
+For the characterization of Steane-type error correction under circuit-level noise 
 we found that STEC thresholds are significantly above the thresholds of the conventional syndrome extraction circuit.
 Under the assumptions made in this thesis, 
 chief among them the assumed access to fault-tolerantly prepared logical encoded ancilla qubits, 
@@ -27,8 +27,8 @@ which works in favour of STEC,
 we observed thresholds for STEC which are at least a factor $2$ higher than those of the conventional approach. 
  
 For the single QEC cycle we determined a threshold at a physical noise rate of approximately $3\%$.
-During the analysis we observed the predicted occurrence of an asymmetry in the observable ($\bar{Z}: p_{th} = 2.961 \pm 0.011 \%$ and $\bar{X}: p_{th} = 3.3690 \pm 0.0080 \% $) see section \ref{ssec:results_circ_single_cycle}.
-While we are able to qualitatively argue for the occurrence of such an asymmetry, 
+During the analysis we observed the expected occurrence of an asymmetry in the observable ($\bar{Z}: p_{th} = 2.961 \pm 0.011 \%$ and $\bar{X}: p_{th} = 3.3690 \pm 0.0080 \% $) see section \ref{ssec:results_circ_single_cycle}.
+While we are able to qualitatively argue for the occurrence of an asymmetry, 
 quantifying which of the observables is benefiting more from the two opposing mechanisms, 
 is a task which requires further analysis, as the incoming error model, 
 as well as the influence of the residual error decoder have to be taken into account and quantified.
@@ -39,7 +39,7 @@ the configuration that uses ML decoding within the QEC cycle and whose half-cycl
 probability of the relevant error type in the residual error, which lends credence to the asymmetry argument made
 above.
 
-The investigation of the choice of decoder during the QEC cycle showed that the ML decoder outperforms the MWPM decoder,
+The investigation of the choice of decoder during the QEC cycle showed that the ML decoder on the ancilla outperforms the MWPM decoder,
 showing a higher threshold for all configurations.
 The difference persists even over multiple QEC cycles, stabilizing at differences between $0.07\%$ and $0.09\%$, see table \ref{tab:results_multi_round}.
 
@@ -74,7 +74,7 @@ STEC achieves a threshold which is significantly higher than
 the threshold determined for the conventional syndrome extraction circuit.
 
 This increased threshold combined with STEC's property of constant-in-time scaling of the syndrome extraction process,
-makes STEC an interesting topic for further research. 
+makes STEC an interesting topic. 
 
 A clear first target for this further research is to reduce the assumptions to obtain this threshold, 
 focusing on the major assumption of the access to fault-tolerantly prepared logical encoded ancilla qubits.
