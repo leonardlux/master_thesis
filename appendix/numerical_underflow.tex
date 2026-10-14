@@ -97,7 +97,7 @@ We refer to this method of constructing the representative error as the \emph{Br
 Before the rejection rate was implemented as a mitigation strategy, the logical error rate exhibited the form shown in figure \ref{fig:exmaple_observed_numerical_underflow}.
 The simulation was performed using a code-capacity noise model with only bit-flip errors, measuring the corresponding logical $Z$ observable.
 The logical error rate $p_{log}$ generally follows the expected behavior for high physical error rates $p_{phy}$.
-In particular the logical error rate curves for the code distances $d\in \{3,5,7\}$, show no obvious anomaly and they exhibit the asymptotic scaling predicted by equation \ref{eq:p_log_asymptotic_behavior}, as discussed in chapter \ref{chapter:qec_thresholds}.
+In particular the logical error rate curves for the code distances $d\in \{3,5,7\}$, show no obvious anomaly and they exhibit the asymptotic scaling predicted by equation \eqref{eq:p_log_asymptotic_behavior}, as discussed in chapter \ref{chapter:qec_thresholds}.
 
 Starting with the logical error rate curve of a distance $d=9$ surface code, an anomalous upward trend becomes apparent,
 breaking from the expected asymptotic scaling at a physical error rate of $p_{\mathrm{phy}} \approx 5\%$. 
@@ -109,7 +109,7 @@ Interestingly, the irregularity of the logical error rate curves below the criti
 Repeating the simulation yields the same curve, up to the expected statistical uncertainty. 
 We therefore conclude that the observed anomaly is deterministic, rather than a statistical artifact.
 
-As shown in equation \ref{eq:mean_prop_coset_in_distance}, the average probability of an individual coset decreases with increasing code distance.
+As shown in equation \eqref{eq:mean_prop_coset_in_distance}, the average probability of an individual coset decreases with increasing code distance.
 Likewise, reducing the physical error rate decreases the probability of most cosets, since the trivial (no-error) coset becomes increasingly dominant. 
 This reduction in coset probability shows the same qualitative behavior as the observed anomaly and the shift of its critical point.  
 Consequently, the probabilities involved in the decoding algorithm become progressively smaller, suggesting numerical underflow as a plausible explanation for the observed anomaly.

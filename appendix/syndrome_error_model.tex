@@ -30,8 +30,8 @@
     Steane circuit diagram with circuit level noise. 
     Here the channels are marked at their positions.
     The different noise channels are marked by the red boxes, where the labels are assigned as follows:
-    $D$ is the single qubit depolarizing noise channel (equation \ref{eq:depo_1_noise}), $D2$ is the two qubit depolarizing noise channel (equation \ref{eq:depo_2_noise}) 
-    and $X$($Z$) symbolizes bit-(phase-)flip error channels (equations \ref{eq:bit_flip_channel}, \ref{eq:phase_flip_channel} respectively). 
+    $D$ is the single qubit depolarizing noise channel (equation \eqref{eq:depo_1_noise}), $D2$ is the two qubit depolarizing noise channel (equation \eqref{eq:depo_2_noise}) 
+    and $X$($Z$) symbolizes bit-(phase-)flip error channels (equations \eqref{eq:bit_flip_channel}, \eqref{eq:phase_flip_channel} respectively). 
     }
 \label{circ:start_circ_lvl_noise}
 \end{figure}
@@ -63,8 +63,8 @@ it holds for all possible underlying encodings compatible with STEC.
 
 Applying the circuit-level noise model to STEC results in the noise model shown in figure \ref{circ:start_circ_lvl_noise}.
 As indicated in the circuit figure we use the noise channels introduced in chapter \ref{chapter:error_models}.
-This includes the bit- and phase-flip noise channel (equations \ref{eq:bit_flip_channel}, \ref{eq:phase_flip_channel}), 
-the depolarizing one qubit noise channel (equation \ref{eq:depo_1_noise}) and the depolarizing two qubit noise channel (equation \ref{eq:depo_2_noise}).
+This includes the bit- and phase-flip noise channel (equations \eqref{eq:bit_flip_channel}, \eqref{eq:phase_flip_channel}), 
+the depolarizing one qubit noise channel (equation \eqref{eq:depo_1_noise}) and the depolarizing two qubit noise channel (equation \eqref{eq:depo_2_noise}).
 Each channel gets assigned its own probability for the analysis, the notation to identify the probability assigned to each channel is shown in figure \ref{circ_dia:start_circ_lvl_noise_define_probabilities}. 
 
 \begin{figure}
@@ -466,7 +466,7 @@ The serial combination of depolarizing channels can be rewritten as
     &= N_{D;p_c}(\rho)
 \end{align*}
 
-Because we include the identity operator in the sum, the product of the sums becomes easy to calculate using the equation \ref{eq:sum_trick} 
+Because we include the identity operator in the sum, the product of the sums becomes easy to calculate using the equation \eqref{eq:sum_trick} 
 \begin{equation*}
     \left( \sum_{i=0}^{3} \hat{E_i}\right) \cdot \left( \sum_{i=0}^{3} \hat{E_i}\right) = 4 \left( \sum_{i=0}^{3} \hat{E_i}\right) .
 \end{equation*}
@@ -491,7 +491,7 @@ This function will be used in the following chapter using the following notation
     \label{eq:depo_depo_composition}
 \end{equation}
 
-We can also rewrite equation \ref{eq:composition_depo_depo_prob_simple} as a sum of non-negative contributions,
+We can also rewrite equation \eqref{eq:composition_depo_depo_prob_simple} as a sum of non-negative contributions,
 \begin{equation}
     p^c_D(p_1,p_2) = p_1 (1-p_2) + (1-p_1) p_2 + \frac{2}{3} p_1 p_2
     \label{eq:sem_depo_depo_not_negative}
@@ -527,7 +527,7 @@ The composition of a (bit-)flip and depolarizing channel takes the form
     \cdot \left( \left(1-\frac{4}{3}p_D\right) \hat{I} + \frac{1}{3} p_D \sum_{i=0}^{3}\hat{E_i} \right) \\
     &= (1-p_x)\left(1-\frac{4}{3}p_D\right) \hat{I} + \frac{1}{3} p_D \sum_{i=0}^{3}\hat{E_i}  + p_x\left(1-\frac{4}{3}p_D\right) \hat{X}
 \end{align*}
-where we used the trick from equation \ref{eq:sum_trick}
+where we used the trick from equation \eqref{eq:sum_trick}
 \begin{equation*}
     \sum_{i=0}^{3} \hat{X}\hat{E_i} = 
     \sum_{i=0}^{3} \hat{E_i}. 
@@ -591,7 +591,7 @@ can be combined using the equations describing the composition of channels, show
 
 This is done in two separate steps, in the first we compute the composition of all channels of the same type. 
 As the propagated channels only take the form of bit-flip, phase-flip or depolarizing channels, we are left with three independent channels at the end of this step,
-whose probabilities are combined using equation \ref{eq:composition_flip_channel} for the flip channels and equation \ref{eq:composition_depo_depo_prob_simple} for the depolarizing channels.
+whose probabilities are combined using equation \eqref{eq:composition_flip_channel} for the flip channels and equation \eqref{eq:composition_depo_depo_prob_simple} for the depolarizing channels.
 
 The resulting probabilities of the three different combined channels, as shown in figure \ref{circ_dia:propagated_noise}, 
 can be expressed in terms of the individual channel probabilities 
@@ -673,7 +673,7 @@ is that finding possible analytical results for given thresholds of symmetric ch
 
 \subsubsection{Product Channel}
 
-To determine for which set of probabilities the SEM can be expressed as a product channel, we start with the probabilities of the SEM, as shown in equation \ref{eq:sem_final_correlated_sem_probs_short}.
+To determine for which set of probabilities the SEM can be expressed as a product channel, we start with the probabilities of the SEM, as shown in equation \eqref{eq:sem_final_correlated_sem_probs_short}.
 \begin{equation}
     p_{t,ij} = \frac{1}{3} p_{D'}^f + \left( 1- \frac{4}{3} p_{D'}^f \right) p_{x,i}^f \cdot p_{z,j}^f 
 \end{equation}
@@ -698,8 +698,8 @@ results in the following cases
 \end{align}
 The resulting probabilities of the different errors are also shown. 
 
-$p_{D'}^f = 0$ is only achievable  if $p_{sp.}=p_{m}=p_{D2}=0$, as those are the channels resulting in the final depolarizing channel, see equation \ref{eq_align:stab_depo_probability},
-and the discussion around equation \ref{eq:sem_depo_depo_not_negative} has shown that the probability of a composite channel is only equal to zero, if all its components are equal to zero.
+$p_{D'}^f = 0$ is only achievable  if $p_{sp.}=p_{m}=p_{D2}=0$, as those are the channels resulting in the final depolarizing channel, see equation \eqref{eq_align:stab_depo_probability},
+and the discussion around equation \eqref{eq:sem_depo_depo_not_negative} has shown that the probability of a composite channel is only equal to zero, if all its components are equal to zero.
 This case is not relevant for the analysis as circuit level noise, as we need to assume multiple components as faultless. 
 
 The second case $p_{D'}^f = 3/4 $ is also not of interest as the resulting SEM cannot contain any information about the occurred error. 
@@ -746,7 +746,7 @@ with,
 
 A trivial solution is the fully depolarizing case $p_{D'}=3/4$, as seen and discussed above.
 
-Otherwise the condition for a depolarizing channel applied to equation \ref{eq:thiiiiiiiis_one_only_cited_here} results in 
+Otherwise the condition for a depolarizing channel applied to equation \eqref{eq:thiiiiiiiis_one_only_cited_here} results in 
 \begin{equation}
     p_{x}^f\cdot p_{z}^f = 
     (1-p_{x}^f)\cdot p_{z}^f = 
@@ -771,13 +771,13 @@ Note that the less strict case for which we only require that bit-flip and phase
 for a single round of QEC.
 This result is rather trivial by looking at the equations \cref{eq:sem_result_phase_flip_prob,eq:sem_result_bit_flip_prob}.
 Since increasing the probability of measurement errors on the ancilla detecting the phase flips $p_{m\ket{0}}$, 
-up until the combined noise rate of the other ancilla (equation \ref{eq:sem_result_bit_flip_prob}), leads to this symmetric case.
+up until the combined noise rate of the other ancilla (equation \eqref{eq:sem_result_bit_flip_prob}), leads to this symmetric case.
 
 \subsection{Quantified Difference: Syndrome - Data Error}\label{ssec:sem_difference_data_qubits}
 
 The correlation between the SEM and the errors on the data qubit can be analyzed by performing the computation to obtain the SEM without neglecting the operators on the data qubit. 
 As the resulting model becomes more complicated, as we are no longer limited to only depolarizing, bit- and phase-flip channels, we performed such computation only up to first order in the probabilities.
-The resulting syndrome-data error model is presented in equation \ref{eq:sem_data_qubit}.
+The resulting syndrome-data error model is presented in equation \eqref{eq:sem_data_qubit}.
 
 It quantifies the relation between the measured syndrome and the actual error on the data qubits. 
 As such we can use it to quantify the probability that the error on the data qubit is equivalent to the measured syndrome $P_{\mathrm{corr}}$, 
@@ -843,7 +843,7 @@ Given that the logical error rate curves will change, the threshold value will m
 This motivates a quantum memory experiment which checks both logical observables to determine if the recovery was successful, 
 which would lead to a more general threshold, as it would be independent of the choice of the ordering for example.
 
-The correlation described in equation \ref{eq:sem_data_qubit} could also be used to improve the ML decoder.
+The correlation described in equation \eqref{eq:sem_data_qubit} could also be used to improve the ML decoder.
 How to use such correlations poses a further research question. 
 
 \clearpage

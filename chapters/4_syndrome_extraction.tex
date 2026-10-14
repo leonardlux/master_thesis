@@ -236,7 +236,7 @@ The resulting threshold thus should be seen as an upper bound for the possible p
 
  
 We can count the resources needed for each QEC cycle, which includes $d$ individual rounds of syndrome extraction. 
-Most of the analysis is identical with the code-capacity case which is shown following equation \ref{eq:resources_conv_se_code_capacity_n_ancillas}.
+Most of the analysis is identical with the code-capacity case which is shown following equation \eqref{eq:resources_conv_se_code_capacity_n_ancillas}.
 Some adaptions are needed to account for the need to repeat the syndrome extraction circuit. 
 
 In the following we assume that the  $n_{\text{ancilla}}$ ancilla qubits can be reset and measured fast enough to reuse them for each syndrome extraction circuit.
@@ -342,7 +342,7 @@ The asymmetry in the residual error is because the errors propagated onto the da
 While the errors propagated through the CNOT of the second half-cycle are part of the undetectable residual error\footnote{
     The noise introduced by the CNOT gate itself is also part of the residual error, but this noise is itself symmetric, and we therefore do not discuss it here.
 } and those errors are only of one type. 
-This discussion is further discussed and formalized in the appendix in section \ref{eq:sem_data_qubit}. 
+This discussion is further discussed and formalized in the appendix in section \eqref{eq:sem_data_qubit}. 
 
 We can use the asymmetry in the order to our advantage. 
 The error type corrected first has the advantage of a lower number of possible circuit-level error locations in the syndrome extraction circuit before the syndrome extraction.

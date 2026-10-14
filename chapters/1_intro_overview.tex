@@ -11,7 +11,7 @@ Deciding on a QEC code is always a compromise between those.
 With the rapidly increasing number of qubits available on different quantum computing platforms, 
 we can afford to accept the tradeoff of using more physical qubits in exchange for a constant-time QEC cycle.
 A major part of each QEC cycle is the syndrome extraction circuit, 
-which extract the information needed for decoding and correction, the syndrome, from the encoded state without compromising the information contained within it. 
+which extracts the information needed for decoding and correction, the syndrome, from the encoded state without compromising the information contained within it. 
 A possible approach for such a syndrome extraction circuit is Steane-type error correction (STEC) \cite{steane_type_EC_og_paper}, 
 which enables constant-time syndrome extraction, 
 thereby limiting the interaction between the data and ancilla qubits.
@@ -33,8 +33,8 @@ which is captured by the so-called circuit-level noise model.
 We characterize the performance of Steane-type error correction by determining the thresholds of a QEC code utilizing STEC.
 The resulting threshold is then used to compare the performance of STEC to different syndrome extraction approaches used with the same underlying code.
 
-We find a threshold results of roughly $3\%$ for a single QEC cycle which is a factor of three greater than the conventional syndrome extraction circuit.
-further results and analysis can be found in the result chapter, chapter \ref{chapter:results}. 
+We find a threshold result of roughly $3\%$ for a single QEC cycle which is a factor of three greater than for the conventional syndrome extraction circuit.
+Further results and analysis can be found in the result chapter, chapter \ref{chapter:results}. 
 
 \section{Overview of the Thesis}
 
@@ -54,7 +54,7 @@ The thesis is organized as follows:
     \item The following chapter \ref{chapter:error_models} introduces the error models used in this thesis. 
     We start with the basic \emph{code-capacity} error model in section \ref{sssec:code_capacity_error_model}.
     This error model is later used only as a baseline to test our implementation and analysis, since the syndrome extraction circuit design does not influence the threshold under this noise setting, 
-    and since analytically calculated thresholds are available for comparison with our results. 
+    and since numerically calculated thresholds are available for comparison with our results. 
     The more realistic and relevant \emph{circuit-level} noise model is introduced in the following section \ref{sssec:circuit_level_noise}, 
     which includes a discussion of noise propagation through the circuit in subsection \ref{ssec:cnot_gate}
     and concludes with the introduction of the \emph{fault-tolerance} property of a circuit in subsection \ref{sec:fault_tolerance}. 
@@ -83,6 +83,7 @@ The thesis is organized as follows:
     This includes an extensive discussion of the effect the ordering of the half-cycles of the STEC circuit has on the threshold.  
 
     \item We conclude this thesis with chapter \ref{chapter:conclusion}, in which we summarize the important findings of the previous chapters and contextualize those with the underlying assumptions of our approach.
-    We use this chapter to sketch an outlook on possible problems that might be worth investigating further, either to improve upon the results obtained in this thesis, or to further the investigation into and characterization of STEC.
+    We use this chapter to sketch an outlook on possible problems that might be worth investigating further, either to improve upon the results obtained in this thesis, 
+    or or to further the characterization of STEC.
 
 \end{enumerate}

@@ -105,7 +105,7 @@ These assumptions hold for $d\rightarrow \infty$.
 For finite size small variation may appear \cite{pyfssa,mwpm_threshold_paper},
 which are discussed as part of the results in section \ref{sssec:finite_size_min_d}.
 
-Following equation \ref{eq:data_collapse_method}, plotting $y=p_{log,d}(p_{phy})$ against $x=d^{1/\nu} \cdot(p_{phy}-p_{th})$ should collapse the simulated data onto one curve, 
+Following equation \eqref{eq:data_collapse_method}, plotting $y=p_{log,d}(p_{phy})$ against $x=d^{1/\nu} \cdot(p_{phy}-p_{th})$ should collapse the simulated data onto one curve, 
 corresponding to the scaling function $f(x)$, 
 under the assumption that we use the correct threshold $p_{th}$ and critical exponent $\nu$.
 We can turn this relation around and determine the values of the threshold $p_{th}$ and the critical exponent $\nu$, 
@@ -121,8 +121,8 @@ We then use those estimates to calculate the values we want to plot against one 
 \end{align}
 
 We sort those data points by their $x$-values and index them as $x_i$ and $y_i$. 
-We then compare each data point $y_i$ to the expectation value $\bar{y}_i$ obtained by linear interpolation of its two neighbors (equation \ref{eq:dcm_bar_y}), 
-and weight the deviation by the propagated uncertainty of that comparison (equation \ref{eq:dcm_error_propagation} and equation \ref{eq:dcm_weighted_difference}).
+We then compare each data point $y_i$ to the expectation value $\bar{y}_i$ obtained by linear interpolation of its two neighbors (equation \eqref{eq:dcm_bar_y}), 
+and weight the deviation by the propagated uncertainty of that comparison (equation \eqref{eq:dcm_error_propagation} and equation \eqref{eq:dcm_weighted_difference}).
 
 \begin{align}
 \bar{y}_i &= \frac{(x_{i+1} - x_i)\,y_{i-1} + (x_{i} - x_{i-1})\,y_{i+1}}{x_{i+1} - x_{i-1}} \label{eq:dcm_bar_y}\\

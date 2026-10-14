@@ -60,7 +60,7 @@ as the Steane-type error correction circuits has no idling qubits.
 This means that our whole decoding process is faulty as well.
 
 To implement this error model we use the following error channels.
-Measurement errors are simulated by placing a bit- or phase-flip channel (eq. \ref{eq:bit_flip_channel} and eq. \ref{eq:phase_flip_channel} respectively) onto measured qubits before the measurement.
+Measurement errors are simulated by placing a bit- or phase-flip channel (eq. \eqref{eq:bit_flip_channel} and eq. \eqref{eq:phase_flip_channel} respectively) onto measured qubits before the measurement.
 Bit-flip errors are placed before $Z$ measurements and phase-flip errors are placed before $X$ measurements to simulate faulty measurements.
 
 For two-qubit gates, such as CNOTs, two-qubit depolarizing noise $\varepsilon_{D_2}$ is applied on both qubits, $q1$ and $q2$, after the gates acted on those qubits 
@@ -168,7 +168,7 @@ This effect is also illustrated in figure \ref{circ:cnot_x_error_prop}
 \end{figure}
 
 A similar propagation can be observed for $Z$-errors.
-$E = I \otimes Z$, becomes $Z \otimes Z$ following equation \ref{eq:cnot_commutation}. 
+$E = I \otimes Z$, becomes $Z \otimes Z$ following equation \eqref{eq:cnot_commutation}. 
 As such $Z$-type errors are propagated from the target qubit onto the target and control qubit by the CNOT gate.
 
 Therefore each CNOT gate, even if free of faults, can therefore increase the effective number of errors present in the circuit.
@@ -191,7 +191,7 @@ A QEC code, the surface code for example, can be implemented in a FT and a non-F
 
 
 The code distance $d$, introduced in section \ref{sssec:distance_stabilizer_formalism},
-quantifies the maximum weight $t$ of an error that is guaranteed to be correctable in the code-capacity setting (see \ref{eq:correctable_errors}).
+quantifies the maximum weight $t$ of an error that is guaranteed to be correctable in the code-capacity setting (see \eqref{eq:correctable_errors}).
 In the circuit-level noise model, errors can occur at any location in the circuit and operations 
 such as CNOT gates can propagate a single error to multiple qubits (see section \ref{ssec:cnot_gate}), thereby increasing their effective weight.
 The fault-tolerant condition is introduced to preserve the relation between the code distance $d$ and the number of guaranteed correctable errors $t$ for the circuit-level noise model.
