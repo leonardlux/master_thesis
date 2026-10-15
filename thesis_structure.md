@@ -57,7 +57,7 @@ Adapting this to use a numbered is on my todo list, for after the presentation.
 8. place final statement of seperation of paulis at the start of the chapter
     + here i am talking about the basic intro chapter
 
-9. cosets of stabilizer group and logical cosets -> make those point clearer earlier -> discuss at some point with maarten
+9. cosets of stabilizer group and logical cosets -> make point clearer earlier -> discuss at some point with maarten
 
 10. maybe resize images?
 
@@ -359,7 +359,7 @@ Modifiable parameters of Circuit
 1. use newly calculated phenomological noise model for ML Decoding
 2. Discuss if this is truly ML implementation
 3. Discuss numerical imprecission Problems
-    + quantify those (TODO)
+    + quantify (TODO)
 
 
 ### MWPM Implementation:

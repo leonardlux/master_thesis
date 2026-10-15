@@ -1,0 +1,23 @@
+Throughout :
+
+- 1-line paragraphs : merge
+
+- Literal repetitions within a few lines (marked)
+
+- Grammar / incomplete lines (marked)
+
+- Appendix figures
+
+- Search for:
+
+   "Note" check that it can be a footnote..
+
+    Those -> These (most of the time)
+    
+    References to appendix: cite them as App. (X).
+
+-  Equation -> Eq. (X) most often...
+
+
+
+Don't write "NOte..." in a footNOTE ... (superfluous).

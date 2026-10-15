@@ -22,7 +22,7 @@ It can be determined through a mapping to statistical physics models for some QE
 including the surface code under code-capacity noise\footnote{
     Note that under code-capacity noise the choice of syndrome extraction circuit has no effect.
     }.
-For those models, we can identify a phase transition between an ordered and a unordered phase at the threshold \cite{fundamental_thresholds,topological_quantum_memory}.
+For these models, we can identify a phase transition between an ordered and a unordered phase at the threshold \cite{fundamental_thresholds,topological_quantum_memory}.
 
 In this thesis we will use a numerical approach to determine the threshold for different configurations as described in the following section.
 
@@ -33,7 +33,7 @@ In this thesis we keep the encoding (see section \ref{sec:kitaev_surface_code}) 
 and vary the choice of error model (see chapter \ref{chapter:error_models}), 
 syndrome extraction circuit (see chapter\ref{chapter:syndrome_extraction}), 
 decoder (section \ref{sec:decoding_problem_general}) and the logical observable.
-For each of those QEC configurations we calculate the logical error rate $p_{log}$ for different physical error rates $p_{phy}$ and code distances $d$.
+For each of these QEC configurations we calculate the logical error rate $p_{log}$ for different physical error rates $p_{phy}$ and code distances $d$.
 
 The logical error rates $p_{log,d}(p_{phy})$ are obtained through the simulation of the quantum memory experiment.
 The simulation starts with the logical encoded data qubit in a known state dependent on the observable we want to measure at the end.
@@ -102,10 +102,9 @@ Following equation \eqref{eq:data_collapse_method}, plotting $y=p_{log,d}$ again
 corresponding to the scaling function $f(x)$, 
 under the assumption that we use the correct threshold $p_{th}$ and critical exponent $\nu$.
 We can turn this relation around and determine the values of the threshold $p_{th}$ and the critical exponent $\nu$, 
-using the fact that the data points should collapse onto a curve under the correct choice for those values.
-
+using the fact that the data points should collapse onto a curve under the correct choice for these values.
 To realize this approach, we first estimate values for the critical exponent $\tilde{\nu}$ and threshold $\tilde{p}_{th}$.
-We then use those estimates to calculate the values we want to plot against one another, which we will refer to as $x$ and $y$, using 
+We then use these estimates to calculate the values we want to plot against one another, which we will refer to as $x$ and $y$, using 
 \begin{align}
     x&=d^{1/\tilde{\nu}} \cdot(p_{phy}-\tilde{p}_{th}) 
     \label{eq:data_collapse_x}
@@ -113,7 +112,7 @@ We then use those estimates to calculate the values we want to plot against one 
     y&=p_{log,d}(p_{phy}).
 \end{align}
 
-We sort those data points by their $x$-values and index them as $x_i$ and $y_i$. 
+We sort these data points by their $x$-values and index them as $x_i$ and $y_i$. 
 We then compare each data point $y_i$ to the expectation value $\bar{y}_i$ obtained by linear interpolation of its two neighbors (eq. \ref{eq:dcm_bar_y}), 
 and weight the deviation by the propagated uncertainty of that comparison (eq. \ref{eq:dcm_error_propagation} and eq. \ref{eq:dcm_weighted_difference}):
 
@@ -135,7 +134,7 @@ until it minimizes the value within the given tolerance.
 We use the Nelder-Mead method with a tolerance of $10^{-5}$ \cite{Scipy}.
 It then returns the values for the threshold $p_{th}$ and the critical exponent $\nu$, 
 which have the minimal mean weighted difference between data points and their interpolation. 
-We can then use those values to see how well such an optimization process collapsed the data onto a curve.
+We can then use these values to see how well such an optimization process collapsed the data onto a curve.
 An example is shown in figure \ref{fig:results_code_capacity_Z_ml_p_log_p_phy_collapsed_data}.
 Both the collapsed data curves and the underlying logical error rate curves are shown in the appendix \ref{appendix:data_collapse_figures}, for all thresholds calculated in this thesis. 
 % This chapter is structured in accordance with the result chapter, as will be explained in the result chapter, chapter \ref{chapter:results}. 

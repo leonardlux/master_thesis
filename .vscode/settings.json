@@ -50,5 +50,6 @@
         "unrotated",
         "Wavefunction",
         "Wegewijs"
-    ]
+    ],
+    "latex-workshop.latex.autoBuild.run": "never"
 }

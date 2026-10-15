@@ -63,7 +63,7 @@ To implement this error model we use the following error channels.
 Measurement errors are simulated by placing a bit- or phase-flip channel (eq. \eqref{eq:bit_flip_channel} and eq. \eqref{eq:phase_flip_channel} respectively) onto measured qubits before the measurement.
 Bit-flip errors are placed before $Z$ measurements and phase-flip errors are placed before $X$ measurements to simulate faulty measurements.
 
-For two-qubit gates, such as CNOTs, two-qubit depolarizing noise $\varepsilon_{D_2}$ is applied on both qubits, $q_1$ and $q_2$, after the gates acted on those qubits 
+For two-qubit gates, such as CNOTs, two-qubit depolarizing noise $\varepsilon_{D_2}$ is applied on both qubits, $q_1$ and $q_2$, after the gates acted on them 
 \begin{equation}
     \varepsilon_{D_2}(\rho) = (1-p_{phy}) \rho + \frac{p_{phy}}{15} \sum_{i=1}^{15} E_i \rho E_i,
     \label{eq:depo_2_noise}
@@ -127,9 +127,8 @@ As such the state preparation of encoded states is not modeled.
 Instead we assume that we get logically encoded states and then place single-qubit depolarizing error on top, identical to the initial preparation of the data qubit.
 The independent single-qubit depolarizing noise placed on top of the resulting state is supposed to mimic a fault-tolerant encoding procedure. 
 We assume the same noise rate $p_{phy}$ on this channel, which is a simplifying assumption.
-
 We assume the access to fault-tolerant preparation for arbitrary distance codes, 
-as preparing those is a complex task outside of the scope of this thesis due to the constrained time.
+as preparing them is a complex task outside of the scope of this thesis due to the constrained time.
 
 The following subsections discuss the influence of the circuit-level noise model on the code distance of the QEC code, 
 and how the specific circuit design influences it. 
@@ -186,7 +185,7 @@ This section introduces the notion of \emph{fault tolerance} (FT) for QEC circui
 % A fault-tolerant circuit design is a necessary condition for a threshold to exist for the given QEC code under circuit-level noise (see section \ref{chapter:qec_thresholds}).
 Notice that fault tolerance is a property of the circuit, not of the underlying encoding which was discussed in chapter \ref{chapter:qec}.
 A QEC code, the surface code for example, can be implemented in a FT and a non-FT way, depending of the design of the circuits implementing the different parts\footnote{
-    Those parts are for example state preparation, syndrome extraction, logical operations.
+    These parts are for example state preparation, syndrome extraction, logical operations.
     In this thesis we focus on the FT syndrome extraction, while assuming that we have access to FT logical state preparation for encoded ancilla qubits.
     } of the QEC circuit and their associated noise model.
 
@@ -217,7 +216,7 @@ A circuit is trivially fault-tolerant if each error event leads to at most one e
 This is the case for the Steane-type syndrome extraction circuit, as shown in section \ref{sssec:steane_type_error_correction_intro}. 
 
 In section \ref{sssec:standard_syndrome_extraction_circuit} we discuss hook errors for the conventional syndrome extraction circuit. 
-Those are single error events propagating onto multiple qubits of an encoded code block, but they do not (necessarily) break fault tolerance.
+These are single error events propagating onto multiple qubits of an encoded code block, but they do not (necessarily) break fault tolerance.
 This is because hook errors can be oriented such that the propagated error does not lead to a reduced effective weight of the logical operators of the QEC code.
 
 % residual error
@@ -237,7 +236,7 @@ but must instead allow for residual errors that remain by a final noiseless QEC 
 The implementation of this adapted success condition during the simulation requires an adaptation of the quantum memory experiment.
 During the measurement of the logical operator at the end of the circuit, 
 all qubits will be measured in the same basis, not only the ones required to construct the logical operator. 
-The results of those measurements will then be used to compute the logical observable and to construct a last (half-)syndrome.
+The results of these measurements will then be used to compute the logical observable and to construct a last (half-)syndrome.
 This syndrome contains the error information about the residual error.
 It will be decoded\footnote{
     We usually use a MWPM decoder for this task.

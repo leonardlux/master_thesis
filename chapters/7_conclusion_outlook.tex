@@ -15,7 +15,7 @@ the maximum likelihood decoder outperforms the minimum weight decoder in regard 
 
 In this process we detected numerical instability in our implementation of the efficient ML decoder,
 which lead us to determine the cause and find possible mitigation strategies for future implementations.
-The occurrence of those numerical underflow error grows with decreasing physical noise rate and increasing distance. 
+The occurrence of numerical underflow errors grows with decreasing physical noise rate and increasing distance. 
 By setting an upper limit on the code distance, and by implementing some of the proposed mitigation strategies, 
 we were able to perform the threshold analysis with negligible rejection rates.
 
@@ -55,8 +55,7 @@ as the repeated cycles lead to a constant iterative change between the two half-
 suppressing the asymmetry of the QEC.
 We also argued that such a bulk may not emerge, if instead of performing a quantum memory experiment,
 actual operations were performed on the qubits in between, which might themselves introduce an asymmetry to the process.
-
-Comparing those results to a conventional repeated syndrome extraction circuit, 
+Comparing these results to a conventional repeated syndrome extraction circuit, 
 which shows an approximately constant threshold at a physical error rate of close to $1\%$, 
 we find that STEC is able to improve the threshold by a factor of $3$ for the single QEC cycle case. 
 This improvement drops off to a factor of $2$ for the repeated cycles.
@@ -84,7 +83,7 @@ A further outlook is provided in the following section.
 \section{Outlook}\label{sec:outlook}
 
 The results of this thesis point toward the benefits of STEC.
-Those results would benefit greatly from further investigation into the influence of the fault-tolerant state preparation procedure 
+These results would benefit greatly from further investigation into the influence of the fault-tolerant state preparation procedure 
 needed for the logical encoded ancilla qubits, as this would remove a major assumption from which STEC is currently benefiting.
 Here modeling or implementing a state preparation circuit which is capable of fault-tolerantly preparing a logical encoded state 
 with a trusted syndrome can be considered a main goal.
@@ -103,5 +102,5 @@ between the data qubit error and the syndrome error model.
 Another topic of interest is the analysis of the asymmetry of the STEC circuit.
 Here one could analyze and quantify this asymmetry in detail, thereby predicting the differences in the performance with regard to the observable. 
 A related question is how the asymmetry interacts with operations placed between independent STEC cycles, 
-and which relation between the incoming error and residual error for those operations yields the best or worst thresholds. 
+and which relation between the incoming error and residual error for these operations yields the best or worst thresholds. 
 

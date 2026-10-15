@@ -4,7 +4,7 @@ For a QEC cycle to work it needs to be able to obtain the syndrome of the encode
 This is done by the \emph{syndrome extraction circuit}, which extracts the syndrome of the encoded state, 
 without revealing or disturbing the logical information encoded in the data qubits. 
 To realize such a circuit we will use additional qubits, called ancilla qubits. 
-By coupling those ancilla qubits to the data qubits, 
+By coupling these ancilla qubits to the data qubits, 
 we are able to extract the syndrome information from the encoded state and map it to the ancilla qubits, which we can then measure to obtain the syndrome.
 
 The circuit-level noise model requires that the syndrome extraction circuit is constructed in a fault-tolerant manner, as discussed in section \ref{sec:fault_tolerance}.
@@ -41,9 +41,9 @@ as shown in figure \ref{circ:standard_syndrome_X_stabilizer} and figure \ref{cir
 To measure the eigenvalues of each generator we can place each needed ancilla in the middle of each stabilizer, 
 on lattice sites for $X$-type site stabilizers and in the middle of the plaquettes for $Z$-type plaquette stabilizers, 
 as shown in figure \ref{fig:surface_code_explaination}.
-The advantage of placing the ancilla qubits in those positions is that we only need next-neighbor interactions to realize the syndrome extraction circuit, 
+The advantage of placing the ancilla qubits in these positions is that we only need next-neighbor interactions to realize the syndrome extraction circuit, 
 even if we are limited to planar\footnote{
-    Planar architectures are those where the qubits are placed in a two-dimensional plane.
+    Planar architectures are these where the qubits are placed in a two-dimensional plane.
     Such architectures are used extensively as they have experimental advantages.
     An example of such a realization, including a similar ancilla qubit placement, using the rotated surface code and superconducting qubits can be found in \cite{google_paper}.
 } architectures. 
@@ -79,7 +79,7 @@ even if we are limited to planar\footnote{
 
 For the code-capacity case the syndrome extraction circuit requires $m=2d\cdot(d-1)$ individual circuits, shown in \cref{circ:standard_syndrome_Z_stabilizer,circ:standard_syndrome_X_stabilizer}, 
 to measure the eigenvalues of the $m$ generators, determining the complete syndrome.
-The ordering of those individual circuits is not relevant as they commute with one another.
+The ordering of these individual circuits is not relevant as they commute with one another.
 We can reduce the time needed for the implementation of this syndrome extraction circuit to four time steps, by performing the required CNOT gates acting on disjoint sets of qubits in parallel\footnote{
     Each data qubit is connected to at most $4$ different ancilla qubits of the $4$ adjacent generators of the stabilizer group, $2$ site and $2$ plaquette stabilizers, 
     which we can label by their direction with regard to the data qubit as north, south, west and east ancilla.
@@ -111,16 +111,15 @@ Fault-tolerance can be achieved by the $\mathcal{O}(d)$-times repetition of the 
 
 The time required to realize a fault-tolerant conventional syndrome extraction circuit scales linear with the code distance $d$, 
 which is a major disadvantage compared to the Steane-type error correction approach.
-To gain an understanding why we require those $d$ repeated syndrome extractions,
+To gain an understanding why we require these $d$ repeated syndrome extractions,
 this section discusses in detail the error propagation properties and how they relate to the fault tolerance of the circuit. 
 This includes a discussion how the circuit-level noise model influences the measured syndrome and more generally the residual error.
-
-Based on those results the fault tolerance of the circuits can be judged and what adaptations need to be taken to ensure FT.
+Based on these results the fault tolerance of the circuits can be judged and what adaptations need to be taken to ensure FT.
 Comparing both subcircuits, shown in \cref{circ:standard_syndrome_Z_stabilizer,circ:standard_syndrome_X_stabilizer}, 
 and based on the calculation required to obtain them,
 a symmetry between the $X$-type and $Z$-type syndrome extraction can be identified. 
 They are symmetric to another under a basis change.
-Therefore we can limit the discussion to the elemental error process of one of those circuit and generalize them to both.
+Therefore we can limit the discussion to the elemental error process of one of these circuit and generalize them to both.
 
 We focus on the $Z$-type plaquette stabilizers extraction circuit, shown in figure \ref{circ:standard_syndrome_Z_stabilizer}.
 The results can then be applied to the $X$-type site stabilizer extraction circuit by relabeling $X$-type errors to $Z$-type errors and vice versa.
@@ -128,7 +127,7 @@ We can do this kind of separated analysis because the surface code is a CSS code
 as established in section \ref{sec:kitaev_surface_code}.
 
 The circuit-level noise model applies errors after the initialization of each qubit, including the ancilla qubits, after each gate and before each measurement.
-All of those error locations and their effects are discussed in the following.
+All of these error locations and their effects are discussed in the following.
 % With the results that the error processes which effectively result in a measurement error of the syndrome 
 % require an adaptation of the syndrome extraction circuit to enable a fault tolerant QEC cycle. 
 
@@ -140,7 +139,7 @@ Data qubit initialization errors are identical to the code-capacity case and the
 Propagating such an $X$-type error through the plaquette stabilizer extraction circuit leads to a $X$-error on one data qubit 
 in combination with an $X$-error in front of the measurement.
 Therefore the syndrome bit\footnote{
-    Each of those errors is detected by two stabilizers for the surface code, assuming the data qubit is located in the bulk,
+    Each of these errors is detected by two stabilizers for the surface code, assuming the data qubit is located in the bulk,
     as each data qubit in the bulk is connected to two stabilizers as visible in figure \ref{fig:surface_code_explaination}. 
 } flips in agreement with the error on the data qubit. 
 This is the case for which the syndrome extraction circuit was designed, the flipped syndrome bit tells us of the presents of the error on the data qubit.
@@ -174,7 +173,7 @@ Here we used the stabilizer equivalence
     I \otimes Z_2 \otimes Z_3 \otimes Z_4 = Z_1 \cdot S_Z,
 \end{equation} 
 to rewrite a weight-three error as an equivalent weight-one error time a stabilizer. 
-Given that a single error event causes a single error to appear on the data qubits, those faults do not break the fault tolerance property.
+Given that a single error event causes a single error to appear on the data qubits, these faults do not break the fault tolerance property.
 
 In contrast, a $Z$-type error after the second CNOT gate will propagate through the following two CNOT gates 
 and will produce a correlated weight-2 error on the data qubits.
@@ -204,7 +203,7 @@ If this injected chain happens to align with the logical operator,
 it effectively reduces the weight of the logical operator, 
 possibly below the code distance $d$ breaking the fault tolerance of the circuit.
 
-We can detect those measurement errors by repeating the syndrome extraction process, 
+We can detect these measurement errors by repeating the syndrome extraction process, 
 and thus constructing a three-dimensional time-space detector error model for the surface code. 
 A single measurement error would then appear as a time-like error chain connecting the same stabilizer and associated detector of different syndrome extraction rounds \cite{topological_quantum_memory,manuel_error_propagation_paper}.  
 
@@ -224,15 +223,13 @@ A possible solution for this is the overlapping recovery method \cite{topologica
 \subsection{Resources and Assumptions}\label{sssec:assumptions_conv_sec}
 
 Given that we want to use the conventional syndrome extraction circuit as a reference value we make a few assumptions to simplify the decoding problem.
-This results in an upper bound for the syndrome extraction circuits performance, as those assumptions improve it performance.
-
+This results in an upper bound for the syndrome extraction circuits performance, as these assumptions improve it performance.
 In the first step of this assumption we assume that each QEC cycle requires only $d$ rounds of syndrome extraction 
 to fault-tolerantly determine a syndrome, taking time-like measurement errors into account \cite{topological_quantum_memory,terhal_qec_formalism,gottesmann_book}.
 
 We can further reduce the complexity of this approach by giving our decoder more information than usually accessible. 
 By giving the decoder access to the faultless syndrome, measured to get rid of the residual error (see section \ref{sec:fault_tolerance}), 
 we can avoid the finite time interval problem of detecting measurement errors by excluding the possibility of measurement errors in the last syndrome. 
-
 Note that this is a strong assumption leading to a better-performing code. 
 The resulting threshold thus should be seen as an upper bound for the possible performance of the configuration used here as a conventional syndrome extraction circuit. 
 
@@ -318,8 +315,7 @@ The resulting measurements can be recombined to reconstruct the $Z$-type generat
     We can reconstruct the logical $\bar{Z}$ measurement of the ancilla. 
     Fortunately the result will be random and will not contain any information about the state of the encoded data qubit.
 }.
-
-Those reconstructed $Z$-stabilizers are then used to define the $Z$-part of the syndrome of the code state, 
+These reconstructed $Z$-stabilizers are then used to define the $Z$-part of the syndrome of the code state, 
 containing the information about $X$-errors that may have occurred.
 This whole construction is a STEC half-cycle, as it extracts half the syndrome.
 
@@ -334,7 +330,7 @@ They require a change of the ancilla qubit to $\ket{0}_L$ and to switch the orie
 using the ancilla as control qubit and having the data qubit as the target.
 Therefore $Z$-type errors will be propagated onto the ancilla 
 where they will be measured by the parity checks and $X$-type errors will contribute to the residual error.
-Note that we can influence the composition of the residual error by the choice of order of those half-cycles.
+Note that we can influence the composition of the residual error by the choice of order of the half-cycles.
 The type of error which is corrected first will occur more often in the residual error for circuit-level noise. 
 This is due to the errors being propagated from the ancilla qubits onto the data qubits.
 They differ in type depending on the type of half-cycle.
@@ -342,7 +338,7 @@ They differ in type depending on the type of half-cycle.
 The asymmetry in the residual error is because the errors propagated onto the data qubits by the first half-cycle are detected by the second half-cycle.
 While the errors propagated through the CNOT of the second half-cycle are part of the undetectable residual error\footnote{
     The noise introduced by the CNOT gate itself is also part of the residual error, but this noise is itself symmetric, and we therefore do not discuss it here.
-} and those errors are only of one type. 
+} and these errors are only of one type. 
 This discussion is further developed and formalized in the appendix in section \ref{ssec:sem_difference_data_qubits}.
 
 We can use the asymmetry in the order to our advantage\footnote{
@@ -364,7 +360,7 @@ Taking a look at the measurement errors, they flip two syndrome bits of the adja
 Measurement errors in STEC therefore behave fundamentally differently from measurement errors in the conventional syndrome extraction circuit.
 For STEC they have an identical effect to data qubit errors, as they flip the two adjacent stabilizers. 
 We still cannot distinguish the syndrome of a measurement error from the syndrome of a data qubit error, 
-but importantly in correcting those we only inject one data qubit error, which is of weight one, per measurement error, if the decoder makes the wrong choice.
+but importantly in correcting them we only inject one data qubit error, which is of weight one, per measurement error, if the decoder makes the wrong choice.
 Therefore the fault tolerance property of the circuit is preserved even under the influence of measurement errors.
 
 % here 
@@ -393,7 +389,7 @@ Note that we only count the time steps where the data qubits are acted on by the
 and the time needed to encode the ancilla qubits.
 
 The fact that STEC is constant in time even for the circuit-level noise case is a major advantage of STEC in comparison with the conventional syndrome extraction circuit. 
-Note as well that for those calculations of resources we neglected the resources needed for the encoding of the logical ancilla states,
+Note as well that for these calculations of resources we neglected the resources needed for the encoding of the logical ancilla states,
 as we assume that we have access to fault-tolerant logical encoded ancilla qubits.
 This is a major assumption.
 
@@ -408,8 +404,8 @@ Note that it is required that the syndrome of that ancilla state is known with s
 Otherwise we face the same problem described in the previous chapter regarding the measurement errors: 
 Syndrome errors lead to the possible implementation of high weight errors.
 For this thesis we assume that we have access to ancilla states with a fixed and known syndrome. 
-Those are only affected by independent depolarizing errors on each data qubit of the encoded ancilla. 
-We place those independent depolarizing errors on top of the ancilla qubits to model the requirement 
+These are only affected by independent depolarizing errors on each data qubit of the encoded ancilla. 
+We place these independent depolarizing errors on top of the ancilla qubits to model the requirement 
 that the ancilla state is only prepared fault-tolerantly in a circuit-level noise model and not faultless.
 
 To summarize, STEC is an approach to syndrome extraction which enables constant-in-time syndrome readout, 
@@ -480,7 +476,7 @@ Based on this observation we can conclude that the resulting propagated error mo
 meaning that the error channel of each qubit has an identical form and identical probabilities.
 As a result, all edges of the matching graph are equally weighted.
 If we were to change the probability of the circuit-level noise model, we would just rescale this global weight, keeping the ratios between the edges fixed.
-Under those conditions the task of finding the matching with the minimum weight, 
+Under these conditions the task of finding the matching with the minimum weight, 
 is equivalent to finding the matching with the minimum amount of edges,
 i.e. the shortest connection between all triggered detectors on the detector graph.
 Therefore the MWPM decoder becomes independent of the actual probability $p_{phy}$ of the error model.
@@ -517,9 +513,9 @@ We only perform ML decoding on the ancilla qubit not on the data and ancilla sys
 Answering the question of whether this is equivalent to ML decoding in the general case\footnote{
     The following example should illustrate that taking the correlation into account can be useful.
     If the probability of measurement errors is $100\%$, or close to it, the syndrome is effectively inverted.
-    A decoding process taking into account the correlation between the data qubits and measured syndrome would be able to use those correlations, 
+    A decoding process taking into account the correlation between the data qubits and measured syndrome would be able to use these correlations, 
     for this example by just decoding the inverse of the measured syndrome. 
-    The decoding process we are using would likely fail at this task, as it has no way to take those correlations into account.
+    The decoding process we are using would likely fail at this task, as it has no way to take these correlations into account.
     This example is not relevant for QEC, as QEC is performed at the low physical noise rate regime. 
     But it does not seem trivial do assume that ignoring the correlations is never leading to a reduction in the success rate. 
 }, requires further research. 

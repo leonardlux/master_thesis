@@ -103,12 +103,12 @@ Each channel gets assigned its own probability for the analysis, the notation to
 Figure \ref{circ_dia:propagated_noise} illustrates the independent fundamental channels from which the SEM is finally computed. 
 The `N' measurement indicates that all operators which act on the data qubit are neglected.
 All possible noise channels and their associated operators are propagated until before the measurements of the ancilla qubits, 
-to model the noise on the syndrome measurements, as those measurements are directly combined to compute the syndrome of the encoded state. 
+to model the noise on the syndrome measurements, as these measurements are directly combined to compute the syndrome of the encoded state. 
 
 One can observe that the $X$-errors have no effects on the $X$-measurements performed on the ancilla  $\ket{0}_L$.
 $X$-errors on the $\ket{0}_L$ state can therefore be neglected for the purpose of the SEM, resulting in $X~I$ and $Y~Z$. 
 Applying the same logic to the $\ket{+}_L$, results in $Z~I$ and $Y~X$. 
-We refer to this concept as syndrome equivalence, as neglecting those parts results in an equivalent in respect to the syndrome. 
+We refer to this concept as syndrome equivalence, as neglecting these parts results in an equivalent in respect to the syndrome. 
 The discussion of this approach will be slightly expanded in section \ref{ssec:sem_syndrome_equivalence}.
 
 The specific noise model shown in figure \ref{circ_dia:propagated_noise}, consists of a composition independent channels.
@@ -147,7 +147,7 @@ The calculation of the exact model is discussed in the following section \ref{se
     \gate[1,style={noisy},]{X}&\meter{$Z$}&\setwiretype{c}\\% 5: stabilizer measurement
 \end{quantikz}
 \caption{
-    Shown is the circuit diagram with the propagated noise channels, at the last step before combining those into the final syndrome error model.
+    Shown is the circuit diagram with the propagated noise channels, at the last step before combining these into the final syndrome error model.
     }
 \label{circ_dia:propagated_noise}
 \end{figure}
@@ -171,7 +171,7 @@ The calculations of the SEM follow want the following steps:
         \item The composition of different channels is discussed in section \ref{ssec:sem_composition_of_channels}. 
         \item The resulting SEM contains correlations between $X$- and $Z$-errors and is shown in section \ref{ssec:sem_results}.
     \end{itemize}
-    % Talk about how to recombine those channels.
+    % Talk about how to recombine these channels.
     \item The last step consists of adapting the resulting SEM to the ML decoder, by calculating the uncorrelated probability of bit- and phase-flip noise, as discussed in section \ref{sssec:sem_results_bit_phase_flip}. 
 \end{enumerate}
 
@@ -303,7 +303,7 @@ Starting with the depolarizing channel on the data state ($\ket{\Psi}$):
     &\overset{\tilde{s}}{\rightarrow} Y^s  \\
 \end{align*} 
 For the initial data state, the structure of the noise channel is conserved.
-This is expected as STEC is designed to be able to detect those errors. 
+This is expected as STEC is designed to be able to detect these errors. 
 Therefore the initial errors should be identically mapped to the syndrome error model.
 
 The resulting channel has the form 
@@ -351,7 +351,7 @@ Lastly the state preparation of the $\ket{+}$ ancilla qubit:
     &\overset{tr}{\rightarrow} & Y^{\ket{+}} 
     &\overset{\tilde{s}}{\rightarrow} X^s  \\
 \end{align*} 
-Applying those mappings to the channel results in 
+Applying these mappings to the channel results in 
 \begin{align*}
     N_{sp.\ket{+}} (\rho) &= \left(1-\frac{2}{3}p_{sp.\ket{+}}\right) \hat{I} + \frac{2}{3}p_{sp.\ket{0}} \hat{X}^{}
 \end{align*}
@@ -362,7 +362,7 @@ which can be identified as a bit-flip channel on $\ket{+}$ with $p_x=\frac{2}{3}
 The discussion of two qubit gate depolarizing noise channel follows. 
 
 Starting with the two qubit channel acting on $\ket{0}$ and $\ket{\Psi}$.
-We only show non trivial terms, so those which are not equal to identity after the propagation: 
+We only show non trivial terms, so these that are not equal to identity after the propagation: 
 \begin{align*}
     X^{\ket{\Psi}} 
     &\overset{\text{CNOTs}}{\rightarrow} X^{\ket{\Psi}}  X^{\ket{+}}  
@@ -381,7 +381,7 @@ We only show non trivial terms, so those which are not equal to identity after t
     &\overset{tr}{\rightarrow} & Y^{\ket{0}}   
     &\overset{\tilde{s}}{\rightarrow} Z^s  \\
 \end{align*} 
-Applying those mappings to the channel equation results in  
+Applying these mappings to the channel equation results in  
 \begin{align*}
     N_{D2\ket{0}} &= \left(1- \frac{16}{15} p_{D2\ket{0}} \right) \hat{I} + \frac{1}{15} p_{D2\ket{0}}(2\hat{I} + 2\hat{Z}^{\ket{0}}) \otimes (2\hat{I} + 2\hat{X}^{\ket{+}})\\
     &= \left(1- \frac{16}{15} p_{D2\ket{0}} \right) \hat{I} + \frac{4}{15}p_{D2\ket{0}} \sum_{i=0}^{3} \hat{E}_i^s 
@@ -698,7 +698,7 @@ results in the following cases
 \end{align}
 The resulting probabilities of the different errors are also shown. 
 
-$p_{D'}^f = 0$ is only achievable  if $p_{sp.}=p_{m}=p_{D2}=0$, as those are the channels resulting in the final depolarizing channel, see equation \eqref{eq_align:stab_depo_probability},
+$p_{D'}^f = 0$ is only achievable  if $p_{sp.}=p_{m}=p_{D2}=0$, as these are the channels resulting in the final depolarizing channel, see equation \eqref{eq_align:stab_depo_probability},
 and the discussion around equation \eqref{eq:sem_depo_depo_not_negative} has shown that the probability of a composite channel is only equal to zero, if all its components are equal to zero.
 This case is not relevant for the analysis as circuit level noise, as we need to assume multiple components as faultless. 
 
