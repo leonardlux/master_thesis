@@ -34,7 +34,7 @@ but also enabled the localization of the numerical underflow, as I was able to r
 
 In this section, we briefly review the decoder, focusing only on the relevant aspects for understanding how numerical underflow arises.
 We restrict our discussion to the algorithm for decoding independent bit- or phase-flip noise presented in \cite{efficient_decoding_algorithm}\footnote{
-Note that the decoder corrects either bit-flip or phase-flip errors in a single decoding step. 
+The decoder corrects either bit-flip or phase-flip errors in a single decoding step. 
 Consequently, decoding under independent bit- and phase-flip noise is achieved by applying the decoder twice.
 
 Furthermore, there appears to be an error, or at least an inconsistency in the notation, 
@@ -55,7 +55,7 @@ This seems to be an error in \cite{efficient_decoding_algorithm}.
 
 The algorithm solves the ML decoding problem, see section \ref{ssec:general_ML_decoder}, by explicitly computing the probabilities of the cosets $\text{Pr}(E_\sigma \bar{P}\mathcal{S})$ corresponding to the measured syndrome $\sigma$.
 Since  $X$- and $Z$-errors are decoded independently in this algorithm\footnote{
-    Note once again that this decoder is only designed to be able to decode either $X$- or $Z$-errors.
+    This decoder is only designed to be able to decode either $X$- or $Z$-errors.
 } and we only consider a single logical encoded qubit, 
 the logical operators defining the two cosets are either $\bar{P} \in \{\bar{I},\bar{X}\}$ or $\bar{P} \in \{\bar{I},\bar{Z}\}$.
 
@@ -66,9 +66,10 @@ For the surface code, the average coset probability can be expressed as
     \label{eq:mean_prop_coset_in_distance}
 \end{equation} 
 where we consider either $X$- or $Z$-errors, consistent with the assumption of the decoder.
-Consequently, we expect the probabilities of individual cosets to become quite small.
-Note that we are using an average here and not a median. 
-The median is highly dependent on the physical error rate, as will be discussed later. 
+Consequently, we expect the probabilities of individual cosets to become quite small\footnote{
+    We are using an average here and not a median. 
+    The median is highly dependent on the physical error rate, as will be discussed later. 
+}.
 
 The efficient decoding algorithm consists of two stages. 
 First, a representative error $E_\sigma$ corresponding to the measured syndrome is generated.
@@ -86,7 +87,7 @@ For the case of $X$-errors \cite{efficient_decoding_algorithm} states:
 ``Let [$\sigma_u$] be the syndrome[bit] of a site stabilizer $A_u$. 
 We choose the desired error [$E_\sigma$] by connecting each site $u$ with a non-zero syndrome [$\sigma_u$] to the left boundary by a horizontal string of $X$-errors 
 and adding all such strings modulo two. 
-Note that [$E_\sigma$] can be constructed in time $\mathcal{O}(n)$.'' 
+[$E_\sigma$] can be constructed in time $\mathcal{O}(n)$.'' 
 \end{quotation}
 Here, we adapted the notation to match the notation used throughout this thesis. 
 We refer to this method of constructing the representative error as the \emph{Bravyi} approach.
@@ -167,7 +168,7 @@ which is plotted alongside all logical error rate curves\footnote{
 The combination of logarithmic calculation and rejection rate strategies yields logical error rate curves that exhibit the expected asymptotic scaling, 
 as shown in figure \ref{fig:results_code_capacity_Z_ml_p_log_p_phy_slopes}. 
 
-Note that the rejection rate strategy, in combination with assigning a fixed representative error for each syndrome, results in the deterministic rejection of certain syndromes. 
+The rejection rate strategy, in combination with assigning a fixed representative error for each syndrome, results in the deterministic rejection of certain syndromes. 
 Since each syndrome is always mapped to the same representative error, any syndrome whose representative error leads to numerical underflow in the main part of the decoder\footnote{
     We observed that a different representative error of the same coset can lead to no numerical underflow.
     The formulation of this as a mitigation strategy is given in the next section \ref{ssec:numerical_underflow_representative_error}.
@@ -210,7 +211,7 @@ Owing to the iterative structure of the decoding algorithm \cite{efficient_decod
     than the single statement above suggests, and would benefit from further investigation.
 }. 
 
-It should be noted, that the construction approaches are not directly equivalent.
+The construction approaches are not directly equivalent.
 The Bravyi approach constructs a representative error belonging to the logically trivial coset $\bar{P} = \bar{I}$.
 In contrast, the MWPM approach returns the lowest weight error from the coset of the centralizer with the corresponding syndrome, see section \ref{ssec:intro_centralizer} for a detailed discussion of the centralizer.
 Consequently, additional processing is required after the MWPM decoding, as introduced in section \ref{ssec:general_MWMP_decoder}, to obtain an equivalent representative error construction method.

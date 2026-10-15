@@ -6,7 +6,7 @@ we can still arbitrarily reduce the logical error rate $p_{log}$ of the encoded 
 given that the error rates of the noisy components $p_{phy}$ is below a \emph{threshold} $p_{th}$ if we use a fault-tolerant QEC circuit, by increasing the distance $d$ of the code\cite{gottesmann_book,topological_quantum_memory}.
 In short, if the error rate is below this threshold the QEC code can suppress errors faster than they occur.
 The overhead in the number of qubits has been shown to be polynomial for the surface code \cite{topological_quantum_memory}.
-Note that, while below the threshold each additional qubit reduces the logical error probability, 
+Below the threshold each additional qubit reduces the logical error probability, 
 above the threshold the logical error probability rises with increased code distance.
 
 Based on this theorem we do not need to realize perfect qubits in an experiment to enable arbitrarily long quantum computations.
@@ -16,11 +16,10 @@ provided the physical qubits are merely good enough rather than perfect \cite{go
 The threshold is a key characteristic of a QEC setup.
 It describes the physical noise rate at which scaling up the QEC setup becomes advantageous.
 Codes with a higher threshold can be used with less optimal qubits and might therefore be advantageous.
-
 There are different possible approaches to determine the threshold of a QEC setup.
 It can be determined through a mapping to statistical physics models for some QEC setups, 
 including the surface code under code-capacity noise\footnote{
-    Note that under code-capacity noise the choice of syndrome extraction circuit has no effect.
+    Under code-capacity noise the choice of syndrome extraction circuit has no effect.
     }.
 For these models, we can identify a phase transition between an ordered and a unordered phase at the threshold \cite{fundamental_thresholds,topological_quantum_memory}.
 
@@ -52,7 +51,7 @@ The uncertainty on the logical error rate $\delta_{p_{log}}$ is
     \delta_{p_{log}} = \sqrt{\frac{p_{log}(1-p_{log})}{n_{shots}}}.
 \end{equation}
 An example of the logical error curves $p_{log,d}(p_{phy})$ can be seen in figure \ref{fig:results_code_capacity_Z_ml_p_log_p_phy}.
-Note that in this approach we only detect $X$-type or $Z$-type logical errors\footnote{
+In this approach we only detect $X$-type or $Z$-type logical errors\footnote{
     One could realize a simulation detecting both types of errors at the same time using a reference system to create an initial pure state, 
     as used in \cite{quantum_data_processing,fundamental_thresholds} and referred to as the coherent information setup.
     This is not done here.
@@ -123,7 +122,7 @@ and weight the deviation by the propagated uncertainty of that comparison (eq. \
 \end{align}
 By minimizing the mean of the weighted squared differences $\Delta y_i$ all data points should fall onto a curve.
 
-% Note that given our approach we do not directly take the data points with the highest and lowest index into account. 
+% Given our approach we do not directly take the data points with the highest and lowest index into account. 
 % They only contribute by determining the interpolation of the second or second-to-last data point. 
 
 We find the minimal value for the mean of all weighted differences $\Delta y_i$, 

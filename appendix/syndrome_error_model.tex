@@ -48,7 +48,7 @@ It is calculated by propagating/commuting the error channels, respectively their
 A more thorough discussion of the computation follows in section \ref{sec:sem_propagation}.
 
 This error model is needed for the construction of the ML\footnote{
-    Note that, the MWPM approach is cyclic in the effective physical noise rate, if the underlying noise model is transversal, which is the case for STEC. 
+    The MWPM approach is cyclic in the effective physical noise rate, if the underlying noise model is transversal, which is the case for STEC. 
     Therefore the SEM is not required for MWPM, as the whole setup is transversal, see section \ref{sssec:stec_decoder_adaption_MWPM}.
 } decoding approach as discussed in section \ref{sssec:stec_decoder_adaption_ML}.
 
@@ -241,11 +241,9 @@ For operators on the $\ket{0}_L$ ancilla qubit:
     X^{\ket{0}} & \overset{{s}}{\rightarrow} I^{s} \\
     I^{\ket{0}} & \overset{{s}}{\rightarrow} I^{s} \\
 \end{align*}
-
-Note that after applying the syndrome equivalence we do not have to specify on which ancilla qubit the error acts, 
+After applying the syndrome equivalence we do not have to specify on which ancilla qubit the error acts, 
 as it is implicitly defined.
-
-Note that this is a slight abuse of notation, as these operators do not follow the expected commutation relations for Pauli operators $[X^s,Z^s]=0$. 
+This is a slight abuse of notation, as these operators do not follow the expected commutation relations for Pauli operators $[X^s,Z^s]=0$. 
 The intuition behind this notation is that we are interpreting the errors from the point of view of the decoder. 
 A $Z^s$ error will be corrected by a $Z$ operator at the same qubit position on the encoded block\footnote{
     Maybe a better derivation compares the effective errors with equivalent errors of the code-capacity case. 
@@ -279,7 +277,6 @@ In this section the propagation of each operator of the channel is performed in 
     \item stabilizer equivalence due to the measurements, indicated by $\tilde{s}$
 \end{enumerate} 
 Each channel is discussed in the following, ordered by their location in the circuit.
-
 A short note about the influence of the ordering is discussed in \ref{ssec:sem_order}.
 
 

@@ -12,7 +12,6 @@ which also affect all thresholds obtained for the circuit-level noise setting.
 
 Regarding our implementation, we also discussed the importance of decoder choice, showing that 
 the maximum likelihood decoder outperforms the minimum weight decoder in regard to the threshold. 
-
 In this process we detected numerical instability in our implementation of the efficient ML decoder,
 which lead us to determine the cause and find possible mitigation strategies for future implementations.
 The occurrence of numerical underflow errors grows with decreasing physical noise rate and increasing distance. 

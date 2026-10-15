@@ -270,7 +270,6 @@ Properties:
     + show to be optimal decoding strategy
 1. Why is it hard?
     + scaling
-2. Note the 1-px pz, mistake 
 
 ## MWPM Decoding
 
