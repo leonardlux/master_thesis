@@ -1,15 +1,9 @@
 Throughout :
-
-- 1-line paragraphs : merge
-
-- Appendix figures
-
-
-# done 
 - Literal repetitions within a few lines (marked) 
 
 - Grammar / incomplete lines (marked)
 
+- Appendix figures
 
 - Search for:
 
@@ -20,3 +14,5 @@ Throughout :
     References to appendix: cite them as App. (X).
     
 - Equation -> Eq. (X) most often...
+
+- 1-line paragraphs : merge
