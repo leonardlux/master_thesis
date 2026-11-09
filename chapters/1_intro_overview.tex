@@ -1,9 +1,9 @@
 \chapter{Introduction \& Overview}
 % basic check done for this chapter!
 
-Quantum error correction (QEC) codes are needed to enable quantum computers to correct occurring errors and protect the encoded quantum information.  
+Quantum error correction (QEC) codes are needed to enable quantum computers to correct errors that occur and protect the encoded quantum information.  
 There are many different QEC codes and configurations, each with its own advantages and disadvantages.
-Deciding on a QEC code is always a compromise between those.
+Deciding on a QEC code is always a compromise between these advantages and disadvantages.
 
 
 % Motivation why Steane Type QEC is good
@@ -31,9 +31,10 @@ we account for the fact that the entire computation can be faulty, including the
 which is captured by the so-called circuit-level noise model.
 
 We characterize the performance of Steane-type error correction by determining the thresholds of a QEC code utilizing STEC.
-The resulting threshold is then used to compare the performance of STEC to different syndrome extraction approaches used with the same underlying code.
-We find a threshold result of roughly $3\%$ for a single QEC cycle which is a factor of three greater than for the conventional syndrome extraction circuit.
-Further results and analysis can be found in the result chapter, chapter \ref{chapter:results}. 
+The resulting threshold is then used to compare the performance of STEC to that of different syndrome extraction approaches used with the same underlying code.
+We find a threshold result of roughly $3\%$ for a single QEC cycle. 
+This threshold is approximately three times that obtained with the conventional syndrome extraction circuit.
+Further results and analysis can be found in the results chapter, chapter \ref{chapter:results}. 
 
 \section{Overview of the Thesis}
 
@@ -68,7 +69,7 @@ The thesis is organized as follows:
     We continue with a discussion of the decoder adaptations needed for STEC in section \ref{ssec:stec_decoder_adaption}, for both MWPM and ML decoding.
 
     % threshold theorem
-    \item Chapter \ref{chapter:qec_thresholds} introduces the threshold and explains the process used to determine it based the simulations of the circuit. 
+    \item Chapter \ref{chapter:qec_thresholds} introduces the threshold and explains the process used to determine it based on simulations of the circuit. 
     Here, we utilize the so-called \emph{data collapse method}, which is based on finite-size scaling analysis and therefore exploits the phase-transition properties of the threshold.
 
     % results
@@ -83,6 +84,6 @@ The thesis is organized as follows:
 
     \item We conclude this thesis with chapter \ref{chapter:conclusion}, in which we summarize the important findings of the previous chapters and contextualize them with the underlying assumptions of our approach.
     We use this chapter to sketch an outlook on possible problems that might be worth investigating further, either to improve upon the results obtained in this thesis, 
-    or or to further the characterization of STEC.
+    or to further the characterization of STEC.
 
 \end{enumerate}

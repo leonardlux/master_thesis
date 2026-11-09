@@ -1,9 +1,8 @@
 \chapter{Conclusion}\label{chapter:conclusion}
 
-We started the analysis in this thesis by validating the used implementation. 
+We started the analysis in this thesis by validating the implementation used. 
 This was performed by simulating the QEC setups, including the different decoders and observables, for a code-capacity noise setting,
 resulting in thresholds which are consistent with the literature values when taking possible finite-size effects into account.
-
 Regarding the finite-size effects, we observed their occurrence and were able to show
 that their impact on the threshold can be reduced by raising the lower bound of the code distance.
 With the code distances used in this thesis, we determined thresholds roughly between $0.03\%$ (MWPM) and $0.1\%$ (ML) below the expected literature values of $10.31\%$ (MWPM) and $10.94\%$ (ML).
@@ -11,9 +10,9 @@ We concluded that this difference is due to the suppression of the threshold by 
 which also affect all thresholds obtained for the circuit-level noise setting.
 
 Regarding our implementation, we also discussed the importance of decoder choice, showing that 
-the maximum likelihood decoder outperforms the minimum weight decoder in regard to the threshold. 
+the maximum-likelihood decoder outperforms the minimum-weight decoder with regard to the threshold. 
 In this process we detected numerical instability in our implementation of the efficient ML decoder,
-which lead us to determine the cause and find possible mitigation strategies for future implementations.
+which led us to determine the cause and find possible mitigation strategies for future implementations.
 The occurrence of numerical underflow errors grows with decreasing physical noise rate and increasing distance. 
 By setting an upper limit on the code distance, and by implementing some of the proposed mitigation strategies, 
 we were able to perform the threshold analysis with negligible rejection rates.
@@ -21,16 +20,16 @@ we were able to perform the threshold analysis with negligible rejection rates.
 For the characterization of Steane-type error correction under circuit-level noise 
 we found that STEC thresholds are significantly above the thresholds of the conventional syndrome extraction circuit.
 Under the assumptions made in this thesis, 
-chief among them the assumed access to fault-tolerantly prepared logical encoded ancilla qubits, 
+chief among them the assumed access to fault-tolerantly prepared logically encoded ancilla qubits, 
 which works in favour of STEC,
-we observed thresholds for STEC which are at least a factor $2$ higher than those of the conventional approach. 
+we observed thresholds for STEC which are at least a factor of $2$ higher than those of the conventional approach. 
  
 For the single QEC cycle we determined a threshold at a physical noise rate of approximately $3\%$.
-During the analysis we observed the expected occurrence of an asymmetry in the observable ($\bar{Z}: p_{th} = 2.961 \pm 0.011 \%$ and $\bar{X}: p_{th} = 3.3690 \pm 0.0080 \% $) see section \ref{ssec:results_circ_single_cycle}.
+During the analysis we observed the expected occurrence of an asymmetry between the thresholds for the two observables ($\bar{Z}: p_{th} = 2.961 \pm 0.011 \%$ and $\bar{X}: p_{th} = 3.3690 \pm 0.0080 \% $); see section \ref{ssec:results_circ_single_cycle}.
 While we are able to qualitatively argue for the occurrence of an asymmetry, 
-quantifying which of the observables is benefiting more from the two opposing mechanisms, 
-is a task which requires further analysis, as the incoming error model, 
-as well as the influence of the residual error decoder have to be taken into account and quantified.
+determining which of the observables benefits more from the two opposing mechanisms 
+is a task which requires further analysis, as both the incoming error model 
+and the influence of the residual error decoder have to be taken into account and quantified.
 
 We discussed the influence of the choice of residual error decoder, showing that this
 choice does not matter for three of the four configurations. It has a significant influence only on
@@ -50,32 +49,32 @@ the following cycles are fed with a more complex error model, as the residual er
 
 We also discussed the reduction of the asymmetry between the different observables, 
 which we argued is due to the emerging symmetric bulk state, 
-as the repeated cycles lead to a constant iterative change between the two half-cycles,
+as repeated cycles cause the two half-cycles to alternate,
 suppressing the asymmetry of the QEC.
-We also argued that such a bulk may not emerge, if instead of performing a quantum memory experiment,
+We also argued that such a bulk may not emerge if instead of performing a quantum memory experiment,
 actual operations were performed on the qubits in between, which might themselves introduce an asymmetry to the process.
 Comparing these results to a conventional repeated syndrome extraction circuit, 
-which shows an approximately constant threshold at a physical error rate of close to $1\%$, 
-we find that STEC is able to improve the threshold by a factor of $3$ for the single QEC cycle case. 
+which shows an approximately constant threshold at a physical error rate close to $1\%$, 
+we find that STEC is able to improve the threshold by a factor of $3$ for the case of a single QEC cycle. 
 This improvement drops off to a factor of $2$ for the repeated cycles.
 
-The whole analysis was performed under the assumption that we have access to fault-tolerantly prepared logical encoded qubits, 
+The whole analysis was performed under the assumption that we have access to fault-tolerantly prepared logically encoded qubits, 
 with an independent depolarizing error channel on each physical qubit. 
 Moreover the ML decoder used was only given the error model of either $X$- or $Z$-type errors. 
 Therefore each half-cycle was independently decoded, and the possible information contained in the correlations present in the error channels was neglected.  
 Finally we assumed that the conventional syndrome extraction circuit is not decoded independently: 
 instead, all syndromes, including the syndrome of the residual error, are decoded together. 
 
-We can conclude the characterization of Steane-type error correction by stating that we are able to show,
+We can conclude the characterization of Steane-type error correction by stating that we are able to show
 that under circuit-level noise, given our assumptions, 
 STEC achieves a threshold which is significantly higher than  
 the threshold determined for the conventional syndrome extraction circuit.
 
-This increased threshold combined with STEC's property of constant-in-time scaling of the syndrome extraction process,
+This increased threshold combined with STEC's property of constant-in-time scaling of the syndrome extraction process
 makes STEC an interesting topic. 
 
-A clear first target for this further research is to reduce the assumptions to obtain this threshold, 
-focusing on the major assumption of the access to fault-tolerantly prepared logical encoded ancilla qubits.
+A clear first target for further research is to reduce the assumptions underlying this threshold estimate, 
+focusing on the major assumption of access to fault-tolerantly prepared logically encoded ancilla qubits.
 Reducing the advantage granted to STEC would strengthen the results obtained.
 A further outlook is provided in the following section. 
 
@@ -83,23 +82,23 @@ A further outlook is provided in the following section.
 
 The results of this thesis point toward the benefits of STEC.
 These results would benefit greatly from further investigation into the influence of the fault-tolerant state preparation procedure 
-needed for the logical encoded ancilla qubits, as this would remove a major assumption from which STEC is currently benefiting.
-Here modeling or implementing a state preparation circuit which is capable of fault-tolerantly preparing a logical encoded state 
+needed for the logically encoded ancilla qubits, as this would remove a major assumption from which STEC is currently benefiting.
+Here modeling or implementing a state preparation circuit which is capable of fault-tolerantly preparing a logically encoded state 
 with a trusted syndrome can be considered a main goal.
 
-On a technical side, the implementation of the maximum likelihood decoder would benefit from a reimplementation in a programming  
-language which supports higher floating point precision, possibly improving the performance at the same time. 
+On the technical side, the implementation of the maximum-likelihood decoder would benefit from a reimplementation in a programming  
+language which supports higher floating-point precision, possibly improving the performance at the same time. 
 
-A potential higher threshold could be achieved for the same experiment performed in this thesis, 
-if the correlations between $X$- and $Z$-errors, present in the noise model, were be used in the decoding process.
-Such a decoder is proposed in \cite{efficient_decoding_algorithm}, which implements MLD approximately but still efficiently.
-For such an implementation the exact interpretation and use of the two ancilla syndromes as one combined syndrome requires some further investigation. 
+A higher threshold could potentially be achieved for the same experiment performed in this thesis, 
+if the correlations between $X$- and $Z$-errors, present in the noise model, were used in the decoding process.
+Such a decoder, which implements MLD approximately but still efficiently, is proposed in \cite{efficient_decoding_algorithm}.
+For such an implementation the exact interpretation and use of the two ancilla syndromes as one combined syndrome require some further investigation. 
 
 The general process of ML decoding would also benefit from an in-depth analysis of the potential uses of the known correlations 
 between the data qubit error and the syndrome error model.
 
 Another topic of interest is the analysis of the asymmetry of the STEC circuit.
-Here one could analyze and quantify this asymmetry in detail, thereby predicting the differences in the performance with regard to the observable. 
+Here one could analyze and quantify this asymmetry in detail, thereby predicting the performance differences between the observables. 
 A related question is how the asymmetry interacts with operations placed between independent STEC cycles, 
 and which relation between the incoming error and residual error for these operations yields the best or worst thresholds. 
 
